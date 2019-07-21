@@ -47,22 +47,31 @@ public class EnemyMovement : MonoBehaviour, IMove
 
             if (!_stats.CheckIfTileIsFree(intPos))
             {
-                pos = transform.position + direction*2;
-                intPos = new Vector3Int(Mathf.FloorToInt(pos.x), Mathf.FloorToInt(pos.y), (int)pos.z);
-                colliderType = _tileMap.GetColliderType(intPos);
-                if (colliderType == Tile.ColliderType.None)
+                var enemyStats = _stats.GetUnitFromTile(intPos);
+                if (enemyStats != null && enemyStats.unitType != _stats.unitType)
                 {
-                    if (_stats.CheckIfTileIsFree(intPos) && _stats.actionPoints >= 2)
+                    enemyStats.TakeDamage(1);
+                }
+                else
+                {
+
+                    pos = transform.position + direction * 2;
+                    intPos = new Vector3Int(Mathf.FloorToInt(pos.x), Mathf.FloorToInt(pos.y), (int) pos.z);
+                    colliderType = _tileMap.GetColliderType(intPos);
+                    if (colliderType == Tile.ColliderType.None)
                     {
-                        _stats.UpdateCurrentTile(intPos);
-                        transform.position += direction * 2;
-                        _stats.UpdateMovementPoints(-2);
-                        return;
-                    }
-                    else
-                    {
-                        Debug.Log("Someone on the way");
-                        return;
+                        if (_stats.CheckIfTileIsFree(intPos) && _stats.actionPoints >= 2)
+                        {
+                            _stats.UpdateCurrentTile(intPos);
+                            transform.position += direction * 2;
+                            _stats.UpdateMovementPoints(-2);
+                            return;
+                        }
+                        else
+                        {
+                            Debug.Log("Someone on the way");
+                            return;
+                        }
                     }
                 }
             }

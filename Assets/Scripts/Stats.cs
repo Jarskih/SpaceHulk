@@ -11,7 +11,14 @@ public class Stats : MonoBehaviour
     private Tilemap _tileMap;
 
     public Color color;
-    
+
+    public UnitType unitType;
+
+    public enum UnitType
+    {
+        Alien,
+        Marine
+    }
     
     void Start()
     {
@@ -62,5 +69,21 @@ public class Stats : MonoBehaviour
     public bool CheckIfTileIsFree(Vector3Int newPos)
     {
         return _tileMap.GetInstantiatedObject(newPos).GetComponent<Node>().unitOnNode == null;
+    }
+
+    public Stats GetUnitFromTile(Vector3Int pos)
+    {
+        return _tileMap.GetInstantiatedObject(pos).GetComponent<Node>().unitOnNode;
+    }
+
+    public void TakeDamage(int damage)
+    {
+        health -= damage;
+        Mathf.Clamp(health, 0, 5);
+        if (health <= 0)
+        {
+            Destroy(gameObject);
+            Debug.Log("unit died");
+        }
     }
 }

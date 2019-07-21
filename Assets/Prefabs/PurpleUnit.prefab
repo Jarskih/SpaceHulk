@@ -88,6 +88,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1115481517841307784}
+  - component: {fileID: 1687729114}
+  - component: {fileID: 1687729115}
+  - component: {fileID: 1687729116}
   m_Layer: 0
   m_Name: PurpleUnit
   m_TagString: Untagged
@@ -110,3 +113,42 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1687729114
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1115481517841307787}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2894534e139f8374eaf74ea8e6167a94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actionPoints: 0
+  color: {r: 0.6172797, g: 0.16153437, b: 0.6226415, a: 0}
+  unitType: 1
+--- !u!114 &1687729115
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1115481517841307787}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2f53c0415b309d48900e14867c5d4e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1687729116
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1115481517841307787}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 251b941edd9ac5a4a91f03cb1b4b4748, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

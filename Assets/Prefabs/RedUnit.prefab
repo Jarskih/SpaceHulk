@@ -59,7 +59,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   actionPoints: 0
-  color: {r: 0.7735849, g: 0.5890632, b: 0.16420436, a: 0}
+  color: {r: 0.6698113, g: 0.65638345, b: 0.078987174, a: 0}
+  unitType: 1
 --- !u!114 &51315045
 MonoBehaviour:
   m_ObjectHideFlags: 0
