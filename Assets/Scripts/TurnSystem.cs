@@ -7,7 +7,7 @@ public class TurnSystem : MonoBehaviour
 {
     public List<Stats> enemies;
     public Stats activeEnemy;
-    private int activeEnemyIndex;
+    private int _activeEnemyIndex;
     public Stats[] players;
     [SerializeField]
     private Stats activePlayer;
@@ -16,7 +16,7 @@ public class TurnSystem : MonoBehaviour
     [SerializeField]
     private Phases currentPhase;
 
-    private SpawnEnemies spawnEnemies;
+    private SpawnEnemies _spawnEnemies;
     
     private enum Phases
     {
@@ -37,11 +37,11 @@ public class TurnSystem : MonoBehaviour
         
         // Choose first player
         SetFirstPlayer();
-        UpdateMovementPoints(activePlayer);
+        UpdateMovementPoints();
         
         // Spawn enemies
-        spawnEnemies = GetComponent<SpawnEnemies>();
-        spawnEnemies.Spawn(1);
+        _spawnEnemies = GetComponent<SpawnEnemies>();
+        _spawnEnemies.Spawn(1);
 
         UpdateEnemyList();
         
@@ -51,7 +51,7 @@ public class TurnSystem : MonoBehaviour
 
     void SetFirstEnemy()
     {
-        activeEnemyIndex = 0;
+        _activeEnemyIndex = 0;
         activeEnemy = enemies[0];
         activeEnemy.UpdateMovementPoints(4);
     }
@@ -69,21 +69,19 @@ public class TurnSystem : MonoBehaviour
         {
             SetNextPhase();
             SetFirstPlayer();
-            UpdateMovementPoints(activePlayer);
             Debug.Log("All players moved, setting new phase: " + currentPhase);
         }
         else
         {
             Debug.Log("Next player turn");
             activePlayer = players[activePlayerIndex];
-            UpdateMovementPoints(activePlayer);
         }
     }
 
     void NextEnemy()
     {
-        activeEnemyIndex = activeEnemyIndex + 1;
-        if (activeEnemyIndex >= enemies.Count)
+        _activeEnemyIndex = _activeEnemyIndex + 1;
+        if (_activeEnemyIndex >= enemies.Count)
         {
             SetNextPhase();
             SetFirstEnemy();
@@ -92,8 +90,7 @@ public class TurnSystem : MonoBehaviour
         else
         {
             Debug.Log("Next alien turn");
-            activeEnemy = enemies[activeEnemyIndex];
-            UpdateMovementPoints(activeEnemy);
+            activeEnemy = enemies[_activeEnemyIndex];
         }
     }
 
@@ -107,23 +104,34 @@ public class TurnSystem : MonoBehaviour
         {
             currentPhase = currentPhase + 1;
         }
+
+        UpdateMovementPoints();
     }
 
-    void UpdateMovementPoints(Stats unit)
+    void UpdateMovementPoints()
     {
         if (currentPhase == Phases.FirstMovement || currentPhase == Phases.SecondMovement)
         {
-            unit.UpdateMovementPoints(2);
+            foreach (var player in players)
+            {
+                player.UpdateMovementPoints(2);
+            }
         }
 
         if (currentPhase == Phases.Actions)
         {
-            unit.UpdateMovementPoints(1);
+            foreach (var player in players)
+            {
+                player.UpdateMovementPoints(1);
+            }
         }
 
         if (currentPhase == Phases.EnemyMovement)
         {
-            unit.UpdateMovementPoints(4);
+            foreach (var enemy in enemies)
+            {
+                enemy.UpdateMovementPoints(4);
+            }
         }
     }
 
@@ -140,7 +148,13 @@ public class TurnSystem : MonoBehaviour
     
     // Update is called once per frame
     void Update()
-    {        
+    {
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            activePlayer.actionPoints = 0;
+            SetNextPlayer();
+        }
+        
         switch (currentPhase)
         {
             case(Phases.FirstMovement):
@@ -166,7 +180,7 @@ public class TurnSystem : MonoBehaviour
                 }
                 break;
             case(Phases.EnemySpawn):
-                spawnEnemies.Spawn(1);
+                _spawnEnemies.Spawn(6);
                 UpdateEnemyList();
                 SetNextPhase();
                 break;
