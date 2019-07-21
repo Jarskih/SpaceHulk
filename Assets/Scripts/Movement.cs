@@ -16,18 +16,12 @@ public class Movement : MonoBehaviour, IMove
     {
         if(Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
         {
-            if (Move(transform.up))
-            {
-                _stats.UpdateMovementPoints(-1);
-            }
+            Move(transform.up);
         }
         
         if(Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
         {
-            if(Move(-transform.up))
-            {
-                _stats.UpdateMovementPoints(-2);
-            }
+            Move(-transform.up);
         }
         
         if(Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A)) {
@@ -48,14 +42,44 @@ public class Movement : MonoBehaviour, IMove
         {
             if (!_stats.CheckIfTileIsFree(intPos))
             {
-                Debug.Log("Someone on the way");
-                return false;
+                if (direction == transform.up)
+                {
+                    pos = transform.position + direction*2;
+                    intPos = new Vector3Int(Mathf.FloorToInt(pos.x), Mathf.FloorToInt(pos.y), (int)pos.z);
+                    colliderType = _tileMap.GetColliderType(intPos);
+                    if (colliderType == Tile.ColliderType.None)
+                    {
+                        if (_stats.CheckIfTileIsFree(intPos) && _stats.actionPoints >= 2)
+                        {
+                            _stats.UpdateCurrentTile(intPos);
+                            transform.position += direction * 2;
+                            _stats.UpdateMovementPoints(-2);
+                            return true;
+                        }
+                    }
+                }
+                else
+                {
+                    Debug.Log("Someone on the way");
+                    return false;
+                }
             }
-            // TODO Jump over friendly
-            
-            _stats.UpdateCurrentTile(intPos);
-            transform.position += direction;
-            return true;
+            else
+            {
+                          
+                _stats.UpdateCurrentTile(intPos);
+                transform.position += direction;
+                if (direction == transform.up)
+                {
+                    _stats.UpdateMovementPoints(-1);
+                }
+                else
+                {
+                    _stats.UpdateMovementPoints(-2);
+                }
+                return true;
+            }
+ 
         }
         return false;
     }

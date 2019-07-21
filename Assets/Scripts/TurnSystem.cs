@@ -16,6 +16,8 @@ public class TurnSystem : MonoBehaviour
     [SerializeField]
     private Phases currentPhase;
 
+
+    public Color enemyColor;
     private SpawnEnemies _spawnEnemies;
     
     private enum Phases
@@ -49,6 +51,18 @@ public class TurnSystem : MonoBehaviour
         SetFirstEnemy();
     }
 
+    public Color GetCurrentColor()
+    {
+        if (currentPhase == Phases.FirstMovement || currentPhase == Phases.SecondMovement || currentPhase == Phases.Actions)
+        {
+            return activePlayer.color;
+        }
+        else
+        {
+            return enemyColor;
+        }
+    }
+    
     void SetFirstEnemy()
     {
         _activeEnemyIndex = 0;

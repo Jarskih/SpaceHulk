@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.Tilemaps;
 
 public class Stats : MonoBehaviour
@@ -8,6 +9,8 @@ public class Stats : MonoBehaviour
     private ComplexActions _complexActions;
     private int health = 1;
     private Tilemap _tileMap;
+
+    public Color color;
     
     
     void Start()
@@ -15,8 +18,15 @@ public class Stats : MonoBehaviour
         _movement = GetComponent<IMove>();
         _complexActions = GetComponent<ComplexActions>();
         _tileMap = GameObject.FindGameObjectWithTag("Grid").GetComponentInChildren<Tilemap>();
+        StartCoroutine(SaveCurrentTile());
     }
-    
+
+    private IEnumerator SaveCurrentTile()
+    {
+        yield return new WaitForSeconds(0.1f);
+        UpdateCurrentTile(GetCurrentTilePos());
+    }
+
     Vector3Int GetCurrentTilePos()
     {
         return new Vector3Int(Mathf.FloorToInt(transform.position.x), Mathf.FloorToInt(transform.position.y), (int)transform.position.z);

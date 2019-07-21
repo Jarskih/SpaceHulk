@@ -47,17 +47,33 @@ public class EnemyMovement : MonoBehaviour, IMove
 
             if (!_stats.CheckIfTileIsFree(intPos))
             {
-                Debug.Log("Someone on the way");
-                return;
+                pos = transform.position + direction*2;
+                intPos = new Vector3Int(Mathf.FloorToInt(pos.x), Mathf.FloorToInt(pos.y), (int)pos.z);
+                colliderType = _tileMap.GetColliderType(intPos);
+                if (colliderType == Tile.ColliderType.None)
+                {
+                    if (_stats.CheckIfTileIsFree(intPos) && _stats.actionPoints >= 2)
+                    {
+                        _stats.UpdateCurrentTile(intPos);
+                        transform.position += direction * 2;
+                        _stats.UpdateMovementPoints(-2);
+                        return;
+                    }
+                    else
+                    {
+                        Debug.Log("Someone on the way");
+                        return;
+                    }
+                }
             }
-            // TODO Jump over friendly
-            
-            _stats.UpdateCurrentTile(intPos);
+            else
+            {
+                _stats.UpdateCurrentTile(intPos);
            
-            _stats.UpdateMovementPoints(-1);
-            transform.position += direction;
+                _stats.UpdateMovementPoints(-1);
+                transform.position += direction;
 
-
+            }
         }
     }
 }
