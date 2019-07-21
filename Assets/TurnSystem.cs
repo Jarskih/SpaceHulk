@@ -16,6 +16,8 @@ public class TurnSystem : MonoBehaviour
     [SerializeField]
     private Phases currentPhase;
 
+    private SpawnEnemies spawnEnemies;
+    
     private enum Phases
     {
         FirstMovement,
@@ -30,23 +32,28 @@ public class TurnSystem : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        SetFirstPlayer();
+        // First phase
         currentPhase = Phases.FirstMovement;
+        
+        // Choose first player
+        SetFirstPlayer();
         UpdateMovementPoints(activePlayer);
+        
+        // Spawn enemies
+        spawnEnemies = GetComponent<SpawnEnemies>();
+        spawnEnemies.Spawn(1);
 
-        var enemyGameObjects = GameObject.FindGameObjectsWithTag("Enemy");
-        foreach (var enemy in enemyGameObjects)
-        {
-            enemies.Add(enemy.GetComponent<Stats>());
-        }
-
-        activeEnemy = enemies[0];
-        activeEnemy.UpdateMovementPoints(4);
+        UpdateEnemyList();
+        
+        // Choose first enemy
+        SetFirstEnemy();
     }
 
     void SetFirstEnemy()
     {
-        
+        activeEnemyIndex = 0;
+        activeEnemy = enemies[0];
+        activeEnemy.UpdateMovementPoints(4);
     }
     
     void SetFirstPlayer()
@@ -60,10 +67,10 @@ public class TurnSystem : MonoBehaviour
         activePlayerIndex = activePlayerIndex + 1;
         if (activePlayerIndex >= players.Length)
         {
-            Debug.Log("All players moved, setting new phase: " + currentPhase);
             SetNextPhase();
             SetFirstPlayer();
             UpdateMovementPoints(activePlayer);
+            Debug.Log("All players moved, setting new phase: " + currentPhase);
         }
         else
         {
@@ -78,8 +85,9 @@ public class TurnSystem : MonoBehaviour
         activeEnemyIndex = activeEnemyIndex + 1;
         if (activeEnemyIndex >= enemies.Count)
         {
-            Debug.Log("All enemies moved, setting new phase: " + currentPhase);
             SetNextPhase();
+            SetFirstEnemy();
+            Debug.Log("All enemies moved, setting new phase: " + currentPhase);
         }
         else
         {
@@ -118,6 +126,17 @@ public class TurnSystem : MonoBehaviour
             unit.UpdateMovementPoints(4);
         }
     }
+
+    void UpdateEnemyList()
+    {
+        // Find enemies
+        enemies.Clear();
+        var enemyGameObjects = GameObject.FindGameObjectsWithTag("Enemy");
+        foreach (var enemy in enemyGameObjects)
+        {
+            enemies.Add(enemy.GetComponent<Stats>());
+        }
+    }
     
     // Update is called once per frame
     void Update()
@@ -145,6 +164,14 @@ public class TurnSystem : MonoBehaviour
                 {
                     NextEnemy();
                 }
+                break;
+            case(Phases.EnemySpawn):
+                spawnEnemies.Spawn(1);
+                UpdateEnemyList();
+                SetNextPhase();
+                break;
+            case(Phases.Resolution):
+                SetNextPhase();
                 break;
             default:
                 break;    
