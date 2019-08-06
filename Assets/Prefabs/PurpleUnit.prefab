@@ -68,8 +68,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: ab3c209f286088b459ea844df00453f8, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Sprite: {fileID: 21300000, guid: c82ed9dc0ec0701448e7dd472dc8f56c, type: 3}
+  m_Color: {r: 0.84705883, g: 0.18039216, b: 0.85490197, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -91,6 +91,7 @@ GameObject:
   - component: {fileID: 1687729114}
   - component: {fileID: 1687729115}
   - component: {fileID: 1687729116}
+  - component: {fileID: 801798469}
   m_Layer: 0
   m_Name: PurpleUnit
   m_TagString: Untagged
@@ -125,8 +126,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2894534e139f8374eaf74ea8e6167a94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  APrules: {fileID: 11400000, guid: ac6b57c383ec70a4cbe16a70b09549a6, type: 2}
   actionPoints: 0
-  color: {r: 0.6172797, g: 0.16153437, b: 0.6226415, a: 0}
+  isDead: 0
+  enemyTargets: {fileID: 11400000, guid: 8b3237d8c41e30540a77cdb930212f30, type: 2}
   unitType: 1
 --- !u!114 &1687729115
 MonoBehaviour:
@@ -152,3 +155,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 251b941edd9ac5a4a91f03cb1b4b4748, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shootingState: 0
+--- !u!114 &801798469
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1115481517841307787}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99208ad21ddc321488d4277b40c57aca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  wounded: {r: 1, g: 0.5254902, b: 0.5254902, a: 1}
+  healthy: {r: 0.8470589, g: 0.18039216, b: 0.854902, a: 1}

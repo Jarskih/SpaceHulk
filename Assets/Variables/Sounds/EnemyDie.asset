@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a90db3620cac3094eaa7f4ed95bfc68b, type: 3}
+  m_Name: EnemyDie
+  m_EditorClassIdentifier: 
+  clips:
+  - {fileID: 8300000, guid: 989d4c9e11e376a40aad1d473c573811, type: 3}
+  - {fileID: 8300000, guid: 708755dc160d6e74aad82548e02ee347, type: 3}
+  - {fileID: 8300000, guid: dde523564a3d9a944914903484ad4840, type: 3}
+  - {fileID: 8300000, guid: f3199c3c90119544a8e6f1a61f8f5d16, type: 3}
+  minVolume: 1
+  maxVolume: 1
+  minPitch: 1
+  maxPitch: 1

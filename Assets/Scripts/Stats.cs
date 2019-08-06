@@ -1,31 +1,50 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
+using Interfaces;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
 public class Stats : MonoBehaviour
 {
+    public APrules APrules;
     public int actionPoints;
+    public bool isDead;
+    public StatsListVariable enemyTargets;
+    public Vector3 _targetPos;
+    
     private IMove _movement;
     private ComplexActions _complexActions;
-    private int health = 1;
+    private int _health = 1;
     private Tilemap _tileMap;
 
-    public Color color;
-
     public UnitType unitType;
-
     public enum UnitType
     {
         Alien,
         Marine
     }
-    
+
+    private UnitState currentState;
+    public enum UnitState
+    {
+        Idle,
+        Shooting
+    }
+
+    public int Health => _health;
+
     void Start()
     {
+        _targetPos = transform.position;
         _movement = GetComponent<IMove>();
         _complexActions = GetComponent<ComplexActions>();
-        _tileMap = GameObject.FindGameObjectWithTag("Grid").GetComponentInChildren<Tilemap>();
+        _tileMap = GameObject.FindObjectOfType<Tilemap>();
         StartCoroutine(SaveCurrentTile());
+    }
+
+    void Update()
+    {
+        transform.position = Vector3.MoveTowards(transform.position, _targetPos, 0.3f);
     }
 
     private IEnumerator SaveCurrentTile()
@@ -34,24 +53,58 @@ public class Stats : MonoBehaviour
         UpdateCurrentTile(GetCurrentTilePos());
     }
 
-    Vector3Int GetCurrentTilePos()
+    public Vector3Int GetCurrentTilePos()
     {
-        return new Vector3Int(Mathf.FloorToInt(transform.position.x), Mathf.FloorToInt(transform.position.y), (int)transform.position.z);
+        var position = transform.position;
+        return new Vector3Int(Mathf.FloorToInt(position.x), Mathf.FloorToInt(position.y), (int)position.z);
+    }
+
+    public Tilemap GetTileMap()
+    {
+        return _tileMap;
     }
 
     public void Movement()
     {
-        _movement.Act();
+         _movement.Act();
     }
 
-    public void Actions()
+    public void ChangeState(UnitState state)
     {
-        _complexActions.Act();
+        currentState = state;
+    }
+
+    public void Actions(IEnumerable<Stats> enemies)
+    {
+        // Wait for unit to move before allowing new orders
+        if (Vector3.Distance(transform.position, _targetPos) > 0.05f) return;
+        
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            if (actionPoints >= 2)
+            {
+                currentState = UnitState.Shooting;
+            }
+            else
+            {
+             EventManager.TriggerEvent("Negative");   
+            }
+        }
+        
+        if (currentState == UnitState.Idle)
+        {
+            _movement.Act();
+        }
+
+        if (currentState == UnitState.Shooting)
+        {
+            _complexActions.Act(enemies);
+        }
     }
 
     public void UpdateMovementPoints(int change)
     {
-        actionPoints = Mathf.Clamp(actionPoints + change, 0, 4);
+        actionPoints = Mathf.Clamp(actionPoints + change, 0, 6);
     }
 
     public void UpdateCurrentTile(Vector3Int newPos)
@@ -68,22 +121,34 @@ public class Stats : MonoBehaviour
 
     public bool CheckIfTileIsFree(Vector3Int newPos)
     {
-        return _tileMap.GetInstantiatedObject(newPos).GetComponent<Node>().unitOnNode == null;
+        var unit =_tileMap.GetInstantiatedObject(newPos)?.GetComponent<Node>()?.unitOnNode;
+        return unit == null || unit._health <= 0;
     }
 
     public Stats GetUnitFromTile(Vector3Int pos)
     {
-        return _tileMap.GetInstantiatedObject(pos).GetComponent<Node>().unitOnNode;
+        pos.z = 0;
+        var obj = _tileMap.GetInstantiatedObject(pos);
+        var unit = obj.GetComponent<Node>()?.unitOnNode;
+        return unit;
     }
 
     public void TakeDamage(int damage)
     {
-        health -= damage;
-        Mathf.Clamp(health, 0, 5);
-        if (health <= 0)
+        _health -= damage;
+        Mathf.Clamp(_health, 0, 5);
+        if (unitType == UnitType.Marine)
         {
+            if (_health <= 0)
+            {
+                EventManager.TriggerEvent("Wounded");
+                isDead = true;
+            }
+        }
+        else
+        {
+            EventManager.TriggerEvent("EnemyDied");
             Destroy(gameObject);
-            Debug.Log("unit died");
         }
     }
 }

@@ -3,7 +3,9 @@ guid: 2894534e139f8374eaf74ea8e6167a94
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - APrules: {fileID: 11400000, guid: ac6b57c383ec70a4cbe16a70b09549a6, type: 2}
+  - enemyTargets: {fileID: 11400000, guid: 8b3237d8c41e30540a77cdb930212f30, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

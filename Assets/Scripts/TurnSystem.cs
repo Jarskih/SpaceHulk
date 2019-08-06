@@ -5,45 +5,67 @@ using UnityEngine;
 
 public class TurnSystem : MonoBehaviour
 {
+    public IntVariable actionPoints;
+    public IntVariable PlayerAPPerTurn;
+    [SerializeField] private int minEnemyAPperTurn;
+    [SerializeField] private int maxEnemyAPperTurn;
+    [SerializeField] private int minEnemiesSpawnedPerTurn;
+    [SerializeField] private int maxEnemiesSpawnedPerTurn;
     public List<Stats> enemies;
     public Stats activeEnemy;
     private int _activeEnemyIndex;
-    public Stats[] players;
+    private List<Stats> _players = new List<Stats>();
     [SerializeField]
     private Stats activePlayer;
     [SerializeField]
     private int activePlayerIndex;
     [SerializeField]
     private Phases currentPhase;
-
-
     public Color enemyColor;
     private SpawnEnemies _spawnEnemies;
+    private CameraFollow _cameraFollow;
+
+    [SerializeField]
+    private int maxEnemies = 12;
     
     private enum Phases
     {
         FirstMovement,
-        Actions,
         SecondMovement,
         EnemyMovement,
         EnemySpawn,
         Resolution
     }
-    
+
+    // Register listeners
+    void OnEnable()
+    {
+        EventManager.StartListening("EnemyDied", UpdateEnemyList);
+    }
+
+    void OnDisable() {
+        EventManager.StopListening("EnemyDied", UpdateEnemyList);
+    }
     
     // Start is called before the first frame update
     void Start()
     {
+        _cameraFollow = GetComponent<CameraFollow>();
         // First phase
         currentPhase = Phases.FirstMovement;
-        
+
+        var players = FindObjectsOfType<Stats>();
+        foreach (var player in players)
+        {
+            _players.Add(player);
+        }
         // Choose first player
         SetFirstPlayer();
         UpdateMovementPoints();
         
         // Spawn enemies
         _spawnEnemies = GetComponent<SpawnEnemies>();
-        _spawnEnemies.Spawn(1);
+        _spawnEnemies.Spawn(GetEnemiesSpawned());
 
         UpdateEnemyList();
         
@@ -53,9 +75,9 @@ public class TurnSystem : MonoBehaviour
 
     public Color GetCurrentColor()
     {
-        if (currentPhase == Phases.FirstMovement || currentPhase == Phases.SecondMovement || currentPhase == Phases.Actions)
+        if (currentPhase == Phases.FirstMovement || currentPhase == Phases.SecondMovement)
         {
-            return activePlayer.color;
+            return activePlayer.GetComponent<AvatarColor>().healthy;
         }
         else
         {
@@ -67,19 +89,19 @@ public class TurnSystem : MonoBehaviour
     {
         _activeEnemyIndex = 0;
         activeEnemy = enemies[0];
-        activeEnemy.UpdateMovementPoints(4);
+        activeEnemy.UpdateMovementPoints(GetEnemyAP());
     }
     
     void SetFirstPlayer()
     {
         activePlayerIndex = 0;
-        activePlayer = players[0];
+        activePlayer = _players[0];
     }
 
     void SetNextPlayer()
     {
         activePlayerIndex = activePlayerIndex + 1;
-        if (activePlayerIndex >= players.Length)
+        if (activePlayerIndex >= _players.Count)
         {
             SetNextPhase();
             SetFirstPlayer();
@@ -88,7 +110,7 @@ public class TurnSystem : MonoBehaviour
         else
         {
             Debug.Log("Next player turn");
-            activePlayer = players[activePlayerIndex];
+            activePlayer = _players[activePlayerIndex];
         }
     }
 
@@ -119,6 +141,11 @@ public class TurnSystem : MonoBehaviour
             currentPhase = currentPhase + 1;
         }
 
+        if (currentPhase == Phases.EnemyMovement)
+        {
+            EventManager.TriggerEvent("EnemyTurn");
+        }
+
         UpdateMovementPoints();
     }
 
@@ -126,17 +153,9 @@ public class TurnSystem : MonoBehaviour
     {
         if (currentPhase == Phases.FirstMovement || currentPhase == Phases.SecondMovement)
         {
-            foreach (var player in players)
+            foreach (var player in _players)
             {
-                player.UpdateMovementPoints(2);
-            }
-        }
-
-        if (currentPhase == Phases.Actions)
-        {
-            foreach (var player in players)
-            {
-                player.UpdateMovementPoints(1);
+                player.UpdateMovementPoints(PlayerAPPerTurn.Value);
             }
         }
 
@@ -144,12 +163,23 @@ public class TurnSystem : MonoBehaviour
         {
             foreach (var enemy in enemies)
             {
-                enemy.UpdateMovementPoints(4);
+                var ap = GetEnemyAP();
+                enemy.UpdateMovementPoints(ap);
             }
         }
     }
 
-    void UpdateEnemyList()
+    int GetEnemyAP()
+    {
+        return Random.Range(minEnemyAPperTurn, maxEnemyAPperTurn);
+    }
+
+    int GetEnemiesSpawned()
+    {
+        return Random.Range(minEnemiesSpawnedPerTurn, maxEnemiesSpawnedPerTurn);
+    }
+
+    public void UpdateEnemyList()
     {
         // Find enemies
         enemies.Clear();
@@ -158,11 +188,44 @@ public class TurnSystem : MonoBehaviour
         {
             enemies.Add(enemy.GetComponent<Stats>());
         }
+
+        if (activeEnemy == null)
+        {
+            activeEnemy = enemies[0];
+        }
+    }
+
+    void UpdateUI()
+    {
+        if (currentPhase == Phases.FirstMovement || currentPhase == Phases.SecondMovement)
+        {
+            actionPoints.Value = activePlayer.actionPoints;
+        }
+        else
+        {
+            actionPoints.Value = activeEnemy.actionPoints;
+        }
+    }
+
+    void FollowPlayer()
+    {
+        if (currentPhase == Phases.FirstMovement || currentPhase == Phases.SecondMovement)
+        {
+            _cameraFollow.SetTarget(activePlayer.transform.position);
+        }
+        else
+        {
+            _cameraFollow.SetTarget(activeEnemy.transform.position);
+        }
     }
     
     // Update is called once per frame
     void Update()
     {
+        UpdateUI();
+        FollowPlayer();
+        UpdateEnemyList();
+        
         if (Input.GetKeyDown(KeyCode.Tab))
         {
             activePlayer.actionPoints = 0;
@@ -173,29 +236,44 @@ public class TurnSystem : MonoBehaviour
         {
             case(Phases.FirstMovement):
             case(Phases.SecondMovement):
-                activePlayer.Movement();
+                if (activePlayer.GetComponent<Stats>().Health > 0)
+                {
+                    activePlayer.Actions(enemies);
+                }
+                else
+                {
+                    activePlayer.actionPoints = 0;
+                }
+                
+                
                 if (activePlayer.actionPoints <= 0)
                 {
                     SetNextPlayer();
                 }
                 break;
-            case(Phases.Actions):
-                activePlayer.Actions();
-                if (activePlayer.actionPoints <= 0)
+            case(Phases.EnemyMovement):     
+                if (activeEnemy.GetComponent<Stats>().Health > 0)
                 {
-                    SetNextPlayer();
+                    activeEnemy.Movement();
                 }
-                break;
-            case(Phases.EnemyMovement):
-                activeEnemy.Movement();
+                else
+                {
+                    activeEnemy.actionPoints = 0;
+                }
+                
                 if (activeEnemy.actionPoints <= 0)
                 {
                     NextEnemy();
                 }
                 break;
             case(Phases.EnemySpawn):
-                _spawnEnemies.Spawn(6);
-                UpdateEnemyList();
+                if (maxEnemies - enemies.Count > 0)
+                {
+                    // Do not spawn more than maxEnemies
+                    int enemiesToSpawn = Mathf.Clamp(maxEnemies - enemies.Count, 0, 6);
+                    _spawnEnemies.Spawn(enemiesToSpawn);
+                    UpdateEnemyList();
+                }
                 SetNextPhase();
                 break;
             case(Phases.Resolution):

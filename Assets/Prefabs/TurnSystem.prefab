@@ -11,9 +11,10 @@ GameObject:
   - component: {fileID: 9034076305799624828}
   - component: {fileID: 9034076305799624803}
   - component: {fileID: 1401116394}
+  - component: {fileID: 1959010648}
   m_Layer: 0
   m_Name: TurnSystem
-  m_TagString: Untagged
+  m_TagString: TurnSystem
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -44,6 +45,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b8f94b9e79fad747b9e36b5379e4f90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  actionPoints: {fileID: 11400000, guid: 4b1ccb44bb0f6214a998095ee82d564a, type: 2}
+  PlayerAPPerTurn: {fileID: 11400000, guid: 3a3af4e0087d73c49a6c820503ad9490, type: 2}
+  minEnemyAPperTurn: 3
+  maxEnemyAPperTurn: 6
+  minEnemiesSpawnedPerTurn: 3
+  maxEnemiesSpawnedPerTurn: 6
   enemies: []
   activeEnemy: {fileID: 0}
   players:
@@ -54,6 +61,8 @@ MonoBehaviour:
   activePlayer: {fileID: 0}
   activePlayerIndex: 0
   currentPhase: 0
+  enemyColor: {r: 0.5566038, g: 0.123398006, b: 0.123398006, a: 0}
+  maxEnemies: 12
 --- !u!114 &1401116394
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -68,3 +77,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyPrefab: {fileID: 4999988259447710837, guid: d64a5d1f878976049b053a53e477da2f,
     type: 3}
+  spawners: []
+--- !u!114 &1959010648
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9034076305799624802}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d95f7a0893a98946ba4e36533f1b704, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
