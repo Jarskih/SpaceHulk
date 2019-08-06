@@ -8,16 +8,26 @@ public class CommandInvoker : MonoBehaviour
     private static Queue<ICommand> commandBuffer;
 
     private static List<ICommand> commandHistory;
+    private static List<ICommand> currentPlayerHistory;
     private static int counter;
 
     private void Awake()
     {
         commandBuffer = new Queue<ICommand>();
         commandHistory = new List<ICommand>();
+        currentPlayerHistory = new List<ICommand>();
     }
 
     public static void AddCommand(ICommand command)
     {
+        if (counter < currentPlayerHistory.Count)
+        {
+            while (currentPlayerHistory.Count > counter)
+            {
+                currentPlayerHistory.RemoveAt(counter);
+            }
+        }
+        
         commandBuffer.Enqueue(command);
     }
     
@@ -28,6 +38,7 @@ public class CommandInvoker : MonoBehaviour
             ICommand c = commandBuffer.Dequeue();
             c.Execute();
             commandHistory.Add(c);
+            currentPlayerHistory.Add(c);
             counter++;
         }
         else
@@ -37,10 +48,23 @@ public class CommandInvoker : MonoBehaviour
                 if (counter > 0)
                 {
                     counter--;
-                    commandHistory[counter].Undo();
-                    commandHistory.RemoveAt(counter);
+                    currentPlayerHistory[counter].Undo();
+                }
+            }
+            else if (Input.GetKeyDown(KeyCode.R))
+            {
+                if (counter < commandBuffer.Count)
+                {
+                    currentPlayerHistory[counter].Execute();
+                    counter++;
                 }
             }
         }
-    }   
+    }
+
+    public static void ResetHistory()
+    {
+        counter = 0;
+        currentPlayerHistory.Clear();
+    }
 }

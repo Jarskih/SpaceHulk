@@ -70,6 +70,7 @@ public class TurnSystem : MonoBehaviour
         UpdateEnemyList();
         
         // Choose first enemy
+        CommandInvoker.ResetHistory();
         SetFirstEnemy();
     }
 
@@ -100,6 +101,7 @@ public class TurnSystem : MonoBehaviour
 
     void SetNextPlayer()
     {
+        CommandInvoker.ResetHistory();
         activePlayerIndex = activePlayerIndex + 1;
         if (activePlayerIndex >= _players.Count)
         {

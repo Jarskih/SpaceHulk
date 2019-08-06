@@ -54,8 +54,6 @@ public class Movement : MonoBehaviour, IMove
             Turn(-90);
             
         }
-        
-        _stats.UpdateCurrentTile(new Vector3Int(Mathf.FloorToInt(_stats._targetPos.x), Mathf.FloorToInt(_stats._targetPos.y), 0));
     }
 
     (bool,bool) CanMove(Vector3 direction)

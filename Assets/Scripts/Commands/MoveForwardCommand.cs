@@ -21,6 +21,7 @@ public class MoveForwardCommand : ICommand
         _unit._targetPos = _transform.position + _direction;
         _unit.UpdateMovementPoints(-_moveCost);
         EventManager.TriggerEvent("PlayerWalk");
+        _unit.UpdateCurrentTile(_unit._targetPos);
     }
 
     public void Undo()
@@ -28,5 +29,6 @@ public class MoveForwardCommand : ICommand
         _unit._targetPos = _transform.position - _direction;
         _unit.UpdateMovementPoints(_moveCost);
         EventManager.TriggerEvent("PlayerWalk");
+        _unit.UpdateCurrentTile(_unit._targetPos);
     }
 }

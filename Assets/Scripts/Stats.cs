@@ -56,7 +56,7 @@ public class Stats : MonoBehaviour
     public Vector3Int GetCurrentTilePos()
     {
         var position = transform.position;
-        return new Vector3Int(Mathf.FloorToInt(position.x), Mathf.FloorToInt(position.y), (int)position.z);
+        return new Vector3Int(Mathf.FloorToInt(_targetPos.x), Mathf.FloorToInt(_targetPos.y), 0);
     }
 
     public Tilemap GetTileMap()
@@ -117,6 +117,11 @@ public class Stats : MonoBehaviour
             
         var tileObject = _tileMap.GetInstantiatedObject(newPos);
         tileObject.GetComponent<Node>().unitOnNode = this;
+    }
+
+    public void UpdateCurrentTile(Vector3 newPos)
+    {
+        UpdateCurrentTile(new Vector3Int((int)newPos.x, (int)newPos.y, 0));
     }
 
     public bool CheckIfTileIsFree(Vector3Int newPos)
