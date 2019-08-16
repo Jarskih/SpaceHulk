@@ -49,6 +49,8 @@ MonoBehaviour:
   actionPoints: 0
   isDead: 0
   enemyTargets: {fileID: 11400000, guid: 8b3237d8c41e30540a77cdb930212f30, type: 2}
+  targetPos: {x: 0, y: 0, z: 0}
+  currentNode: {fileID: 0}
   unitType: 0
 --- !u!114 &4094675398754299362
 MonoBehaviour:
@@ -72,6 +74,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4999988260633094809}
   - component: {fileID: 4999988260633094808}
+  - component: {fileID: 6905354040579643294}
   m_Layer: 0
   m_Name: Icon
   m_TagString: Untagged
@@ -141,3 +144,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &6905354040579643294
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4999988260633094810}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48da771623e04cf4282c73edc85dd25d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyTargets: {fileID: 11400000, guid: 8b3237d8c41e30540a77cdb930212f30, type: 2}
+  normal: {fileID: 21300000, guid: 19016c363984b1a46b40236f971f3359, type: 3}
+  targeted: {fileID: 21300000, guid: eaf292e9f0227b04fa94b27fe50d6504, type: 3}

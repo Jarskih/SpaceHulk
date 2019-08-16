@@ -12,13 +12,12 @@ public class Stats : MonoBehaviour
     public StatsListVariable enemyTargets;
     public Vector3 targetPos;
     public Node currentNode;
-    
+    private ChangeSprite _changeSprite;
     private IMove _movement;
     private ComplexActions _complexActions;
     private int _health = 1;
     private Tilemap _tileMap;
     private TurnSystem _turnSystem;
-
     public UnitType unitType;
     public enum UnitType
     {
@@ -26,7 +25,7 @@ public class Stats : MonoBehaviour
         Marine
     }
 
-    private UnitState currentState;
+   private UnitState currentState;
 
     public enum UnitState
     {
@@ -38,6 +37,7 @@ public class Stats : MonoBehaviour
 
     void Start()
     {
+        _changeSprite = GetComponentInChildren<ChangeSprite>();
         _turnSystem = FindObjectOfType<TurnSystem>();
         targetPos = transform.position;
         _movement = GetComponent<IMove>();
@@ -56,7 +56,7 @@ public class Stats : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
         UpdateCurrentTile(GetCurrentTilePos());
     }
-
+    
     public Vector3Int GetCurrentTilePos()
     {
         return new Vector3Int(Mathf.FloorToInt(targetPos.x), Mathf.FloorToInt(targetPos.y), 0);

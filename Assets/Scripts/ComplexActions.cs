@@ -13,12 +13,10 @@ public class ComplexActions : MonoBehaviour
     }
 
     public void Act(IEnumerable<Stats> enemies)
-    {
-        FindTargets();
-        
+    {        
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            if (enemies.Count() > 0)
+            if (_stats.enemyTargets.list.Count() > 0)
             {
                 EventManager.TriggerEvent("Shoot");
 
@@ -33,7 +31,11 @@ public class ComplexActions : MonoBehaviour
             }
             else
             {
-                EventManager.TriggerEvent("Negative");
+                FindTargets();
+                if (_stats.enemyTargets.list.Count() == 0)
+                {
+                    EventManager.TriggerEvent("Negative");
+                }
             }
         }
     }

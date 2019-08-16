@@ -158,11 +158,6 @@ public class TurnSystem : MonoBehaviour
             currentPhase = currentPhase + 1;
         }
 
-        if (currentPhase == Phases.EnemyMovement)
-        {
-            EventManager.TriggerEvent("EnemyTurn");
-        }
-
         UpdateMovementPoints();
     }
 
@@ -201,6 +196,12 @@ public class TurnSystem : MonoBehaviour
         // Find enemies
         _enemies.Clear();
         var enemyGameObjects = GameObject.FindGameObjectsWithTag("Enemy");
+
+        if (enemyGameObjects.Length == 0)
+        {
+            return;
+        }
+        
         foreach (var enemy in enemyGameObjects)
         {
             _enemies.Add(enemy.GetComponent<Stats>());
@@ -208,7 +209,7 @@ public class TurnSystem : MonoBehaviour
 
         if (activeEnemy == null)
         {
-            _activeEnemy = _enemies[0];
+            _activeEnemy = _enemies[0];   
         }
     }
 
@@ -228,11 +229,17 @@ public class TurnSystem : MonoBehaviour
     {
         if (currentPhase == Phases.FirstMovement || currentPhase == Phases.SecondMovement)
         {
-            _cameraFollow.SetTarget(activePlayer.transform.position);
+            if (activePlayer != null)
+            {
+                _cameraFollow.SetTarget(activePlayer.transform.position);
+            }
         }
         else
         {
-            _cameraFollow.SetTarget(activeEnemy.transform.position);
+            if (activeEnemy != null)
+            {
+                _cameraFollow.SetTarget(activeEnemy.transform.position);
+            }
         }
     }
     
@@ -253,7 +260,7 @@ public class TurnSystem : MonoBehaviour
         {
             case(Phases.FirstMovement):
             case(Phases.SecondMovement):
-                if (activePlayer.GetComponent<Stats>().health > 0)
+                if (activePlayer && activePlayer.GetComponent<Stats>().health > 0)
                 {
                     activePlayer.Actions(_enemies);
                 }
@@ -268,8 +275,17 @@ public class TurnSystem : MonoBehaviour
                     SetNextPlayer();
                 }
                 break;
-            case(Phases.EnemyMovement):     
-                if (activeEnemy.GetComponent<Stats>().health > 0)
+            case(Phases.EnemyMovement):   
+                UpdateEnemyList();
+                if (enemies.Count == 0)
+                {
+                    SetNextPhase();
+                    break;
+                }
+                
+                EventManager.TriggerEvent("EnemyTurn");
+                
+                if (activeEnemy && activeEnemy.GetComponent<Stats>().health > 0)
                 {
                     activeEnemy.Movement();
                 }
@@ -284,7 +300,7 @@ public class TurnSystem : MonoBehaviour
                 }
                 break;
             case(Phases.EnemySpawn):
-                if (maxEnemies - _enemies.Count > 0)
+                if (maxEnemies >_enemies.Count)
                 {
                     // Do not spawn more than maxEnemies
                     int enemiesToSpawn = Mathf.Clamp(maxEnemies - _enemies.Count, 0, 6);
