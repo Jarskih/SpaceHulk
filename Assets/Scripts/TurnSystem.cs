@@ -11,10 +11,10 @@ public class TurnSystem : MonoBehaviour
     [SerializeField] private int maxEnemyAPperTurn;
     [SerializeField] private int minEnemiesSpawnedPerTurn;
     [SerializeField] private int maxEnemiesSpawnedPerTurn;
-    public List<Stats> enemies;
-    public Stats activeEnemy;
+    private List<Stats> _enemies;
+    private List<Stats> _players;
+    private Stats _activeEnemy;
     private int _activeEnemyIndex;
-    private List<Stats> _players = new List<Stats>();
     [SerializeField]
     private Stats activePlayer;
     [SerializeField]
@@ -27,7 +27,12 @@ public class TurnSystem : MonoBehaviour
 
     [SerializeField]
     private int maxEnemies = 12;
-    
+
+    public TurnSystem(List<Stats> enemies)
+    {
+        this._enemies = enemies;
+    }
+
     private enum Phases
     {
         FirstMovement,
@@ -36,6 +41,10 @@ public class TurnSystem : MonoBehaviour
         EnemySpawn,
         Resolution
     }
+
+    public List<Stats> enemies => _enemies;
+    public List<Stats> players => _players;
+    public Stats activeEnemy => _activeEnemy;
 
     // Register listeners
     void OnEnable()
@@ -46,7 +55,13 @@ public class TurnSystem : MonoBehaviour
     void OnDisable() {
         EventManager.StopListening("EnemyDied", UpdateEnemyList);
     }
-    
+
+    private void Awake()
+    {
+        _enemies = new List<Stats>();
+        _players = new List<Stats>();
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -54,8 +69,8 @@ public class TurnSystem : MonoBehaviour
         // First phase
         currentPhase = Phases.FirstMovement;
 
-        var players = FindObjectsOfType<Stats>();
-        foreach (var player in players)
+        var foundPlayers = FindObjectsOfType<Stats>();
+        foreach (var player in foundPlayers)
         {
             _players.Add(player);
         }
@@ -89,7 +104,7 @@ public class TurnSystem : MonoBehaviour
     void SetFirstEnemy()
     {
         _activeEnemyIndex = 0;
-        activeEnemy = enemies[0];
+        _activeEnemy = _enemies[0];
         activeEnemy.UpdateMovementPoints(GetEnemyAP());
     }
     
@@ -119,7 +134,7 @@ public class TurnSystem : MonoBehaviour
     void NextEnemy()
     {
         _activeEnemyIndex = _activeEnemyIndex + 1;
-        if (_activeEnemyIndex >= enemies.Count)
+        if (_activeEnemyIndex >= _enemies.Count)
         {
             SetNextPhase();
             SetFirstEnemy();
@@ -128,7 +143,7 @@ public class TurnSystem : MonoBehaviour
         else
         {
             Debug.Log("Next alien turn");
-            activeEnemy = enemies[_activeEnemyIndex];
+            _activeEnemy = _enemies[_activeEnemyIndex];
         }
     }
 
@@ -163,7 +178,7 @@ public class TurnSystem : MonoBehaviour
 
         if (currentPhase == Phases.EnemyMovement)
         {
-            foreach (var enemy in enemies)
+            foreach (var enemy in _enemies)
             {
                 var ap = GetEnemyAP();
                 enemy.UpdateMovementPoints(ap);
@@ -184,16 +199,16 @@ public class TurnSystem : MonoBehaviour
     public void UpdateEnemyList()
     {
         // Find enemies
-        enemies.Clear();
+        _enemies.Clear();
         var enemyGameObjects = GameObject.FindGameObjectsWithTag("Enemy");
         foreach (var enemy in enemyGameObjects)
         {
-            enemies.Add(enemy.GetComponent<Stats>());
+            _enemies.Add(enemy.GetComponent<Stats>());
         }
 
         if (activeEnemy == null)
         {
-            activeEnemy = enemies[0];
+            _activeEnemy = _enemies[0];
         }
     }
 
@@ -238,9 +253,9 @@ public class TurnSystem : MonoBehaviour
         {
             case(Phases.FirstMovement):
             case(Phases.SecondMovement):
-                if (activePlayer.GetComponent<Stats>().Health > 0)
+                if (activePlayer.GetComponent<Stats>().health > 0)
                 {
-                    activePlayer.Actions(enemies);
+                    activePlayer.Actions(_enemies);
                 }
                 else
                 {
@@ -254,7 +269,7 @@ public class TurnSystem : MonoBehaviour
                 }
                 break;
             case(Phases.EnemyMovement):     
-                if (activeEnemy.GetComponent<Stats>().Health > 0)
+                if (activeEnemy.GetComponent<Stats>().health > 0)
                 {
                     activeEnemy.Movement();
                 }
@@ -269,10 +284,10 @@ public class TurnSystem : MonoBehaviour
                 }
                 break;
             case(Phases.EnemySpawn):
-                if (maxEnemies - enemies.Count > 0)
+                if (maxEnemies - _enemies.Count > 0)
                 {
                     // Do not spawn more than maxEnemies
-                    int enemiesToSpawn = Mathf.Clamp(maxEnemies - enemies.Count, 0, 6);
+                    int enemiesToSpawn = Mathf.Clamp(maxEnemies - _enemies.Count, 0, 6);
                     _spawnEnemies.Spawn(enemiesToSpawn);
                     UpdateEnemyList();
                 }

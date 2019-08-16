@@ -10,12 +10,14 @@ public class Stats : MonoBehaviour
     public int actionPoints;
     public bool isDead;
     public StatsListVariable enemyTargets;
-    public Vector3 _targetPos;
+    public Vector3 targetPos;
+    public Node currentNode;
     
     private IMove _movement;
     private ComplexActions _complexActions;
     private int _health = 1;
     private Tilemap _tileMap;
+    private TurnSystem _turnSystem;
 
     public UnitType unitType;
     public enum UnitType
@@ -25,17 +27,19 @@ public class Stats : MonoBehaviour
     }
 
     private UnitState currentState;
+
     public enum UnitState
     {
         Idle,
         Shooting
     }
 
-    public int Health => _health;
+    public int health => _health;
 
     void Start()
     {
-        _targetPos = transform.position;
+        _turnSystem = FindObjectOfType<TurnSystem>();
+        targetPos = transform.position;
         _movement = GetComponent<IMove>();
         _complexActions = GetComponent<ComplexActions>();
         _tileMap = GameObject.FindObjectOfType<Tilemap>();
@@ -44,7 +48,7 @@ public class Stats : MonoBehaviour
 
     void Update()
     {
-        transform.position = Vector3.MoveTowards(transform.position, _targetPos, 0.3f);
+        transform.position = Vector3.MoveTowards(transform.position, targetPos, 0.3f);
     }
 
     private IEnumerator SaveCurrentTile()
@@ -55,8 +59,7 @@ public class Stats : MonoBehaviour
 
     public Vector3Int GetCurrentTilePos()
     {
-        var position = transform.position;
-        return new Vector3Int(Mathf.FloorToInt(_targetPos.x), Mathf.FloorToInt(_targetPos.y), 0);
+        return new Vector3Int(Mathf.FloorToInt(targetPos.x), Mathf.FloorToInt(targetPos.y), 0);
     }
 
     public Tilemap GetTileMap()
@@ -77,7 +80,7 @@ public class Stats : MonoBehaviour
     public void Actions(IEnumerable<Stats> enemies)
     {
         // Wait for unit to move before allowing new orders
-        if (Vector3.Distance(transform.position, _targetPos) > 0.05f) return;
+        if (Vector3.Distance(transform.position, targetPos) > 0.05f) return;
         
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -109,32 +112,112 @@ public class Stats : MonoBehaviour
 
     public void UpdateCurrentTile(Vector3Int newPos)
     {
-        var currentTile = _tileMap.GetInstantiatedObject(GetCurrentTilePos());
-        if (currentTile != null)
-        {
-            currentTile.GetComponent<Node>().unitOnNode = null;
-        }
-            
         var tileObject = _tileMap.GetInstantiatedObject(newPos);
-        tileObject.GetComponent<Node>().unitOnNode = this;
+        if (tileObject)
+        {
+            currentNode = tileObject.GetComponent<Node>();
+        }
+        else
+        {
+            Debug.LogWarning("no tileobject at: " + newPos);
+        }
     }
 
     public void UpdateCurrentTile(Vector3 newPos)
     {
-        UpdateCurrentTile(new Vector3Int((int)newPos.x, (int)newPos.y, 0));
+        UpdateCurrentTile(new Vector3Int(Mathf.FloorToInt(newPos.x), Mathf.FloorToInt(newPos.y), 0));
     }
 
-    public bool CheckIfTileIsFree(Vector3Int newPos)
+    public bool CheckIfTileOccupied(Vector3Int newPos)
     {
-        var unit =_tileMap.GetInstantiatedObject(newPos)?.GetComponent<Node>()?.unitOnNode;
-        return unit == null || unit._health <= 0;
+        var tile = _tileMap.GetInstantiatedObject(newPos);
+
+        if (tile == null)
+        {
+            Debug.Log("Tile outside of game area");
+            return true;
+        }
+        
+        Stats unit = null;
+        var node = tile.GetComponent<Node>();
+        
+        var enemies = _turnSystem.enemies;
+        foreach (var enemy in enemies)
+        {
+            // Dont check current player
+            if (enemy == this) continue;
+            if (enemy.currentNode == node)
+            {
+                if (enemy.health > 0)
+                {
+                    unit = enemy;
+                }
+            }
+        }
+
+        if (unit == null)
+        {
+            var players = _turnSystem.players;
+            foreach (var player in players)
+            {
+                // Dont check current player
+                if (player == this) continue;
+                if (player.currentNode == node)
+                {
+                    if (player.health > 0)
+                    {
+                        unit = player;
+                    }
+                }
+            }
+        }
+        
+        return unit != null && unit.health > 0;
     }
 
     public Stats GetUnitFromTile(Vector3Int pos)
     {
-        pos.z = 0;
-        var obj = _tileMap.GetInstantiatedObject(pos);
-        var unit = obj.GetComponent<Node>()?.unitOnNode;
+        var tile = _tileMap.GetInstantiatedObject(pos);
+
+        if (tile == null)
+        {
+            Debug.Log("Tile outside of game area");
+            return null;
+        }
+        
+        var node = tile.GetComponent<Node>();
+
+        if (node == null)
+        {
+            Debug.LogWarning("Node not found");
+            return null;
+        }
+        
+        Stats unit = null;
+        var enemies = _turnSystem.enemies;
+        foreach (var enemy in enemies)
+        {
+            if (enemy.currentNode == node)
+            {
+                if (enemy.health > 0)
+                {
+                    unit = enemy;
+                }
+            }
+        }
+
+        if (unit == null)
+        {
+            var players = _turnSystem.players;
+            foreach (var player in players)
+            {
+                if (player.currentNode == node)
+                {
+                    unit = player;
+                }
+            }
+        }
+        
         return unit;
     }
 
@@ -155,5 +238,11 @@ public class Stats : MonoBehaviour
             EventManager.TriggerEvent("EnemyDied");
             Destroy(gameObject);
         }
+    }
+
+    public void GainHealth(int value)
+    {
+        _health += value;
+        Mathf.Clamp(_health, 0, 5);
     }
 }

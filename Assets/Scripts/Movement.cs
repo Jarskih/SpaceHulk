@@ -20,31 +20,13 @@ public class Movement : MonoBehaviour, IMove
 
     void ListenToInput()
     {
-        if(Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
+        if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
         {
-            if (CanMove(transform.up) == (true,false))
-            {
-                ICommand c = new MoveForwardCommand(_stats);
-                CommandInvoker.AddCommand(c);
-            }
-            else if (CanMove(transform.up) == (false, true)) {
-                ICommand c = new DoubleMoveCommand(_stats);
-                CommandInvoker.AddCommand(c);
-            } else {
-                EventManager.TriggerEvent("Negative");
-            }
-        } else if(Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
-        {
-            if (CanMove(-transform.up) == (true, false))
-            {
-                ICommand c = new MoveBackwardCommand(_stats);
-                CommandInvoker.AddCommand(c);
-            }
-            else
-            {
-                EventManager.TriggerEvent("Negative");
-            }
-            
+            CanMove(transform.up);
+        }
+        else if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.S))
+        {     
+            CanMove(-transform.up);
         } else if(Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
         {
             Turn(90);
@@ -52,28 +34,35 @@ public class Movement : MonoBehaviour, IMove
         } else if(Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
         {
             Turn(-90);
-            
         }
     }
 
-    (bool,bool) CanMove(Vector3 direction)
+    void CanMove(Vector3 direction)
     {
-        Vector3 pos = _stats._targetPos + direction;
+        Vector3 pos = _stats.targetPos + direction;
         Vector3Int intPos = new Vector3Int(Mathf.FloorToInt(pos.x), Mathf.FloorToInt(pos.y), 0);
         
-       // If tile is occupied by a unit
-       if (!_stats.CheckIfTileIsFree(intPos))
+       // If tile is occupied by a unit move two tiles
+       if (_stats.CheckIfTileOccupied(intPos))
        {
-           if (direction == Vector3.up)
+           if (direction == transform.up)
            {
-               return MoveTwoTiles(direction);
+               MoveTwoTiles(direction);
+               return;
            }
        }
 
-       return MoveOneTile(direction, intPos);
+       MoveOneTile(direction, intPos);
     }
 
-    (bool,bool) MoveOneTile(Vector3 direction, Vector3Int intPos)
+    private void AttackUnit(Vector3Int intPos)
+    {
+        var enemy = _stats.GetUnitFromTile(intPos);
+        ICommand c = new MeleeAttackCommand(_stats, enemy);
+        CommandInvoker.AddCommand(c);
+    }
+
+    void MoveOneTile(Vector3 direction, Vector3Int intPos)
     {
        
         // Check if tile is walkable
@@ -81,35 +70,52 @@ public class Movement : MonoBehaviour, IMove
         if (colliderType != Tile.ColliderType.None)
         {
             Debug.Log("Tile not walkable");
-            return (false, false);
+            EventManager.TriggerEvent("Negative");
+            return;
         }
 
-        return (true, false);
+        if (direction == transform.up)
+        {
+            ICommand c = new MoveForwardCommand(_stats);
+            CommandInvoker.AddCommand(c);
+        }
+        else if(direction == -transform.up)
+        {
+            ICommand c = new MoveBackwardCommand(_stats);
+            CommandInvoker.AddCommand(c);
+        }
+        else
+        {
+            EventManager.TriggerEvent("Negative");
+        }
     }
 
-    (bool,bool) MoveTwoTiles(Vector3 direction)
+    void MoveTwoTiles(Vector3 direction)
     {
       if (_stats.actionPoints <= 2)
       {
           Debug.Log("Not enough AP to jump over");
-          return (false, false);
+          EventManager.TriggerEvent("Negative");
+          return;
       }
          
-      Vector3 pos = _stats._targetPos + direction*2;
+      Vector3 pos = _stats.targetPos + direction*2;
       Vector3Int intPos = new Vector3Int(Mathf.FloorToInt(pos.x), Mathf.FloorToInt(pos.y), (int)pos.z);
          
       // Check if a tile 2 steps away is walkable (jump over)
       var colliderType = _tileMap.GetColliderType(intPos);
       if (colliderType == Tile.ColliderType.None)
       {
-          if (_stats.CheckIfTileIsFree(intPos))
+          // if tile is not occupied by unit allow movement
+          if (!_stats.CheckIfTileOccupied(intPos))
           {
-              return (false, true);
+              ICommand c = new DoubleMoveCommand(_stats);
+              CommandInvoker.AddCommand(c);
           }
       }
 
         Debug.Log("Someone on the way");
-        return (false, false);
+        EventManager.TriggerEvent("Negative");
     }
 
     void Turn(int angle)

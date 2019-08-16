@@ -10,6 +10,14 @@
           <e p="CameraFollow.cs" t="Include" />
           <e p="ChangeBackgroundColor.cs" t="Include" />
           <e p="CommandInvoker.cs" t="Include" />
+          <e p="Commands" t="Include">
+            <e p="DoubleMoveCommand.cs" t="Include" />
+            <e p="EnemyDoubleMoveCommand.cs" t="Include" />
+            <e p="EnemyMoveCommand.cs" t="Include" />
+            <e p="MoveBackwardCommand.cs" t="Include" />
+            <e p="MoveForwardCommand.cs" t="Include" />
+            <e p="TurnCommand.cs" t="Include" />
+          </e>
           <e p="ComplexActions.cs" t="Include" />
           <e p="EnemyMovement.cs" t="Include" />
           <e p="EventManager.cs" t="Include" />
@@ -18,7 +26,6 @@
             <e p="ICommand.cs" t="Include" />
             <e p="IMove.cs" t="Include" />
           </e>
-          <e p="MoveCommand.cs" t="Include" />
           <e p="Movement.cs" t="Include" />
           <e p="Node.cs" t="Include" />
           <e p="PlayAudio.cs" t="Include" />

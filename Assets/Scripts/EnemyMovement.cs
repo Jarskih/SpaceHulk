@@ -21,75 +21,58 @@ public class EnemyMovement : MonoBehaviour, IMove
     {
         if(Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
         {
-            if (CanMove(transform.up) == (true, false))
-            {
-                ICommand c = new EnemyMoveCommand(transform.up, _stats);
-                CommandInvoker.AddCommand(c);
-            } else if(CanMove(transform.up) == (false, true))
-            {
-                ICommand c = new EnemyDoubleMoveCommand(transform.up, _stats);
-                CommandInvoker.AddCommand(c);
-            }
+            CanMove(transform.up);
         }
         
         if(Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
         {
-            if (CanMove(-transform.up) == (true, false))
-            {
-                ICommand c = new EnemyMoveCommand(-transform.up, _stats);
-                CommandInvoker.AddCommand(c);
-            } else if(CanMove(-transform.up) == (false, true))
-            {
-                ICommand doubleMoveCommand = new EnemyDoubleMoveCommand(transform.up, _stats);
-                doubleMoveCommand.Execute();
-            }
+            CanMove(-transform.up);
         }
         
-        if(Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A)) 
+        if(Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
         {
-            if (CanMove(-transform.right) == (true, false))
-            {
-                ICommand c = new EnemyMoveCommand(-transform.right, _stats);
-                CommandInvoker.AddCommand(c);
-            } else if(CanMove(-transform.up) == (false, true))
-            {
-                ICommand c = new EnemyDoubleMoveCommand(-transform.right, _stats);
-                CommandInvoker.AddCommand(c);
-            }
+            CanMove(-transform.right);
         }
         
-        if(Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D)) 
+        if(Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
         {
-            if (CanMove(transform.right) == (true, false))
-            {
-                ICommand c = new EnemyMoveCommand(transform.right, _stats);
-                CommandInvoker.AddCommand(c);
-            } else if(CanMove(transform.up) == (false, true))
-            {
-                ICommand c = new EnemyDoubleMoveCommand(transform.up, _stats);
-                CommandInvoker.AddCommand(c);
-            }
+            CanMove(transform.right);
         }
     }
 
-    (bool,bool) CanMove(Vector3 direction)
+    void CanMove(Vector3 direction)
     {
-        Vector3 pos = _stats._targetPos + direction;
+        Vector3 pos = _stats.targetPos + direction;
         Vector3Int intPos = new Vector3Int(Mathf.FloorToInt(pos.x), Mathf.FloorToInt(pos.y), 0);
         
         // If tile is occupied by a unit
-        if (!_stats.CheckIfTileIsFree(intPos))
+        if (_stats.CheckIfTileOccupied(intPos))
         {
+            // if unit type is not friendly unit attack it
+            if (_stats.GetUnitFromTile(intPos).unitType != _stats.unitType)
+            {
+                AttackUnit(intPos);
+                return;
+            }
+            
             if (direction == Vector3.up)
             {
-                return MoveTwoTiles(direction);
+                MoveTwoTiles(direction);
+                return;
             }
         }
 
-        return MoveOneTile(direction, intPos);
+        MoveOneTile(direction, intPos);
     }
     
-    (bool,bool) MoveOneTile(Vector3 direction, Vector3Int intPos)
+    private void AttackUnit(Vector3Int intPos)
+    {
+        var enemy = _stats.GetUnitFromTile(intPos);
+        ICommand c = new MeleeAttackCommand(_stats, enemy);
+        CommandInvoker.AddCommand(c);
+    }
+    
+    void MoveOneTile(Vector3 direction, Vector3Int intPos)
     {
        
         // Check if tile is walkable
@@ -97,45 +80,48 @@ public class EnemyMovement : MonoBehaviour, IMove
         if (colliderType != Tile.ColliderType.None)
         {
             Debug.Log("Tile not walkable");
-            return (false, false);
+            return;
         }
-
-        return (true, false);
+        
+        ICommand c = new EnemyMoveCommand(direction, _stats);
+        CommandInvoker.AddCommand(c);
     }
 
-    (bool,bool) MoveTwoTiles(Vector3 direction)
+    void MoveTwoTiles(Vector3 direction)
     {
         if (_stats.actionPoints <= 2)
         {
             Debug.Log("Not enough AP to jump over");
-            return (false, false);
+            return;
         }
          
-        Vector3 pos = _stats._targetPos + direction*2;
+        Vector3 pos = _stats.targetPos + direction*2;
         Vector3Int intPos = new Vector3Int(Mathf.FloorToInt(pos.x), Mathf.FloorToInt(pos.y), (int)pos.z);
          
         // Check if a tile 2 steps away is walkable (jump over)
         var colliderType = _tileMap.GetColliderType(intPos);
         if (colliderType == Tile.ColliderType.None)
         {
-            if (_stats.CheckIfTileIsFree(intPos))
+            // If tile is not occupied move to new tile
+            if (!_stats.CheckIfTileOccupied(intPos))
             {
-                return (false, true);
+                ICommand c = new EnemyDoubleMoveCommand(direction, _stats);
+                CommandInvoker.AddCommand(c);
             }
         }
 
-        Debug.Log("Someone on the way");
-        return (false, false);
+        Debug.Log("EnemyMove: Someone on the way");
     }
 
+    /*
     bool Move(Vector3 direction)
     {
-        Vector3 pos = _stats._targetPos + direction;
+        Vector3 pos = _stats.targetPos + direction;
         Vector3Int intPos = new Vector3Int(Mathf.FloorToInt(pos.x), Mathf.FloorToInt(pos.y), 0);
         var colliderType = _tileMap.GetColliderType(intPos);
         if (colliderType == Tile.ColliderType.None)
         {
-            if (!_stats.CheckIfTileIsFree(intPos))
+            if (!_stats.CheckIfTileOccupied(intPos))
             {
                 var enemyStats = _stats.GetUnitFromTile(intPos);
                 if (enemyStats != null && enemyStats.unitType != _stats.unitType)
@@ -146,12 +132,12 @@ public class EnemyMovement : MonoBehaviour, IMove
                 }
                 else
                 {
-                    pos = _stats._targetPos + direction * 2;
+                    pos = _stats.targetPos + direction * 2;
                     intPos = new Vector3Int(Mathf.FloorToInt(pos.x), Mathf.FloorToInt(pos.y), (int) pos.z);
                     colliderType = _tileMap.GetColliderType(intPos);
                     if (colliderType == Tile.ColliderType.None)
                     {
-                        if (_stats.CheckIfTileIsFree(intPos) && _stats.actionPoints >= 2)
+                        if (_stats.CheckIfTileOccupied(intPos) && _stats.actionPoints >= 2)
                         {
                             _stats.UpdateCurrentTile(intPos);
                             _stats.UpdateMovementPoints(-_stats.APrules.moving * 2);
@@ -174,4 +160,5 @@ public class EnemyMovement : MonoBehaviour, IMove
         }
         return false;
     }
+    */
 }

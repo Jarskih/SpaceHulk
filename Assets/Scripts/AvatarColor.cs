@@ -29,6 +29,6 @@ public class AvatarColor : MonoBehaviour
 
     void Update()
     {
-        ChangeSpriteColor((stats.Health <= 0));
+        ChangeSpriteColor((stats.health <= 0));
     }
 }
