@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class TurnSystem : MonoBehaviour
 {
@@ -11,22 +12,22 @@ public class TurnSystem : MonoBehaviour
     [SerializeField] private int maxEnemyAPperTurn;
     [SerializeField] private int minEnemiesSpawnedPerTurn;
     [SerializeField] private int maxEnemiesSpawnedPerTurn;
-    private List<Stats> _enemies;
-    private List<Stats> _players;
-    private Stats _activeEnemy;
+    [SerializeField] private List<Stats> _enemies;
+    [SerializeField] private List<Stats> _players;
+    [SerializeField] private Stats _activeEnemy;
+    [SerializeField] private Stats activePlayer;
+    [SerializeField] private int activePlayerIndex;
+    [SerializeField]  private Phases currentPhase;
     private int _activeEnemyIndex;
-    [SerializeField]
-    private Stats activePlayer;
-    [SerializeField]
-    private int activePlayerIndex;
-    [SerializeField]
-    private Phases currentPhase;
     public Color enemyColor;
     private SpawnEnemies _spawnEnemies;
     private CameraFollow _cameraFollow;
-
+    private bool spawnedPlayers;
     [SerializeField]
     private int maxEnemies = 12;
+
+    private Tilemap _tilemap;
+    private SpawnPlayers _spawnPlayers;
 
     public TurnSystem(List<Stats> enemies)
     {
@@ -65,18 +66,11 @@ public class TurnSystem : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        _spawnPlayers = GetComponent<SpawnPlayers>();
         _cameraFollow = GetComponent<CameraFollow>();
+        _tilemap = FindObjectOfType<Tilemap>();
         // First phase
         currentPhase = Phases.FirstMovement;
-
-        var foundPlayers = FindObjectsOfType<Stats>();
-        foreach (var player in foundPlayers)
-        {
-            _players.Add(player);
-        }
-        // Choose first player
-        SetFirstPlayer();
-        UpdateMovementPoints();
         
         // Spawn enemies
         _spawnEnemies = GetComponent<SpawnEnemies>();
@@ -91,14 +85,12 @@ public class TurnSystem : MonoBehaviour
 
     public Color GetCurrentColor()
     {
-        if (currentPhase == Phases.FirstMovement || currentPhase == Phases.SecondMovement)
+        if ((currentPhase == Phases.FirstMovement || currentPhase == Phases.SecondMovement) && activePlayer)
         {
-            return activePlayer.GetComponent<AvatarColor>().healthy;
+           return activePlayer.GetComponent<AvatarColor>().healthy;
         }
-        else
-        {
-            return enemyColor;
-        }
+
+        return enemyColor;
     }
     
     void SetFirstEnemy()
@@ -213,15 +205,42 @@ public class TurnSystem : MonoBehaviour
         }
     }
 
-    void UpdateUI()
+    public void UpdatePlayerList()
     {
+        _players.Clear();
+        var playerObjects = GameObject.FindGameObjectsWithTag("Player");
+        
+        if (playerObjects.Length == 0)
+        {
+            return;
+        }
+        
+        foreach (var player in playerObjects)
+        {
+            _players.Add(player.GetComponent<Stats>());
+        }
+
+        if (activePlayer == null)
+        {
+            activePlayer = _players[0];   
+        }
+    }
+
+    void UpdateUI()
+    {   
         if (currentPhase == Phases.FirstMovement || currentPhase == Phases.SecondMovement)
         {
-            actionPoints.Value = activePlayer.actionPoints;
+            if (activePlayer)
+            {
+                actionPoints.Value = activePlayer.actionPoints;
+            }
         }
         else
         {
-            actionPoints.Value = activeEnemy.actionPoints;
+            if (activeEnemy)
+            {
+                actionPoints.Value = activeEnemy.actionPoints;
+            }
         }
     }
 
@@ -242,6 +261,21 @@ public class TurnSystem : MonoBehaviour
             }
         }
     }
+
+    void SpawnPlayers()
+    {
+        // Spawn players
+        _spawnPlayers.SpawnPlayer();
+            
+        var foundPlayers = GameObject.FindGameObjectsWithTag("Player");
+        foreach (var player in foundPlayers)
+        {
+            _players.Add(player.GetComponent<Stats>());
+        }
+        // Choose first player
+        SetFirstPlayer();
+        UpdateMovementPoints();
+    }
     
     // Update is called once per frame
     void Update()
@@ -249,8 +283,24 @@ public class TurnSystem : MonoBehaviour
         UpdateUI();
         FollowPlayer();
         UpdateEnemyList();
-        
-        if (Input.GetKeyDown(KeyCode.Tab))
+        UpdatePlayerList();
+
+        if (!spawnedPlayers)
+        {
+            if (_tilemap.transform.childCount > 0)
+            {
+                SpawnPlayers();
+                spawnedPlayers = true;
+            }
+        }
+
+        TurnManager();
+    }
+
+
+    void TurnManager()
+    {
+        if(Input.GetKeyDown(KeyCode.Tab))
         {
             activePlayer.actionPoints = 0;
             SetNextPlayer();
@@ -276,14 +326,14 @@ public class TurnSystem : MonoBehaviour
                 }
                 break;
             case(Phases.EnemyMovement):   
-                UpdateEnemyList();
                 if (enemies.Count == 0)
                 {
                     SetNextPhase();
                     break;
                 }
                 
-                EventManager.TriggerEvent("EnemyTurn");
+                // TODO enable later
+                // EventManager.TriggerEvent("EnemyTurn");
                 
                 if (activeEnemy && activeEnemy.GetComponent<Stats>().health > 0)
                 {
@@ -310,6 +360,10 @@ public class TurnSystem : MonoBehaviour
                 SetNextPhase();
                 break;
             case(Phases.Resolution):
+                if (players.Count == 0)
+                {
+                    SpawnPlayers();
+                }
                 SetNextPhase();
                 break;
             default:

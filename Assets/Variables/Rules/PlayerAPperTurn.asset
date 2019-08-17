@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31d9e116bff76bc41be713feb97a6e1f, type: 3}
   m_Name: PlayerAPperTurn
   m_EditorClassIdentifier: 
-  Value: 3
+  Value: 0

@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 1555154700}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -51,7 +51,8 @@ MonoBehaviour:
   actionPoints: 0
   isDead: 0
   enemyTargets: {fileID: 11400000, guid: 8b3237d8c41e30540a77cdb930212f30, type: 2}
-  _targetPos: {x: 0, y: 0, z: 0}
+  targetPos: {x: 0, y: 0, z: 0}
+  currentNode: {fileID: 0}
   unitType: 1
 --- !u!114 &1731015295
 MonoBehaviour:
@@ -90,7 +91,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   wounded: {r: 1, g: 0.5254902, b: 0.5254902, a: 1}
-  healthy: {r: 0, g: 0, b: 0, a: 1}
+  healthy: {r: 0.20784315, g: 0.28235295, b: 0.5568628, a: 1}
 --- !u!1 &624011990773320101
 GameObject:
   m_ObjectHideFlags: 0
@@ -156,11 +157,11 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1506292043
+  m_SortingLayer: 1
   m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: c82ed9dc0ec0701448e7dd472dc8f56c, type: 3}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 0.20784315, g: 0.28235295, b: 0.5568628, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

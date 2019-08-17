@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4999988259447710836}
   - component: {fileID: 6529253}
   - component: {fileID: 4094675398754299362}
+  - component: {fileID: 8821393952440982105}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Enemy
@@ -64,6 +65,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 275c9e03fd57ce34fb1587e977f36ce5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8821393952440982105
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4999988259447710837}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d148fea951239841868a9f3c38fd71f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  brain: {fileID: 11400000, guid: db76cac177c251b49b9c2a70ecb2fa89, type: 2}
+  agentParameters:
+    agentCameras: []
+    agentRenderTextures: []
+    maxStep: 0
+    resetOnDone: 1
+    onDemandDecision: 1
+    numberOfActionsBetweenDecisions: 1
+  timeBetweenDecisionsAtInference: 10
 --- !u!1 &4999988260633094810
 GameObject:
   m_ObjectHideFlags: 0
@@ -130,8 +152,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1506292043
+  m_SortingLayer: 1
   m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 19016c363984b1a46b40236f971f3359, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

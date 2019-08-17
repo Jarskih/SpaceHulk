@@ -231,6 +231,7 @@ public class Stats : MonoBehaviour
             {
                 EventManager.TriggerEvent("Wounded");
                 isDead = true;
+                Destroy(gameObject);
             }
         }
         else

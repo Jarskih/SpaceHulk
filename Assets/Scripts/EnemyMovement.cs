@@ -15,32 +15,32 @@ public class EnemyMovement : MonoBehaviour, IMove
     
     public void Act()
     {
-        ListenToInput();
+       // ListenToInput();
     }
     void ListenToInput()
     {
         if(Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
         {
-            CanMove(transform.up);
+            //CanMove(transform.up);
         }
         
         if(Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
         {
-            CanMove(-transform.up);
+            //CanMove(-transform.up);
         }
         
         if(Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
         {
-            CanMove(-transform.right);
+            //CanMove(-transform.right);
         }
         
         if(Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
         {
-            CanMove(transform.right);
+            //CanMove(transform.right);
         }
     }
 
-    void CanMove(Vector3 direction)
+    public void CanMove(Vector3 direction)
     {
         Vector3 pos = _stats.targetPos + direction;
         Vector3Int intPos = new Vector3Int(Mathf.FloorToInt(pos.x), Mathf.FloorToInt(pos.y), 0);

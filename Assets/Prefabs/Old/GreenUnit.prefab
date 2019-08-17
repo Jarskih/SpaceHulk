@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 840114605}
   m_Layer: 0
   m_Name: GreenUnit
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -142,6 +142,8 @@ MonoBehaviour:
   actionPoints: 0
   isDead: 0
   enemyTargets: {fileID: 11400000, guid: 8b3237d8c41e30540a77cdb930212f30, type: 2}
+  targetPos: {x: 0, y: 0, z: 0}
+  currentNode: {fileID: 0}
   unitType: 1
 --- !u!114 &1004826666
 MonoBehaviour:
@@ -155,7 +157,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 251b941edd9ac5a4a91f03cb1b4b4748, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shootingState: 0
 --- !u!114 &840114605
 MonoBehaviour:
   m_ObjectHideFlags: 0
