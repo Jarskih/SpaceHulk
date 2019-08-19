@@ -175,12 +175,12 @@ public class TurnSystem : MonoBehaviour
 
     int GetEnemyAP()
     {
-        return Random.Range(minEnemyAPperTurn, maxEnemyAPperTurn);
+        return Random.Range(minEnemyAPperTurn, maxEnemyAPperTurn+1);
     }
 
     int GetEnemiesSpawned()
     {
-        return Random.Range(minEnemiesSpawnedPerTurn, maxEnemiesSpawnedPerTurn);
+        return Random.Range(minEnemiesSpawnedPerTurn, maxEnemiesSpawnedPerTurn+1);
     }
 
     public void UpdateEnemyList()
@@ -293,8 +293,10 @@ public class TurnSystem : MonoBehaviour
                 spawnedPlayers = true;
             }
         }
-
-        TurnManager();
+        else
+        {
+            TurnManager();
+        }
     }
 
 
@@ -310,7 +312,12 @@ public class TurnSystem : MonoBehaviour
         {
             case(Phases.FirstMovement):
             case(Phases.SecondMovement):
-                if (activePlayer && activePlayer.GetComponent<Stats>().health > 0)
+                if (activePlayer == null)
+                {
+                    return;
+                }
+                
+                if (activePlayer.GetComponent<Stats>().health > 0)
                 {
                     activePlayer.Actions(_enemies);
                 }
@@ -325,7 +332,7 @@ public class TurnSystem : MonoBehaviour
                     SetNextPlayer();
                 }
                 break;
-            case(Phases.EnemyMovement):   
+            case(Phases.EnemyMovement):
                 if (enemies.Count == 0)
                 {
                     SetNextPhase();

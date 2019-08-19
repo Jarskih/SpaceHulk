@@ -163,7 +163,8 @@ Tilemap:
       m_TileSpriteIndex: 0
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
-      m_ObjectToInstantiate: {fileID: 0}
+      m_ObjectToInstantiate: {fileID: 1438640969524186740, guid: d3754c16f7ab3bb44b6e338db9369ab8,
+        type: 3}
       m_TileFlags: 1
       m_ColliderType: 0
   - first: {x: 0, y: -5, z: 0}
@@ -172,7 +173,8 @@ Tilemap:
       m_TileSpriteIndex: 0
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
-      m_ObjectToInstantiate: {fileID: 0}
+      m_ObjectToInstantiate: {fileID: 1438640969524186740, guid: d3754c16f7ab3bb44b6e338db9369ab8,
+        type: 3}
       m_TileFlags: 1
       m_ColliderType: 0
   - first: {x: 1, y: -5, z: 0}
@@ -226,7 +228,8 @@ Tilemap:
       m_TileSpriteIndex: 0
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
-      m_ObjectToInstantiate: {fileID: 0}
+      m_ObjectToInstantiate: {fileID: 1438640969524186740, guid: d3754c16f7ab3bb44b6e338db9369ab8,
+        type: 3}
       m_TileFlags: 1
       m_ColliderType: 0
   - first: {x: 0, y: -4, z: 0}
@@ -235,7 +238,8 @@ Tilemap:
       m_TileSpriteIndex: 0
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
-      m_ObjectToInstantiate: {fileID: 0}
+      m_ObjectToInstantiate: {fileID: 1438640969524186740, guid: d3754c16f7ab3bb44b6e338db9369ab8,
+        type: 3}
       m_TileFlags: 1
       m_ColliderType: 0
   - first: {x: 1, y: -4, z: 0}
@@ -3287,11 +3291,13 @@ Tilemap:
     m_Data: {r: 1, g: 1, b: 1, a: 1}
   - m_RefCount: 0
     m_Data: {r: NaN, g: NaN, b: NaN, a: NaN}
+  - m_RefCount: 0
+    m_Data: {r: NaN, g: NaN, b: NaN, a: NaN}
   m_AnimationFrameRate: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Origin: {x: -13, y: -6, z: 0}
   m_Size: {x: 25, y: 23, z: 1}
-  m_TileAnchor: {x: 0.5, y: 0.5, z: 0}
+  m_TileAnchor: {x: 0, y: 0, z: 0}
   m_TileOrientation: 0
   m_TileOrientationMatrix:
     e00: 1
@@ -3344,8 +3350,8 @@ TilemapRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1106928901
+  m_SortingLayer: -1
   m_SortingOrder: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}

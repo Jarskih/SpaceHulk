@@ -7,7 +7,7 @@ public class SpaceHulkAcademy : Academy
 {
     public override void InitializeAcademy()
     {
-
+        
     }
 
     public override void AcademyReset()

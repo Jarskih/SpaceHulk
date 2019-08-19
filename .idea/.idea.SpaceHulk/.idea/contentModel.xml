@@ -91,6 +91,7 @@
             <e p="EmojiOne Attribution.txt" t="Include" />
           </e>
         </e>
+        <e p="TilemapController.cs" t="Include" />
         <e p="UnitySDK" t="Include">
           <e p="ML-Agents" t="Include">
             <e p="Editor" t="Include">

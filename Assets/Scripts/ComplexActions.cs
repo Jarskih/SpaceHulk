@@ -6,10 +6,12 @@ using UnityEngine.Tilemaps;
 public class ComplexActions : MonoBehaviour
 {
     private Stats _stats;
+    private TilemapController _tilemapController;
 
     void Start()
     {
         _stats = GetComponent<Stats>();
+        _tilemapController = FindObjectOfType<TilemapController>();
     }
 
     public void Act(IEnumerable<Stats> enemies)
@@ -56,7 +58,7 @@ public class ComplexActions : MonoBehaviour
                     break;
                 }
 
-                var enemy = _stats.GetUnitFromTile(intPos);
+                var enemy = _tilemapController.GetUnitFromTile(intPos);
 
                 if (enemy == null)
                 {

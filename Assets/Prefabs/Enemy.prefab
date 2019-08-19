@@ -65,6 +65,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 275c9e03fd57ce34fb1587e977f36ce5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  timeBetweenDecisions: 1
+  timeSinceDecision: 0
+  isAi: 1
 --- !u!114 &8821393952440982105
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -77,7 +80,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d148fea951239841868a9f3c38fd71f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  brain: {fileID: 11400000, guid: db76cac177c251b49b9c2a70ecb2fa89, type: 2}
+  brain: {fileID: 11400000, guid: 4972d6371c768254a9a69b0d33bd52ab, type: 2}
   agentParameters:
     agentCameras: []
     agentRenderTextures: []
@@ -85,7 +88,8 @@ MonoBehaviour:
     resetOnDone: 1
     onDemandDecision: 1
     numberOfActionsBetweenDecisions: 1
-  timeBetweenDecisionsAtInference: 10
+  killedPlayer: 0
+  maskActions: 1
 --- !u!1 &4999988260633094810
 GameObject:
   m_ObjectHideFlags: 0

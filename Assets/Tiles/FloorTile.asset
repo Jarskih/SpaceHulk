@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: FloorTile
   m_EditorClassIdentifier: 
   m_Sprite: {fileID: 21300000, guid: d9a08d8ceb590a3498ac825917377058, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.9013884, g: 0.90223885, b: 0.9056604, a: 1}
   m_Transform:
     e00: 1
     e01: 0

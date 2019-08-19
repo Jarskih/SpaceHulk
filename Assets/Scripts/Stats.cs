@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Interfaces;
 using UnityEngine;
+using UnityEngine.Networking.NetworkSystem;
 using UnityEngine.Tilemaps;
 
 public class Stats : MonoBehaviour
@@ -128,99 +129,6 @@ public class Stats : MonoBehaviour
         UpdateCurrentTile(new Vector3Int(Mathf.FloorToInt(newPos.x), Mathf.FloorToInt(newPos.y), 0));
     }
 
-    public bool CheckIfTileOccupied(Vector3Int newPos)
-    {
-        var tile = _tileMap.GetInstantiatedObject(newPos);
-
-        if (tile == null)
-        {
-            Debug.Log("Tile outside of game area");
-            return true;
-        }
-        
-        Stats unit = null;
-        var node = tile.GetComponent<Node>();
-        
-        var enemies = _turnSystem.enemies;
-        foreach (var enemy in enemies)
-        {
-            // Dont check current player
-            if (enemy == this) continue;
-            if (enemy.currentNode == node)
-            {
-                if (enemy.health > 0)
-                {
-                    unit = enemy;
-                }
-            }
-        }
-
-        if (unit == null)
-        {
-            var players = _turnSystem.players;
-            foreach (var player in players)
-            {
-                // Dont check current player
-                if (player == this) continue;
-                if (player.currentNode == node)
-                {
-                    if (player.health > 0)
-                    {
-                        unit = player;
-                    }
-                }
-            }
-        }
-        
-        return unit != null && unit.health > 0;
-    }
-
-    public Stats GetUnitFromTile(Vector3Int pos)
-    {
-        var tile = _tileMap.GetInstantiatedObject(pos);
-
-        if (tile == null)
-        {
-            Debug.Log("Tile outside of game area");
-            return null;
-        }
-        
-        var node = tile.GetComponent<Node>();
-
-        if (node == null)
-        {
-            Debug.LogWarning("Node not found");
-            return null;
-        }
-        
-        Stats unit = null;
-        var enemies = _turnSystem.enemies;
-        foreach (var enemy in enemies)
-        {
-            if (enemy.currentNode == node)
-            {
-                if (enemy.health > 0)
-                {
-                    unit = enemy;
-                }
-            }
-        }
-
-        if (unit == null)
-        {
-            var players = _turnSystem.players;
-            foreach (var player in players)
-            {
-                if (player.currentNode == node)
-                {
-                    unit = player;
-                }
-            }
-        }
-        
-        return unit;
-    }
-
     public void TakeDamage(int damage)
     {
         _health -= damage;
@@ -239,6 +147,12 @@ public class Stats : MonoBehaviour
             EventManager.TriggerEvent("EnemyDied");
             Destroy(gameObject);
         }
+    }
+
+    private IEnumerator RemovePlayer()
+    {
+        yield return new WaitForSeconds(0.1f);
+        Destroy(gameObject);
     }
 
     public void GainHealth(int value)
