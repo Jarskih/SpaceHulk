@@ -9,16 +9,25 @@ public class EnemyMovement : MonoBehaviour, IMove
     [SerializeField] private bool isAi;
     private TilemapController _tilemapController;
     private Tilemap _tileMap;
-    private Stats _stats;
+    private Unit _unit;
     private SpaceHulkAgent _agent;
-
+    [SerializeField] private bool isTraining;
     
     void Start()
     {
-        _stats = GetComponent<Stats>();
+        _unit = GetComponent<Unit>();
         _tileMap = GameObject.FindObjectOfType<Tilemap>();
         _tilemapController = FindObjectOfType<TilemapController>();
         _agent = GetComponent<SpaceHulkAgent>();
+    }
+
+    void Update()
+    {
+
+        if (isTraining)
+        {
+            Act();
+        }
     }
    
     public void Act()
@@ -62,7 +71,7 @@ public class EnemyMovement : MonoBehaviour, IMove
 
     public void CanMove(Vector3 direction)
     {
-        Vector3 pos = _stats.targetPos + direction;
+        Vector3 pos = _unit.targetPos + direction;
         Vector3Int intPos = new Vector3Int(Mathf.FloorToInt(pos.x), Mathf.FloorToInt(pos.y), 0);
 
         // Check if tile is not a floor
@@ -72,13 +81,21 @@ public class EnemyMovement : MonoBehaviour, IMove
         }
         
         // If tile is occupied by a unit
-        if (_tilemapController.CheckIfTileOccupied(intPos, _stats))
+        if (_tilemapController.CheckIfTileOccupied(intPos, _unit))
         {
             // if unit type is not friendly unit attack it
-            if (_tilemapController.GetUnitFromTile(intPos).unitType != _stats.unitType)
+            if (_tilemapController.GetUnitFromTile(intPos).unitType != _unit.unitType)
             {
-                AttackUnit(intPos);
-                return;
+                if (isTraining)
+                {
+                    GetComponent<SpaceHulkAgent>().killedPlayer = true;
+                    return;
+                }
+                else
+                {
+                    AttackUnit(intPos);
+                    return;
+                }
             }
             
             if (direction == Vector3.up)
@@ -94,9 +111,8 @@ public class EnemyMovement : MonoBehaviour, IMove
     private void AttackUnit(Vector3Int intPos)
     {
         var enemy = _tilemapController.GetUnitFromTile(intPos);
-        ICommand c = new MeleeAttackCommand(_stats, enemy);
+        ICommand c = new MeleeAttackCommand(_unit, enemy);
         CommandInvoker.AddCommand(c);
-        GetComponent<SpaceHulkAgent>().killedPlayer = true;
     }
     
     void MoveOneTile(Vector3 direction, Vector3Int intPos)
@@ -110,19 +126,19 @@ public class EnemyMovement : MonoBehaviour, IMove
             return;
         }
         
-        ICommand c = new EnemyMoveCommand(direction, _stats);
+        ICommand c = new EnemyMoveCommand(direction, _unit);
         CommandInvoker.AddCommand(c);
     }
 
     void MoveTwoTiles(Vector3 direction)
     {
-        if (_stats.actionPoints <= 2)
+        if (_unit.actionPoints <= 2)
         {
             Debug.Log("Not enough AP to jump over");
             return;
         }
          
-        Vector3 pos = _stats.targetPos + direction*2;
+        Vector3 pos = _unit.targetPos + direction*2;
         Vector3Int intPos = new Vector3Int(Mathf.FloorToInt(pos.x), Mathf.FloorToInt(pos.y), (int)pos.z);
          
         // Check if a tile 2 steps away is walkable (jump over)
@@ -130,9 +146,9 @@ public class EnemyMovement : MonoBehaviour, IMove
         if (colliderType == Tile.ColliderType.None)
         {
             // If tile is not occupied move to new tile
-            if (!_tilemapController.CheckIfTileOccupied(intPos, _stats))
+            if (!_tilemapController.CheckIfTileOccupied(intPos, _unit))
             {
-                ICommand c = new EnemyDoubleMoveCommand(direction, _stats);
+                ICommand c = new EnemyDoubleMoveCommand(direction, _unit);
                 CommandInvoker.AddCommand(c);
             }
         }

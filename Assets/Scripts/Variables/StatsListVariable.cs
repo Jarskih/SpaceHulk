@@ -4,5 +4,5 @@ using UnityEngine;
 [CreateAssetMenu]
 public class StatsListVariable : ScriptableObject
 {
-    public List<Stats> list = new List<Stats>();
+    public List<Unit> list = new List<Unit>();
 }

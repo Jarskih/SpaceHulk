@@ -5,12 +5,12 @@ using UnityEngine;
 
 public class TurnCommand : ICommand
 {
-    private readonly Stats _unit;
+    private readonly Unit _unit;
     private readonly Vector3 _direction = Vector3.up;
     private readonly int _moveCost;
     private readonly int _angle;
 
-    public TurnCommand(Stats unit, int angle)
+    public TurnCommand(Unit unit, int angle)
     {
         _unit = unit;
         _moveCost = _unit.APrules.turning;

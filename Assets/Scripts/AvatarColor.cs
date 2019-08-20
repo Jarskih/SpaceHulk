@@ -6,12 +6,12 @@ public class AvatarColor : MonoBehaviour
 {
     public Color wounded;
     public Color healthy;
-    private Stats stats;
+    private Unit _unit;
     private SpriteRenderer sprite;
 
     void Start()
     {
-        stats = GetComponent<Stats>();
+        _unit = GetComponent<Unit>();
         sprite = GetComponentInChildren<SpriteRenderer>();
     }
 
@@ -29,6 +29,6 @@ public class AvatarColor : MonoBehaviour
 
     void Update()
     {
-        ChangeSpriteColor((stats.health <= 0));
+        ChangeSpriteColor((_unit.health <= 0));
     }
 }

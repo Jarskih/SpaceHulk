@@ -4,11 +4,11 @@ using UnityEngine;
 public class MoveForwardCommand : ICommand
 {
     private readonly Transform _transform;
-    private readonly Stats _unit;
+    private readonly Unit _unit;
     private readonly Vector3 _direction;
     private readonly int _moveCost;
 
-    public MoveForwardCommand(Stats unit)
+    public MoveForwardCommand(Unit unit)
     {
         _unit = unit;
         _transform = _unit.transform;

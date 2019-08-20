@@ -12,10 +12,10 @@ public class TurnSystem : MonoBehaviour
     [SerializeField] private int maxEnemyAPperTurn;
     [SerializeField] private int minEnemiesSpawnedPerTurn;
     [SerializeField] private int maxEnemiesSpawnedPerTurn;
-    [SerializeField] private List<Stats> _enemies;
-    [SerializeField] private List<Stats> _players;
-    [SerializeField] private Stats _activeEnemy;
-    [SerializeField] private Stats activePlayer;
+    [SerializeField] private List<Unit> _enemies;
+    [SerializeField] private List<Unit> _players;
+    [SerializeField] private Unit _activeEnemy;
+    [SerializeField] private Unit activePlayer;
     [SerializeField] private int activePlayerIndex;
     [SerializeField]  private Phases currentPhase;
     private int _activeEnemyIndex;
@@ -29,7 +29,7 @@ public class TurnSystem : MonoBehaviour
     private Tilemap _tilemap;
     private SpawnPlayers _spawnPlayers;
 
-    public TurnSystem(List<Stats> enemies)
+    public TurnSystem(List<Unit> enemies)
     {
         this._enemies = enemies;
     }
@@ -43,9 +43,9 @@ public class TurnSystem : MonoBehaviour
         Resolution
     }
 
-    public List<Stats> enemies => _enemies;
-    public List<Stats> players => _players;
-    public Stats activeEnemy => _activeEnemy;
+    public List<Unit> enemies => _enemies;
+    public List<Unit> players => _players;
+    public Unit activeEnemy => _activeEnemy;
 
     // Register listeners
     void OnEnable()
@@ -59,8 +59,8 @@ public class TurnSystem : MonoBehaviour
 
     private void Awake()
     {
-        _enemies = new List<Stats>();
-        _players = new List<Stats>();
+        _enemies = new List<Unit>();
+        _players = new List<Unit>();
     }
 
     // Start is called before the first frame update
@@ -114,11 +114,11 @@ public class TurnSystem : MonoBehaviour
         {
             SetNextPhase();
             SetFirstPlayer();
-            Debug.Log("All players moved, setting new phase: " + currentPhase);
+            //Debug.Log("All players moved, setting new phase: " + currentPhase);
         }
         else
         {
-            Debug.Log("Next player turn");
+            //Debug.Log("Next player turn");
             activePlayer = _players[activePlayerIndex];
         }
     }
@@ -130,11 +130,11 @@ public class TurnSystem : MonoBehaviour
         {
             SetNextPhase();
             SetFirstEnemy();
-            Debug.Log("All enemies moved, setting new phase: " + currentPhase);
+            //Debug.Log("All enemies moved, setting new phase: " + currentPhase);
         }
         else
         {
-            Debug.Log("Next alien turn");
+            //Debug.Log("Next alien turn");
             _activeEnemy = _enemies[_activeEnemyIndex];
         }
     }
@@ -196,7 +196,7 @@ public class TurnSystem : MonoBehaviour
         
         foreach (var enemy in enemyGameObjects)
         {
-            _enemies.Add(enemy.GetComponent<Stats>());
+            _enemies.Add(enemy.GetComponent<Unit>());
         }
 
         if (activeEnemy == null)
@@ -217,7 +217,7 @@ public class TurnSystem : MonoBehaviour
         
         foreach (var player in playerObjects)
         {
-            _players.Add(player.GetComponent<Stats>());
+            _players.Add(player.GetComponent<Unit>());
         }
 
         if (activePlayer == null)
@@ -270,7 +270,7 @@ public class TurnSystem : MonoBehaviour
         var foundPlayers = GameObject.FindGameObjectsWithTag("Player");
         foreach (var player in foundPlayers)
         {
-            _players.Add(player.GetComponent<Stats>());
+            _players.Add(player.GetComponent<Unit>());
         }
         // Choose first player
         SetFirstPlayer();
@@ -317,7 +317,7 @@ public class TurnSystem : MonoBehaviour
                     return;
                 }
                 
-                if (activePlayer.GetComponent<Stats>().health > 0)
+                if (activePlayer.GetComponent<Unit>().health > 0)
                 {
                     activePlayer.Actions(_enemies);
                 }
@@ -342,7 +342,7 @@ public class TurnSystem : MonoBehaviour
                 // TODO enable later
                 // EventManager.TriggerEvent("EnemyTurn");
                 
-                if (activeEnemy && activeEnemy.GetComponent<Stats>().health > 0)
+                if (activeEnemy && activeEnemy.GetComponent<Unit>().health > 0)
                 {
                     activeEnemy.Movement();
                 }

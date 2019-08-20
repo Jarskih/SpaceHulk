@@ -5,36 +5,36 @@ using UnityEngine.Tilemaps;
 
 public class ComplexActions : MonoBehaviour
 {
-    private Stats _stats;
+    private Unit _unit;
     private TilemapController _tilemapController;
 
     void Start()
     {
-        _stats = GetComponent<Stats>();
+        _unit = GetComponent<Unit>();
         _tilemapController = FindObjectOfType<TilemapController>();
     }
 
-    public void Act(IEnumerable<Stats> enemies)
+    public void Act(IEnumerable<Unit> enemies)
     {        
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            if (_stats.enemyTargets.list.Count() > 0)
+            if (_unit.enemyTargets.list.Count() > 0)
             {
                 EventManager.TriggerEvent("Shoot");
 
-                foreach (var enemy in _stats.enemyTargets.list)
+                foreach (var enemy in _unit.enemyTargets.list)
                 {
                     enemy.TakeDamage(1);
                 }
 
-                _stats.UpdateMovementPoints(-_stats.APrules.playerAttacking);
-                _stats.ChangeState(Stats.UnitState.Idle);
-                _stats.enemyTargets.list.Clear();
+                _unit.UpdateMovementPoints(-_unit.APrules.playerAttacking);
+                _unit.ChangeState(Unit.UnitState.Idle);
+                _unit.enemyTargets.list.Clear();
             }
             else
             {
                 FindTargets();
-                if (_stats.enemyTargets.list.Count() == 0)
+                if (_unit.enemyTargets.list.Count() == 0)
                 {
                     EventManager.TriggerEvent("Negative");
                 }
@@ -44,7 +44,7 @@ public class ComplexActions : MonoBehaviour
 
     void FindTargets()
     {
-        _stats.enemyTargets.list.Clear();
+        _unit.enemyTargets.list.Clear();
         for (int width = -1; width < 1; width++)
         {
             for (int distance = 1; distance < 10; distance++)
@@ -53,7 +53,7 @@ public class ComplexActions : MonoBehaviour
                 Vector3 pos = transform1.position + transform1.up * distance + transform1.right * width;
                 Vector3Int intPos = new Vector3Int(Mathf.FloorToInt(pos.x), Mathf.FloorToInt(pos.y), (int) pos.z);
 
-                if (_stats.GetTileMap().GetColliderType(intPos) != Tile.ColliderType.None)
+                if (_unit.GetTileMap().GetColliderType(intPos) != Tile.ColliderType.None)
                 {
                     break;
                 }
@@ -65,13 +65,13 @@ public class ComplexActions : MonoBehaviour
                     continue;
                 }
                 
-                if (enemy.unitType == _stats.unitType)
+                if (enemy.unitType == _unit.unitType)
                 {
                     break;
                 }
                 
                 if (enemy.isDead) continue;
-                _stats.enemyTargets.list.Add(enemy);
+                _unit.enemyTargets.list.Add(enemy);
                 
             }
         }

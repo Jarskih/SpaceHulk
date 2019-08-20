@@ -5,11 +5,11 @@ using UnityEngine;
 
 public class MeleeAttackCommand : ICommand
 {
-    private Stats _attacker;
-    private Stats _defender;
+    private Unit _attacker;
+    private Unit _defender;
     private readonly int _moveCost;
 
-    public MeleeAttackCommand(Stats attacker, Stats defender)
+    public MeleeAttackCommand(Unit attacker, Unit defender)
     {
         _attacker = attacker;
         _defender = defender;

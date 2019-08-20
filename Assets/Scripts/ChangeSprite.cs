@@ -6,18 +6,18 @@ public class ChangeSprite : MonoBehaviour
     public Sprite normal;
     public Sprite targeted;
 
-    private Stats _stats;
+    private Unit _unit;
     private SpriteRenderer _spriteRenderer;
 
     void Start()
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();
-        _stats = GetComponentInParent<Stats>();
+        _unit = GetComponentInParent<Unit>();
     }
 
     void Update()
     {
-        if (enemyTargets.list.Contains(_stats))
+        if (enemyTargets.list.Contains(_unit))
         {
             SetTargeted();
         }

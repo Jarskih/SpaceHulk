@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: 705125957cb1e4d4a8afdc1cae1d7d3b
+ScriptedImporter:
+  fileIDToRecycleName:
+    11400000: Assets/Demonstrations/SpaceHulk_0.demo
+  externalObjects: {}
+  userData: ' (MLAgents.Demonstration)'
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 11500000, guid: 7bd65ce151aaa4a41a45312543c56be1, type: 3}

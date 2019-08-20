@@ -4,11 +4,11 @@ using UnityEngine;
 public class EnemyMoveCommand : ICommand
 {
     private readonly Transform _transform;
-    private readonly Stats _unit;
+    private readonly Unit _unit;
     private readonly Vector3 _direction;
     private readonly int _moveCost;
 
-    public EnemyMoveCommand(Vector3 direction, Stats unit)
+    public EnemyMoveCommand(Vector3 direction, Unit unit)
     {
         _unit = unit;
         _transform = _unit.transform;

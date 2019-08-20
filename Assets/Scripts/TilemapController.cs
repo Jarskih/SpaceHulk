@@ -1,0 +1,190 @@
+﻿using System.Collections.Generic;
+using System.Xml.Linq;
+using UnityEngine;
+using UnityEngine.Tilemaps;
+
+public class TilemapController : MonoBehaviour
+{
+    private Tilemap _tilemap;
+    private TurnSystem _turnSystem;
+
+    void Start()
+    {
+        _tilemap = GetComponent<Tilemap>();
+        _turnSystem = FindObjectOfType<TurnSystem>();
+    }
+    
+    public bool IsFloor(Vector3Int intPos)
+    {
+        var colliderType = _tilemap.GetColliderType(intPos);
+        return (int)colliderType == (int)Tile.ColliderType.None;
+    }
+    
+    public Unit GetUnitFromTile(Vector3Int pos)
+    {
+        var tile = _tilemap.GetInstantiatedObject(pos);
+
+        if (tile == null)
+        {
+            Debug.Log("Tile outside of game area");
+            return null;
+        }
+        
+        var node = tile.GetComponent<Node>();
+
+        if (node == null)
+        {
+            Debug.LogWarning("Node not found");
+            return null;
+        }
+        
+        Unit unit = null;
+        var enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        //var enemies = _turnSystem.enemies;
+        foreach (var enemy in enemies)
+        {
+            var u = enemy.GetComponent<Unit>();
+            if (u.currentNode == node)
+            {
+                if (u.health > 0)
+                {
+                    unit = u;
+                }
+            }
+        }
+
+        if (unit == null)
+        {
+            var players = GameObject.FindGameObjectsWithTag("Player");
+            //var players = _turnSystem.players;
+            foreach (var player in players)
+            {
+                var u = player.GetComponent<Unit>();
+                if (u.currentNode == node)
+                {
+                    unit = u;
+                }
+            }
+        }
+        
+        return unit;
+    }
+    
+    public bool CheckIfTileOccupied(Vector3Int newPos, Unit currentUnit)
+    {
+        var tile = _tilemap.GetInstantiatedObject(newPos);
+
+        if (tile == null)
+        {
+            if (!IsFloor(newPos))
+            {
+                return true;
+            }
+        }
+
+        Unit unit = null;
+        var node = tile.GetComponent<Node>();
+
+        var enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        //var enemies = _turnSystem.enemies;
+        foreach (var enemy in enemies)
+        {
+            var u = enemy.GetComponent<Unit>();
+            // Dont check current player
+            if (u == currentUnit) continue;
+            if (u.currentNode == node)
+            {
+                if (u.health > 0)
+                {
+                    unit = u;
+                }
+            }
+        }
+
+        if (unit == null)
+        {
+            
+            // var players = _turnSystem.players;
+            var players = GameObject.FindGameObjectsWithTag("Player");
+            foreach (var player in players)
+            {
+                var u = player.GetComponent<Unit>();
+                // Dont check current player
+                if (u == currentUnit) continue;
+                if (u.currentNode == node)
+                {
+                    if (u.health > 0)
+                    {
+                        unit = u;
+                    }
+                }
+            }
+        }
+
+        return unit != null && unit.health > 0;
+    }
+
+    //Add information about the surroundings:
+    //0 = not valid tile or occupied by Alien unit
+    //1 = free tile
+    //2 = current unit
+    //3 = occupied by player unit
+    public List<int> GetSurroundingTiles(Vector3 pos, Unit unit)
+    {
+        List<int> tileIndex = new List<int>();
+        Vector3Int currentPos = new Vector3Int((int)pos.x, (int)pos.y, 0);
+        for (int x = -10; x < 10; x++)
+        {
+            for (int y = -10; y < 10; y++)
+            {
+                var intPos = new Vector3Int(currentPos.x + x, currentPos.y + y, 0);
+                var tileObj = _tilemap.GetInstantiatedObject(intPos);
+                if (tileObj != null)
+                {
+                    if (_tilemap.GetColliderType(intPos) == Tile.ColliderType.None)
+                    {
+                        var unitFromTile = GetUnitFromTile(intPos);
+                        if (unitFromTile == null)
+                        {
+                            // Free tile
+                            tileIndex.Add(1);
+                            continue;
+                        }
+                            
+                            
+                        {
+                            if (unitFromTile == unit)
+                            {
+                                tileIndex.Add(2);
+                            } else if (unitFromTile.unitType == Unit.UnitType.Alien)
+                            {
+                                tileIndex.Add(0);
+                            }
+                            else if(unitFromTile.unitType == Unit.UnitType.Marine)
+                            {
+                                tileIndex.Add(3);         
+                            }
+                            else
+                            {
+                                Debug.LogWarning("Wrong index");
+                                tileIndex.Add(0);
+                            }
+                        }
+
+                    }
+                    else
+                    {
+                        // Wall
+                        tileIndex.Add(0);
+                    }
+                }
+                else
+                {
+                    // Not valid tile
+                    tileIndex.Add(0);
+                }
+            }
+        }
+        return tileIndex;
+    }
+}

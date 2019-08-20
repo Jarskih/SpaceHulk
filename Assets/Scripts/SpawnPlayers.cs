@@ -8,7 +8,8 @@ public class SpawnPlayers : MonoBehaviour
     
     public void SpawnPlayer()
     {
-        var tilePos = GetRandomTilePos();
+        var tilePos = new Vector3Int(-9, 9, 0);
+        //var tilePos = GetRandomTilePos();
         Instantiate(this.player1, tilePos, Quaternion.identity);
     }
 

@@ -4,5 +4,5 @@ using UnityEngine;
 
 public class Node : MonoBehaviour
 {
-    public Stats unitOnNode;
+    public Unit unitOnNode;
 }

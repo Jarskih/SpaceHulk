@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Networking.NetworkSystem;
 using UnityEngine.Tilemaps;
 
-public class Stats : MonoBehaviour
+public class Unit : MonoBehaviour
 {
     public APrules APrules;
     public int actionPoints;
@@ -27,8 +27,9 @@ public class Stats : MonoBehaviour
     }
 
    private UnitState currentState;
+   public Vector3 startingPos;
 
-    public enum UnitState
+   public enum UnitState
     {
         Idle,
         Shooting
@@ -45,11 +46,14 @@ public class Stats : MonoBehaviour
         _complexActions = GetComponent<ComplexActions>();
         _tileMap = GameObject.FindObjectOfType<Tilemap>();
         StartCoroutine(SaveCurrentTile());
+        startingPos = targetPos;
     }
 
     void Update()
     {
-        transform.position = Vector3.MoveTowards(transform.position, targetPos, 0.3f);
+        transform.position = targetPos;
+        //transform.position = Vector3.MoveTowards(transform.position, targetPos, 0.3f);
+        SaveCurrentTile();
     }
 
     private IEnumerator SaveCurrentTile()
@@ -78,7 +82,7 @@ public class Stats : MonoBehaviour
         currentState = state;
     }
 
-    public void Actions(IEnumerable<Stats> enemies)
+    public void Actions(IEnumerable<Unit> enemies)
     {
         // Wait for unit to move before allowing new orders
         if (Vector3.Distance(transform.position, targetPos) > 0.05f) return;
@@ -138,8 +142,8 @@ public class Stats : MonoBehaviour
             if (_health <= 0)
             {
                 EventManager.TriggerEvent("Wounded");
-                isDead = true;
-                Destroy(gameObject);
+                //isDead = true;
+                //Destroy(gameObject);
             }
         }
         else
