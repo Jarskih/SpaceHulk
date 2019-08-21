@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
 
 public class TurnSystem : MonoBehaviour
@@ -285,6 +286,7 @@ public class TurnSystem : MonoBehaviour
         UpdateEnemyList();
         UpdatePlayerList();
 
+        /*
         if (!spawnedPlayers)
         {
             if (_tilemap.transform.childCount > 0)
@@ -295,8 +297,9 @@ public class TurnSystem : MonoBehaviour
         }
         else
         {
+        */
             TurnManager();
-        }
+        /*}*/
     }
 
 
@@ -369,7 +372,8 @@ public class TurnSystem : MonoBehaviour
             case(Phases.Resolution):
                 if (players.Count == 0)
                 {
-                    SpawnPlayers();
+                    SceneManager.LoadScene("Level1");
+                    //SpawnPlayers();
                 }
                 SetNextPhase();
                 break;

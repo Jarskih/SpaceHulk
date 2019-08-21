@@ -20,13 +20,14 @@ public class Unit : MonoBehaviour
     private Tilemap _tileMap;
     private TurnSystem _turnSystem;
     public UnitType unitType;
+
     public enum UnitType
     {
         Alien,
         Marine
     }
 
-   private UnitState currentState;
+    [SerializeField] private UnitState currentState;
    public Vector3 startingPos;
 
    public enum UnitState
@@ -51,8 +52,8 @@ public class Unit : MonoBehaviour
 
     void Update()
     {
-        transform.position = targetPos;
-        //transform.position = Vector3.MoveTowards(transform.position, targetPos, 0.3f);
+        //transform.position = targetPos;
+        transform.position = Vector3.MoveTowards(transform.position, targetPos, 0.3f);
         SaveCurrentTile();
     }
 

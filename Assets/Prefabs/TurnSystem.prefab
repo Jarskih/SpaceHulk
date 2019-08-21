@@ -49,8 +49,8 @@ MonoBehaviour:
   actionPoints: {fileID: 11400000, guid: 4b1ccb44bb0f6214a998095ee82d564a, type: 2}
   PlayerAPPerTurn: {fileID: 11400000, guid: 3a3af4e0087d73c49a6c820503ad9490, type: 2}
   minEnemyAPperTurn: 4
-  maxEnemyAPperTurn: 4
-  minEnemiesSpawnedPerTurn: 6
+  maxEnemyAPperTurn: 6
+  minEnemiesSpawnedPerTurn: 3
   maxEnemiesSpawnedPerTurn: 6
   _enemies: []
   _players: []

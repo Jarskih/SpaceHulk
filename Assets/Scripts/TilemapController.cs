@@ -187,4 +187,25 @@ public class TilemapController : MonoBehaviour
         }
         return tileIndex;
     }
+
+    public Tile GetTile(Vector3Int pos)
+    {
+        return _tilemap.GetTile(pos) as Tile;
+    }
+    
+    /// <summary>
+    /// Set the colour of a tile.
+    /// </summary>
+    /// <param name="colour">The desired colour.</param>
+    /// <param name="position">The position of the tile.</param>
+    /// <param name="tilemap">The tilemap the tile belongs to.</param>
+    public void SetTileColour(Color colour, Vector3Int position, Tilemap tilemap)
+    {
+        // Flag the tile, inidicating that it can change colour.
+        // By default it's set to "Lock Colour".
+        tilemap.SetTileFlags(position, TileFlags.None);
+ 
+        // Set the colour.
+        tilemap.SetColor(position, colour);
+    }
 }

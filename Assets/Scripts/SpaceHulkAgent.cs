@@ -83,7 +83,7 @@ public class SpaceHulkAgent : Agent
         {
             AddVectorObs(Vector3.Distance(_player.targetPos, _unit.targetPos));
             AddVectorObs(_player.targetPos);
-            AddVectorObs(_player.transform.rotation);
+            AddVectorObs((_player.targetPos - _unit.targetPos).normalized);
         }
         else
         {
@@ -167,7 +167,6 @@ public class SpaceHulkAgent : Agent
                }
                else
                {
-                   SetReward(-1f);
                    Done();
                }
                break;
@@ -181,7 +180,6 @@ public class SpaceHulkAgent : Agent
                }
                else
                {
-                   SetReward(-1f);
                    Done();
                }
 
@@ -196,7 +194,6 @@ public class SpaceHulkAgent : Agent
                }
                else
                {
-                   SetReward(-1f);
                    Done();
                }
                 break;
@@ -210,7 +207,6 @@ public class SpaceHulkAgent : Agent
                }
                else
                {
-                   SetReward(-1f);
                    Done();
                }
                break;
@@ -221,7 +217,7 @@ public class SpaceHulkAgent : Agent
         if (killedPlayer)
         {
             Done();
-            SetReward(5f);
+            SetReward(1f);
         } else if (_unit.isDead)
         {
             Done();
@@ -231,16 +227,18 @@ public class SpaceHulkAgent : Agent
     // to be implemented by the developer
     public override void AgentReset()
     {
-        _unit.targetPos = _unit.startingPos;
-        _unit.transform.position = _unit.startingPos;
-        _academy.AcademyReset();
+        if (!_academy.GetIsInference())
+        {
+            _unit.targetPos = _unit.startingPos;
+            _unit.transform.position = _unit.startingPos;
+           // _academy.AcademyReset();
+        }
         killedPlayer = false;
     }
     
    // Note that in order for AgentOnDone() to be called, the Agent's ResetOnDone property must be false. You can set ResetOnDone on the Agent's Inspector or in code.
     public override void AgentOnDone()
     {
-        _academy.AcademyReset();
         Destroy(gameObject);
     }
 }
