@@ -18,7 +18,7 @@ public class SpawnPlayers : MonoBehaviour
         Instantiate(this.player1, tilePos, Quaternion.identity);
     }
 
-    private Vector3 GetRandomTilePos()
+    public Vector3 GetRandomTilePos()
     {
         if (_tilemap == null)
         {

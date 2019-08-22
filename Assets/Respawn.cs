@@ -14,6 +14,6 @@ public class Respawn : MonoBehaviour
     public void RespawnUnit()
     {
         transform.position = _unit.startingPos;
-        _unit.targetPos = _unit.startingPos;
+        _unit.UpdateCurrentTile(_unit.startingPos);
     }
 }

@@ -71,7 +71,7 @@ public class EnemyMovement : MonoBehaviour, IMove
 
     public void CanMove(Vector3 direction)
     {
-        Vector3 pos = _unit.targetPos + direction;
+        Vector3 pos = _unit.TargetPos + direction;
         Vector3Int intPos = new Vector3Int(Mathf.FloorToInt(pos.x), Mathf.FloorToInt(pos.y), 0);
 
         // Check if tile is not a floor
@@ -84,7 +84,7 @@ public class EnemyMovement : MonoBehaviour, IMove
         if (_tilemapController.CheckIfTileOccupied(intPos, _unit))
         {
             // if unit type is not friendly unit attack it
-            if (_tilemapController.GetUnitFromTile(intPos).unitType != _unit.unitType)
+            if (_tilemapController.GetUnitFromTile(intPos)?.unitType != _unit.unitType)
             {
                 if (isTraining)
                 {
@@ -93,6 +93,7 @@ public class EnemyMovement : MonoBehaviour, IMove
                 }
                 else
                 {
+                    GetComponent<SpaceHulkAgent>().killedPlayer = true;
                     AttackUnit(intPos);
                     return;
                 }
@@ -138,7 +139,7 @@ public class EnemyMovement : MonoBehaviour, IMove
             return;
         }
          
-        Vector3 pos = _unit.targetPos + direction*2;
+        Vector3 pos = _unit.TargetPos + direction*2;
         Vector3Int intPos = new Vector3Int(Mathf.FloorToInt(pos.x), Mathf.FloorToInt(pos.y), (int)pos.z);
          
         // Check if a tile 2 steps away is walkable (jump over)

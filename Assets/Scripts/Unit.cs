@@ -11,7 +11,7 @@ public class Unit : MonoBehaviour
     public int actionPoints;
     public bool isDead;
     public StatsListVariable enemyTargets;
-    public Vector3 targetPos;
+    private Vector3 _targetPos;
     public Node currentNode;
     private ChangeSprite _changeSprite;
     private IMove _movement;
@@ -28,9 +28,9 @@ public class Unit : MonoBehaviour
     }
 
     [SerializeField] private UnitState currentState;
-   public Vector3 startingPos;
+    public Vector3 startingPos;
 
-   public enum UnitState
+    public enum UnitState
     {
         Idle,
         Shooting
@@ -38,23 +38,26 @@ public class Unit : MonoBehaviour
 
     public int health => _health;
 
+    public Vector3 TargetPos => currentNode ? currentNode.transform.position : transform.position;
+
+
     void Start()
     {
         _changeSprite = GetComponentInChildren<ChangeSprite>();
         _turnSystem = FindObjectOfType<TurnSystem>();
-        targetPos = transform.position;
         _movement = GetComponent<IMove>();
         _complexActions = GetComponent<ComplexActions>();
         _tileMap = GameObject.FindObjectOfType<Tilemap>();
         StartCoroutine(SaveCurrentTile());
-        startingPos = targetPos;
+        startingPos = transform.position;
+
     }
 
     void Update()
     {
-        //transform.position = targetPos;
-        transform.position = Vector3.MoveTowards(transform.position, targetPos, 0.3f);
-        SaveCurrentTile();
+        transform.position = TargetPos;
+        //transform.position = Vector3.MoveTowards(transform.position, TargetPos, 0.3f);
+        //UpdateCurrentTile(targetPos);
     }
 
     private IEnumerator SaveCurrentTile()
@@ -63,9 +66,27 @@ public class Unit : MonoBehaviour
         UpdateCurrentTile(GetCurrentTilePos());
     }
     
+    private void UpdateCurrentTile(Vector3Int newPos)
+    {
+        var tileObject = _tileMap.GetInstantiatedObject(newPos);
+        if (tileObject)
+        {
+            currentNode = tileObject.GetComponent<Node>();
+        }
+        else
+        {
+            //Debug.LogWarning("no tileobject at: " + newPos);
+        }
+    }
+
+    public void UpdateCurrentTile(Vector3 newPos)
+    {
+        UpdateCurrentTile(new Vector3Int(Mathf.RoundToInt(newPos.x), Mathf.RoundToInt(newPos.y), 0));
+    }
+    
     public Vector3Int GetCurrentTilePos()
     {
-        return new Vector3Int(Mathf.FloorToInt(targetPos.x), Mathf.FloorToInt(targetPos.y), 0);
+        return new Vector3Int(Mathf.RoundToInt(TargetPos.x), Mathf.RoundToInt(TargetPos.y), 0);
     }
 
     public Tilemap GetTileMap()
@@ -86,7 +107,7 @@ public class Unit : MonoBehaviour
     public void Actions(IEnumerable<Unit> enemies)
     {
         // Wait for unit to move before allowing new orders
-        if (Vector3.Distance(transform.position, targetPos) > 0.05f) return;
+        if (Vector3.Distance(transform.position, TargetPos) > 0.05f) return;
         
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -96,7 +117,8 @@ public class Unit : MonoBehaviour
             }
             else
             {
-             EventManager.TriggerEvent("Negative");   
+             EventManager.TriggerEvent("Negative");
+             currentState = UnitState.Idle;
             }
         }
         
@@ -116,23 +138,6 @@ public class Unit : MonoBehaviour
         actionPoints = Mathf.Clamp(actionPoints + change, 0, 6);
     }
 
-    public void UpdateCurrentTile(Vector3Int newPos)
-    {
-        var tileObject = _tileMap.GetInstantiatedObject(newPos);
-        if (tileObject)
-        {
-            currentNode = tileObject.GetComponent<Node>();
-        }
-        else
-        {
-            Debug.LogWarning("no tileobject at: " + newPos);
-        }
-    }
-
-    public void UpdateCurrentTile(Vector3 newPos)
-    {
-        UpdateCurrentTile(new Vector3Int(Mathf.FloorToInt(newPos.x), Mathf.FloorToInt(newPos.y), 0));
-    }
 
     public void TakeDamage(int damage)
     {
@@ -144,7 +149,6 @@ public class Unit : MonoBehaviour
             {
                 EventManager.TriggerEvent("Wounded");
                 //isDead = true;
-                //Destroy(gameObject);
             }
         }
         else

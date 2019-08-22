@@ -18,17 +18,15 @@ public class MoveBackwardCommand : ICommand
     
     public void Execute()
     {
-        _unit.targetPos = _transform.position + _direction;
+        _unit.UpdateCurrentTile(_transform.position + _direction);
         _unit.UpdateMovementPoints(-_moveCost);
         EventManager.TriggerEvent("PlayerWalk");
-        _unit.UpdateCurrentTile(_unit.targetPos);
     }
 
     public void Undo()
     {
-        _unit.targetPos = _transform.position - _direction;
+        _unit.UpdateCurrentTile(_transform.position - _direction);
         _unit.UpdateMovementPoints(_moveCost);
         EventManager.TriggerEvent("PlayerWalk");
-        _unit.UpdateCurrentTile(_unit.targetPos);
     }
 }

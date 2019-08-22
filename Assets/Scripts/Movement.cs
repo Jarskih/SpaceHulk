@@ -4,20 +4,37 @@ using UnityEngine.Tilemaps;
 
 public class Movement : MonoBehaviour, IMove
 {
+    [SerializeField] private float timeBetweenDecisions;
+    [SerializeField] private float timeSinceDecision = 0;
+    [SerializeField] private bool isAi;
     private Tilemap _tileMap;
     private Unit _unit;
     private TilemapController _tilemapController;
+    private SpaceHulkPlayerAgent _agent;
 
     void Start()
     {
         _tileMap = FindObjectOfType<Tilemap>();
         _tilemapController = FindObjectOfType<TilemapController>();
         _unit = GetComponent<Unit>();
+        _agent = GetComponent<SpaceHulkPlayerAgent>();
     }
 
     public void Act()
     {
-        ListenToInput();
+        if (isAi)
+        {
+            timeSinceDecision += Time.deltaTime;
+            if (timeSinceDecision > timeBetweenDecisions)
+            {
+                _agent.RequestDecision();
+                timeSinceDecision = 0;
+            }
+        }
+        else
+        {
+            ListenToInput();    
+        }
     }
 
     void ListenToInput()
@@ -39,9 +56,9 @@ public class Movement : MonoBehaviour, IMove
         }
     }
 
-    void CanMove(Vector3 direction)
+    public void CanMove(Vector3 direction)
     {
-        Vector3 pos = _unit.targetPos + direction;
+        Vector3 pos = _unit.TargetPos + direction;
         Vector3Int intPos = new Vector3Int(Mathf.FloorToInt(pos.x), Mathf.FloorToInt(pos.y), 0);
         
         // Check if tile is not a floor
@@ -113,7 +130,7 @@ public class Movement : MonoBehaviour, IMove
           return;
       }
          
-      Vector3 pos = _unit.targetPos + direction*2;
+      Vector3 pos = _unit.TargetPos + direction*2;
       Vector3Int intPos = new Vector3Int(Mathf.FloorToInt(pos.x), Mathf.FloorToInt(pos.y), (int)pos.z);
          
       // Check if a tile 2 steps away is walkable (jump over)
@@ -132,7 +149,7 @@ public class Movement : MonoBehaviour, IMove
         EventManager.TriggerEvent("Negative");
     }
 
-    void Turn(int angle)
+    public void Turn(int angle)
     {
         ICommand c = new TurnCommand(_unit, angle);
         CommandInvoker.AddCommand(c);

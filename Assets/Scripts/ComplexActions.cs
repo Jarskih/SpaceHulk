@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Tilemaps;
-using UnityEngine.XR.WSA.Input;
 
 public class ComplexActions : MonoBehaviour
 {
@@ -51,17 +49,17 @@ public class ComplexActions : MonoBehaviour
         
         // Left Side 
         {
-            var startingPos = _unit.targetPos + transform.right;
+            var startingPos = _unit.TargetPos + transform.right;
             FindEnemiesInLine(10, startingPos);
         }
         // Middle
         {
-            var startingPos = _unit.targetPos;
+            var startingPos = _unit.TargetPos;
             FindEnemiesInLine(10, startingPos);
         }
         // Right
         {
-            var startingPos = _unit.targetPos - transform.right;
+            var startingPos = _unit.TargetPos - transform.right;
             FindEnemiesInLine(10, startingPos);
         }
     }

@@ -76,10 +76,7 @@ public class TilemapController : MonoBehaviour
 
         if (tile == null)
         {
-            if (!IsFloor(newPos))
-            {
-                return true;
-            }
+            return true;
         }
 
         Unit unit = null;
@@ -124,6 +121,68 @@ public class TilemapController : MonoBehaviour
         return unit != null && unit.health > 0;
     }
 
+    public bool TileOccupiedByAlien(Vector3Int newPos, Unit currentUnit)
+    {
+        var tile = _tilemap.GetInstantiatedObject(newPos);
+
+        if (tile == null)
+        {
+            return true;
+        }
+
+        Unit unit = null;
+        var node = tile.GetComponent<Node>();
+
+        var enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        //var enemies = _turnSystem.enemies;
+        foreach (var enemy in enemies)
+        {
+            var u = enemy.GetComponent<Unit>();
+            // Dont check current player
+            if (u == currentUnit) continue;
+            if (u.currentNode == node)
+            {
+                if (u.health > 0)
+                {
+                    unit = u;
+                }
+            }
+        }
+
+        return unit != null && unit.health > 0;
+    }
+    
+    public bool TileOccupiedByMarine(Vector3Int newPos, Unit currentUnit)
+    {
+        var tile = _tilemap.GetInstantiatedObject(newPos);
+
+        if (tile == null)
+        {
+            return true;
+        }
+
+        Unit unit = null;
+        var node = tile.GetComponent<Node>();
+            
+        // var players = _turnSystem.players;
+        var players = GameObject.FindGameObjectsWithTag("Player");
+        foreach (var player in players)
+        {
+            var u = player.GetComponent<Unit>();
+            // Dont check current player
+            if (u == currentUnit) continue;
+            if (u.currentNode == node)
+            {
+                if (u.health > 0)
+                {
+                    unit = u;
+                }
+            }
+        }
+
+        return unit != null && unit.health > 0;
+    }
+
     //Add information about the surroundings:
     //0 = not valid tile or occupied by Alien unit
     //1 = free tile
@@ -133,9 +192,10 @@ public class TilemapController : MonoBehaviour
     {
         List<int> tileIndex = new List<int>();
         Vector3Int currentPos = new Vector3Int((int)pos.x, (int)pos.y, 0);
-        for (int x = -10; x < 10; x++)
+        
+        for (int x = -1; x < 1; x++)
         {
-            for (int y = -10; y < 10; y++)
+            for (int y = -1; y < 1; y++)
             {
                 var intPos = new Vector3Int(currentPos.x + x, currentPos.y + y, 0);
                 var tileObj = _tilemap.GetInstantiatedObject(intPos);
