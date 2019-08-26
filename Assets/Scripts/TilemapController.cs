@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Xml.Linq;
+using Interfaces;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -13,13 +14,14 @@ public class TilemapController : MonoBehaviour
         _tilemap = GetComponent<Tilemap>();
         _turnSystem = FindObjectOfType<TurnSystem>();
     }
-    
-    public bool IsFloor(Vector3Int intPos)
+
+    public bool IsWalkable(Vector3Int intPos, Tilemap tilemap)
     {
-        var colliderType = _tilemap.GetColliderType(intPos);
-        return (int)colliderType == (int)Tile.ColliderType.None;
+        GameObject tile = _tilemap.GetInstantiatedObject(intPos);
+        var walkable = tile.GetComponent<IWalkable>() != null;
+        return walkable;
     }
-    
+
     public Unit GetUnitFromTile(Vector3Int pos)
     {
         var tile = _tilemap.GetInstantiatedObject(pos);
@@ -30,21 +32,13 @@ public class TilemapController : MonoBehaviour
             return null;
         }
         
-        var node = tile.GetComponent<Node>();
-
-        if (node == null)
-        {
-            Debug.LogWarning("Node not found");
-            return null;
-        }
-        
         Unit unit = null;
         var enemies = GameObject.FindGameObjectsWithTag("Enemy");
         //var enemies = _turnSystem.enemies;
         foreach (var enemy in enemies)
         {
             var u = enemy.GetComponent<Unit>();
-            if (u.currentNode == node)
+            if (u.currentNode == tile)
             {
                 if (u.health > 0)
                 {
@@ -60,7 +54,7 @@ public class TilemapController : MonoBehaviour
             foreach (var player in players)
             {
                 var u = player.GetComponent<Unit>();
-                if (u.currentNode == node)
+                if (u.currentNode == tile)
                 {
                     unit = u;
                 }
@@ -80,7 +74,6 @@ public class TilemapController : MonoBehaviour
         }
 
         Unit unit = null;
-        var node = tile.GetComponent<Node>();
 
         var enemies = GameObject.FindGameObjectsWithTag("Enemy");
         //var enemies = _turnSystem.enemies;
@@ -89,7 +82,7 @@ public class TilemapController : MonoBehaviour
             var u = enemy.GetComponent<Unit>();
             // Dont check current player
             if (u == currentUnit) continue;
-            if (u.currentNode == node)
+            if (u.currentNode == tile)
             {
                 if (u.health > 0)
                 {
@@ -100,7 +93,6 @@ public class TilemapController : MonoBehaviour
 
         if (unit == null)
         {
-            
             // var players = _turnSystem.players;
             var players = GameObject.FindGameObjectsWithTag("Player");
             foreach (var player in players)
@@ -108,7 +100,7 @@ public class TilemapController : MonoBehaviour
                 var u = player.GetComponent<Unit>();
                 // Dont check current player
                 if (u == currentUnit) continue;
-                if (u.currentNode == node)
+                if (u.currentNode == tile)
                 {
                     if (u.health > 0)
                     {
@@ -131,7 +123,6 @@ public class TilemapController : MonoBehaviour
         }
 
         Unit unit = null;
-        var node = tile.GetComponent<Node>();
 
         var enemies = GameObject.FindGameObjectsWithTag("Enemy");
         //var enemies = _turnSystem.enemies;
@@ -140,7 +131,7 @@ public class TilemapController : MonoBehaviour
             var u = enemy.GetComponent<Unit>();
             // Dont check current player
             if (u == currentUnit) continue;
-            if (u.currentNode == node)
+            if (u.currentNode == tile)
             {
                 if (u.health > 0)
                 {
@@ -162,7 +153,6 @@ public class TilemapController : MonoBehaviour
         }
 
         Unit unit = null;
-        var node = tile.GetComponent<Node>();
             
         // var players = _turnSystem.players;
         var players = GameObject.FindGameObjectsWithTag("Player");
@@ -171,7 +161,7 @@ public class TilemapController : MonoBehaviour
             var u = player.GetComponent<Unit>();
             // Dont check current player
             if (u == currentUnit) continue;
-            if (u.currentNode == node)
+            if (u.currentNode == tile)
             {
                 if (u.health > 0)
                 {
@@ -267,5 +257,17 @@ public class TilemapController : MonoBehaviour
  
         // Set the colour.
         tilemap.SetColor(position, colour);
+    }
+
+    public bool IsDoor(Vector3Int intPos)
+    {
+       var door = _tilemap.GetInstantiatedObject(intPos).GetComponent<IOpenable>() as DoorNode;
+       return door != null;
+    }
+
+    public bool DoorIsOpen(Vector3Int intPos)
+    {
+        var door = _tilemap.GetInstantiatedObject(intPos).GetComponent<IOpenable>() as DoorNode;
+        return door != null && door.isOpen;
     }
 }

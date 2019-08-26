@@ -12,20 +12,36 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player Purple
       objectReference: {fileID: 0}
-    - target: {fileID: 624011989332150839, guid: 47118ab023c765a47b47bf9564bc525c,
-        type: 3}
-      propertyPath: m_TagString
-      value: Player
+    - target: {fileID: 1555154700, guid: 47118ab023c765a47b47bf9564bc525c, type: 3}
+      propertyPath: healthy.r
+      value: 0.84705883
       objectReference: {fileID: 0}
+    - target: {fileID: 1555154700, guid: 47118ab023c765a47b47bf9564bc525c, type: 3}
+      propertyPath: healthy.g
+      value: 0.18039216
+      objectReference: {fileID: 0}
+    - target: {fileID: 1555154700, guid: 47118ab023c765a47b47bf9564bc525c, type: 3}
+      propertyPath: healthy.b
+      value: 0.85490197
+      objectReference: {fileID: 0}
+    - target: {fileID: 1731015294, guid: 47118ab023c765a47b47bf9564bc525c, type: 3}
+      propertyPath: actionPoints
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1731015297, guid: 47118ab023c765a47b47bf9564bc525c, type: 3}
+      propertyPath: ammoUI
+      value: 
+      objectReference: {fileID: 11400000, guid: dd1a484df1997a848aa074460e7084bf,
+        type: 2}
     - target: {fileID: 624011989332150836, guid: 47118ab023c765a47b47bf9564bc525c,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.5
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 624011989332150836, guid: 47118ab023c765a47b47bf9564bc525c,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -4.5
+      value: -5
       objectReference: {fileID: 0}
     - target: {fileID: 624011989332150836, guid: 47118ab023c765a47b47bf9564bc525c,
         type: 3}
@@ -71,18 +87,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1555154700, guid: 47118ab023c765a47b47bf9564bc525c, type: 3}
-      propertyPath: healthy.r
-      value: 0.84705883
-      objectReference: {fileID: 0}
-    - target: {fileID: 1555154700, guid: 47118ab023c765a47b47bf9564bc525c, type: 3}
-      propertyPath: healthy.g
-      value: 0.18039216
-      objectReference: {fileID: 0}
-    - target: {fileID: 1555154700, guid: 47118ab023c765a47b47bf9564bc525c, type: 3}
-      propertyPath: healthy.b
-      value: 0.85490197
       objectReference: {fileID: 0}
     - target: {fileID: 624011990773320123, guid: 47118ab023c765a47b47bf9564bc525c,
         type: 3}

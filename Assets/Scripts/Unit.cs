@@ -7,19 +7,21 @@ using UnityEngine.Tilemaps;
 
 public class Unit : MonoBehaviour
 {
+    public IntVariable maxAP;
+    public UnitType unitType;
+    public SetActive setActive;
     public APrules APrules;
-    public int actionPoints;
-    public bool isDead;
     public StatsListVariable enemyTargets;
+    public int actionPoints;
+    public GameObject currentNode;
     private Vector3 _targetPos;
-    public Node currentNode;
     private ChangeSprite _changeSprite;
     private IMove _movement;
     private ComplexActions _complexActions;
     private int _health = 1;
     private Tilemap _tileMap;
     private TurnSystem _turnSystem;
-    public UnitType unitType;
+   
 
     public enum UnitType
     {
@@ -27,7 +29,7 @@ public class Unit : MonoBehaviour
         Marine
     }
 
-    [SerializeField] private UnitState currentState;
+    [SerializeField] private UnitState _currentState;
     public Vector3 startingPos;
 
     public enum UnitState
@@ -37,17 +39,19 @@ public class Unit : MonoBehaviour
     }
 
     public int health => _health;
+    public UnitState currentState => _currentState;
 
     public Vector3 TargetPos => currentNode ? currentNode.transform.position : transform.position;
 
 
     void Start()
     {
+        setActive = GetComponentInChildren<SetActive>();
         _changeSprite = GetComponentInChildren<ChangeSprite>();
         _turnSystem = FindObjectOfType<TurnSystem>();
         _movement = GetComponent<IMove>();
         _complexActions = GetComponent<ComplexActions>();
-        _tileMap = GameObject.FindObjectOfType<Tilemap>();
+        _tileMap = FindObjectOfType<Tilemap>();
         StartCoroutine(SaveCurrentTile());
         startingPos = transform.position;
 
@@ -58,6 +62,13 @@ public class Unit : MonoBehaviour
         transform.position = TargetPos;
         //transform.position = Vector3.MoveTowards(transform.position, TargetPos, 0.3f);
         //UpdateCurrentTile(targetPos);
+    }
+
+    public void ReturnToIdle()
+    {
+        _currentState = UnitState.Idle;
+        enemyTargets.list.Clear();
+        _complexActions?.ClearTargetingTiles();
     }
 
     private IEnumerator SaveCurrentTile()
@@ -71,7 +82,7 @@ public class Unit : MonoBehaviour
         var tileObject = _tileMap.GetInstantiatedObject(newPos);
         if (tileObject)
         {
-            currentNode = tileObject.GetComponent<Node>();
+            currentNode = tileObject;
         }
         else
         {
@@ -101,7 +112,7 @@ public class Unit : MonoBehaviour
 
     public void ChangeState(UnitState state)
     {
-        currentState = state;
+        _currentState = state;
     }
 
     public void Actions(IEnumerable<Unit> enemies)
@@ -109,35 +120,38 @@ public class Unit : MonoBehaviour
         // Wait for unit to move before allowing new orders
         if (Vector3.Distance(transform.position, TargetPos) > 0.05f) return;
         
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            if (actionPoints >= 2)
-            {
-                currentState = UnitState.Shooting;
-            }
-            else
-            {
-             EventManager.TriggerEvent("Negative");
-             currentState = UnitState.Idle;
-            }
-        }
-        
         if (currentState == UnitState.Idle)
         {
             _movement.Act();
+            _complexActions?.UpdateAmmo();
+            enemyTargets.list.Clear();
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                Aim();
+                return;
+            }
         }
 
         if (currentState == UnitState.Shooting)
         {
             _complexActions.Act(enemies);
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                Shoot();
+                return;
+            }
         }
     }
-
+    
     public void UpdateMovementPoints(int change)
     {
-        actionPoints = Mathf.Clamp(actionPoints + change, 0, 6);
+        actionPoints = Mathf.Clamp(actionPoints + change, 0, maxAP.Value);
     }
 
+    public void SetActionPoints(int AP)
+    {
+        actionPoints = Mathf.Clamp(AP, 0, maxAP.Value);
+    }
 
     public void TakeDamage(int damage)
     {
@@ -145,15 +159,17 @@ public class Unit : MonoBehaviour
         Mathf.Clamp(_health, 0, 5);
         if (unitType == UnitType.Marine)
         {
-            if (_health <= 0)
+            if (_health > 0) return;
+            
+            EventManager.TriggerEvent("Die");
+            foreach (var spriteRenderer in GetComponentsInChildren<SpriteRenderer>())
             {
-                EventManager.TriggerEvent("Wounded");
-                //isDead = true;
+                spriteRenderer.enabled = false;
             }
         }
         else
         {
-            EventManager.TriggerEvent("EnemyDied");
+            EventManager.TriggerEvent("EnemyDie");
             Destroy(gameObject);
         }
     }
@@ -168,5 +184,40 @@ public class Unit : MonoBehaviour
     {
         _health += value;
         Mathf.Clamp(_health, 0, 5);
+    }
+
+    public void Reload()
+    {
+        if (actionPoints >= APrules.reloading)
+        {
+            _complexActions.Reload();
+        }
+    }
+    
+    public void Aim()
+    {
+        if (actionPoints >= APrules.playerAttacking)
+        {
+            _complexActions.FindTargets();
+            _currentState = UnitState.Shooting;
+        }
+        else
+        {
+            EventManager.TriggerEvent("Negative");
+            _currentState = UnitState.Idle;
+        }
+    }
+
+    public WeaponStats GetWeaponStats()
+    {
+        return _complexActions.weaponStats;
+    }
+
+    public void Shoot()
+    {
+        if (currentState == UnitState.Shooting)
+        {
+            _complexActions.Shoot();
+        }
     }
 }

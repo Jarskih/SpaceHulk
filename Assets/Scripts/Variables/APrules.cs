@@ -9,4 +9,5 @@ public class APrules : ScriptableObject
     public int playerAttacking;
     public int enemyAttacking;
     public int turning;
+    public int reloading;
 }

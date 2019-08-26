@@ -7,6 +7,8 @@ public class DoubleMoveCommand : ICommand
     private readonly Unit _unit;
     private readonly Vector3 _direction;
     private readonly int _moveCost;
+    private DoorNode _door;
+
 
     public DoubleMoveCommand(Unit unit)
     {
@@ -21,6 +23,11 @@ public class DoubleMoveCommand : ICommand
         _unit.UpdateCurrentTile(_transform.position + _direction * 2);
         _unit.UpdateMovementPoints(-_moveCost);
         EventManager.TriggerEvent("PlayerWalk");
+        
+                
+        if (_unit.currentNode.GetComponent<IOpenable>() == null) return;
+        _door = _unit.currentNode.GetComponent<IOpenable>() as DoorNode;
+        if (_door != null) _door.Open();
     }
 
     public void Undo()
@@ -28,5 +35,10 @@ public class DoubleMoveCommand : ICommand
         _unit.UpdateCurrentTile(_transform.position - _direction * 2);
         _unit.UpdateMovementPoints(_moveCost);
         EventManager.TriggerEvent("PlayerWalk");
+
+        if (_door != null)
+        {
+            _door.Close();
+        }
     }
 }

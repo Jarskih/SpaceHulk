@@ -55,10 +55,10 @@ public class SpaceHulkAgent : Agent
         //}
 
         Vector3Int intPos = _unit.GetCurrentTilePos();
-        AddVectorObs(_tilemapController.IsFloor(intPos + Vector3Int.up));
-        AddVectorObs(_tilemapController.IsFloor(intPos - Vector3Int.up));
-        AddVectorObs(_tilemapController.IsFloor(intPos + Vector3Int.right));
-        AddVectorObs(_tilemapController.IsFloor(intPos - Vector3Int.right));
+        AddVectorObs(_tilemapController.IsWalkable(intPos + Vector3Int.up, _unit.GetTileMap()));
+        AddVectorObs(_tilemapController.IsWalkable(intPos - Vector3Int.up, _unit.GetTileMap()));
+        AddVectorObs(_tilemapController.IsWalkable(intPos + Vector3Int.right, _unit.GetTileMap()));
+        AddVectorObs(_tilemapController.IsWalkable(intPos - Vector3Int.right, _unit.GetTileMap()));
         AddVectorObs(_unit.TargetPos);
         
         
@@ -69,11 +69,16 @@ public class SpaceHulkAgent : Agent
         //AddVectorObs(ap);
 
             var players = GameObject.FindGameObjectsWithTag("Player");
+           _player = null;
             foreach (var player in players)
             {
+                var unit = player.GetComponent<Unit>();
+
+                if (unit.health <= 0) continue;
+                
                 if (_player == null)
                 {
-                    _player = player.GetComponent<Unit>();
+                     _player = unit;
                 }
                 else
                 {
@@ -118,7 +123,7 @@ public class SpaceHulkAgent : Agent
             // Check left
             Vector3 pos = _unit.TargetPos - transform.right;
             Vector3Int left = new Vector3Int(Mathf.RoundToInt(pos.x), (int)pos.y, 0);
-            if (!_tilemapController.IsFloor(left))
+            if (!_tilemapController.IsWalkable(left, _unit.GetTileMap()))
             {
                 SetActionMask(Left);
             }
@@ -138,7 +143,7 @@ public class SpaceHulkAgent : Agent
             // Check right
             Vector3 pos = _unit.TargetPos + transform.right;
             Vector3Int right = new Vector3Int(Mathf.RoundToInt(pos.x), (int)pos.y, 0);
-            if (!_tilemapController.IsFloor(right))
+            if (!_tilemapController.IsWalkable(right, _unit.GetTileMap()))
             {
                 SetActionMask(Right);
             }
@@ -158,7 +163,7 @@ public class SpaceHulkAgent : Agent
             // Check up
             Vector3 pos = _unit.TargetPos + transform.up;
             Vector3Int up = new Vector3Int(Mathf.RoundToInt(pos.x), (int)pos.y, 0);
-            if (!_tilemapController.IsFloor(up))
+            if (!_tilemapController.IsWalkable(up, _unit.GetTileMap()))
             {
                 SetActionMask(Up);
             }
@@ -178,7 +183,7 @@ public class SpaceHulkAgent : Agent
             // Check down
             Vector3 pos = _unit.TargetPos - transform.up;
             Vector3Int down = new Vector3Int(Mathf.RoundToInt(pos.x), (int)pos.y, 0);
-            if (!_tilemapController.IsFloor(down))
+            if (!_tilemapController.IsWalkable(down, _unit.GetTileMap()))
             {
                 SetActionMask(Down);
             }
@@ -208,7 +213,7 @@ public class SpaceHulkAgent : Agent
                //Debug.Log("Right");
                pos = _unit.TargetPos + transform.right;
                Vector3Int right = new Vector3Int(Mathf.RoundToInt(pos.x), (int)pos.y, 0);
-               if (_tilemapController.IsFloor(right))
+               if (_tilemapController.IsWalkable(right, _unit.GetTileMap()))
                {
                    _movement.CanMove(transform.right);
                }
@@ -222,7 +227,7 @@ public class SpaceHulkAgent : Agent
                //Debug.Log("Left");
                pos = _unit.TargetPos - transform.right;
                Vector3Int left = new Vector3Int(Mathf.RoundToInt(pos.x), (int)pos.y, 0);
-               if (_tilemapController.IsFloor(left))
+               if (_tilemapController.IsWalkable(left, _unit.GetTileMap()))
                {
                    _movement.CanMove(-transform.right);
                }
@@ -237,7 +242,7 @@ public class SpaceHulkAgent : Agent
                //Debug.Log("Up");
                pos = _unit.TargetPos + transform.up;
                Vector3Int up = new Vector3Int(Mathf.RoundToInt(pos.x), (int)pos.y, 0);
-               if (_tilemapController.IsFloor(up))
+               if (_tilemapController.IsWalkable(up, _unit.GetTileMap()))
                {
                    _movement.CanMove(transform.up);
                }
@@ -251,7 +256,7 @@ public class SpaceHulkAgent : Agent
                //Debug.Log("Down");
                pos = _unit.TargetPos - transform.up;
                Vector3Int down = new Vector3Int(Mathf.RoundToInt(pos.x), (int)pos.y, 0);
-               if (_tilemapController.IsFloor(down))
+               if (_tilemapController.IsWalkable(down, _unit.GetTileMap()))
                {
                    _movement.CanMove(-transform.up);
                }
@@ -270,7 +275,7 @@ public class SpaceHulkAgent : Agent
             _academy.playersKilled++;
             SetReward(1f);
             Done();
-        } else if (_unit.isDead)
+        } else if (_unit.health <= 0)
         {
             Done();
         }

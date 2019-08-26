@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: APrules
   m_EditorClassIdentifier: 
   moving: 1
-  playerAttacking: 2
+  playerAttacking: 1
   enemyAttacking: 6
   turning: 1
+  reloading: 1

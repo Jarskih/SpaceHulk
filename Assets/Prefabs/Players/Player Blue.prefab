@@ -12,6 +12,23 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player Blue
       objectReference: {fileID: 0}
+    - target: {fileID: 1731015294, guid: 47118ab023c765a47b47bf9564bc525c, type: 3}
+      propertyPath: actionPoints
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1731015294, guid: 47118ab023c765a47b47bf9564bc525c, type: 3}
+      propertyPath: startingPos.x
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1731015294, guid: 47118ab023c765a47b47bf9564bc525c, type: 3}
+      propertyPath: startingPos.y
+      value: -5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1731015297, guid: 47118ab023c765a47b47bf9564bc525c, type: 3}
+      propertyPath: ammoUI
+      value: 
+      objectReference: {fileID: 11400000, guid: dd1a484df1997a848aa074460e7084bf,
+        type: 2}
     - target: {fileID: 624011989332150836, guid: 47118ab023c765a47b47bf9564bc525c,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -20,7 +37,7 @@ PrefabInstance:
     - target: {fileID: 624011989332150836, guid: 47118ab023c765a47b47bf9564bc525c,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -5
+      value: -4
       objectReference: {fileID: 0}
     - target: {fileID: 624011989332150836, guid: 47118ab023c765a47b47bf9564bc525c,
         type: 3}

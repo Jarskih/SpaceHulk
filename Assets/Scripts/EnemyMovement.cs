@@ -72,10 +72,10 @@ public class EnemyMovement : MonoBehaviour, IMove
     public void CanMove(Vector3 direction)
     {
         Vector3 pos = _unit.TargetPos + direction;
-        Vector3Int intPos = new Vector3Int(Mathf.FloorToInt(pos.x), Mathf.FloorToInt(pos.y), 0);
+        Vector3Int intPos = new Vector3Int(Mathf.RoundToInt(pos.x), Mathf.RoundToInt(pos.y), 0);
 
         // Check if tile is not a floor
-        if (!_tilemapController.IsFloor(intPos))
+        if (!_tilemapController.IsWalkable(intPos, _unit.GetTileMap()))
         {
             return;
         }
@@ -121,7 +121,8 @@ public class EnemyMovement : MonoBehaviour, IMove
        
         // Check if tile is walkable
         var colliderType = _tileMap.GetColliderType(intPos);
-        if (colliderType != Tile.ColliderType.None)
+        var door = _tileMap.GetInstantiatedObject(intPos).GetComponent<IOpenable>() as DoorNode;
+        if (colliderType == Tile.ColliderType.Grid && door == null)
         {
             Debug.Log("Tile not walkable");
             return;
@@ -140,11 +141,11 @@ public class EnemyMovement : MonoBehaviour, IMove
         }
          
         Vector3 pos = _unit.TargetPos + direction*2;
-        Vector3Int intPos = new Vector3Int(Mathf.FloorToInt(pos.x), Mathf.FloorToInt(pos.y), (int)pos.z);
+        Vector3Int intPos = new Vector3Int(Mathf.RoundToInt(pos.x), Mathf.RoundToInt(pos.y), (int)pos.z);
          
         // Check if a tile 2 steps away is walkable (jump over)
         var colliderType = _tileMap.GetColliderType(intPos);
-        if (colliderType == Tile.ColliderType.None)
+        if (colliderType == Tile.ColliderType.None || _tileMap.GetInstantiatedObject(intPos).GetComponent<IOpenable>() != null)
         {
             // If tile is not occupied move to new tile
             if (!_tilemapController.CheckIfTileOccupied(intPos, _unit))

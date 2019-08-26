@@ -31,10 +31,10 @@ public class SpaceHulkPlayerAgent : Agent
     public override void CollectObservations()
     {
         Vector3Int intPos = _unit.GetCurrentTilePos();
-        AddVectorObs(_tilemapController.IsFloor(intPos + Vector3Int.up));
-        AddVectorObs(_tilemapController.IsFloor(intPos - Vector3Int.up));
-        AddVectorObs(_tilemapController.IsFloor(intPos + Vector3Int.right));
-        AddVectorObs(_tilemapController.IsFloor(intPos - Vector3Int.right));
+        AddVectorObs(_tilemapController.IsWalkable(intPos + Vector3Int.up, _unit.GetTileMap()));
+        AddVectorObs(_tilemapController.IsWalkable(intPos - Vector3Int.up, _unit.GetTileMap()));
+        AddVectorObs(_tilemapController.IsWalkable(intPos + Vector3Int.right, _unit.GetTileMap()));
+        AddVectorObs(_tilemapController.IsWalkable(intPos - Vector3Int.right, _unit.GetTileMap()));
         AddVectorObs(_unit.TargetPos);
         AddVectorObs(_unit.transform.up);
     }
@@ -50,7 +50,7 @@ public class SpaceHulkPlayerAgent : Agent
             // Check up
             Vector3 pos = _unit.TargetPos + transform.up;
             Vector3Int up = new Vector3Int(Mathf.RoundToInt(pos.x), (int)pos.y, 0);
-            if (!_tilemapController.IsFloor(up))
+            if (!_tilemapController.IsWalkable(up, _unit.GetTileMap()))
             {
                 SetActionMask(Forward);
             }
@@ -70,7 +70,7 @@ public class SpaceHulkPlayerAgent : Agent
             // Check down
             Vector3 pos = _unit.TargetPos - transform.up;
             Vector3Int down = new Vector3Int(Mathf.RoundToInt(pos.x), (int)pos.y, 0);
-            if (!_tilemapController.IsFloor(down))
+            if (!_tilemapController.IsWalkable(down, _unit.GetTileMap()))
             {
                 SetActionMask(Backward);
             }

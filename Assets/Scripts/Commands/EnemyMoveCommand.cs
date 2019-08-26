@@ -7,6 +7,7 @@ public class EnemyMoveCommand : ICommand
     private readonly Unit _unit;
     private readonly Vector3 _direction;
     private readonly int _moveCost;
+    private DoorNode _door;
 
     public EnemyMoveCommand(Vector3 direction, Unit unit)
     {
@@ -21,6 +22,10 @@ public class EnemyMoveCommand : ICommand
         _unit.UpdateCurrentTile(_transform.position + _direction);
         _unit.UpdateMovementPoints(-_moveCost);
         EventManager.TriggerEvent("EnemyMove");
+        
+        if (_unit.currentNode.GetComponent<IOpenable>() == null) return;
+        _door = _unit.currentNode.GetComponent<IOpenable>() as DoorNode;
+        if (_door != null) _door.Open();
     }
 
     public void Undo()
@@ -28,5 +33,10 @@ public class EnemyMoveCommand : ICommand
         _unit.UpdateCurrentTile(_transform.position - _direction);
         _unit.UpdateMovementPoints(_moveCost);
         EventManager.TriggerEvent("EnemyMove");
+        
+        if (_door != null)
+        {
+            _door.Close();
+        }
     }
 }

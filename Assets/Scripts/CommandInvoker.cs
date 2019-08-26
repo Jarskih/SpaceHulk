@@ -62,9 +62,41 @@ public class CommandInvoker : MonoBehaviour
         }
     }
 
+    public void Undo()
+    {
+        if (counter > 0) {
+            counter--;
+            currentPlayerHistory[counter].Undo();
+        }
+    }
+
+    public void Redo()
+    {
+        if (counter < currentPlayerHistory.Count)
+        {
+            currentPlayerHistory[counter].Execute();
+            counter++;
+        }
+    }
+
     public static void ResetHistory()
     {
         counter = 0;
         currentPlayerHistory.Clear();
+    }
+
+    public static int GetPlayerHistory()
+    {
+        return currentPlayerHistory.Count;
+    }
+
+    public static bool CanUndo()
+    {
+        return currentPlayerHistory.Count > 0 && counter > 0;
+    }
+
+    public static bool CanRedo()
+    {
+        return currentPlayerHistory.Count > 0 && counter < currentPlayerHistory.Count;
     }
 }

@@ -21,10 +21,6 @@ public class AvatarColor : MonoBehaviour
         {
             sprite.color = wounded;
         }
-        else
-        {
-            sprite.color = healthy;
-        }
     }
 
     void Update()
