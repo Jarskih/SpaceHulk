@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class IsUnitAiming : MonoBehaviour
 {
     public Button aimButton;
-    public Button shootButton;
+    public GameObject aimPanel;
 
     private TurnSystem _turnSystem;
     // Start is called before the first frame update
@@ -21,13 +21,13 @@ public class IsUnitAiming : MonoBehaviour
         var unitState = _turnSystem.activeUnit.currentState;
         if (unitState == Unit.UnitState.Shooting)
         {
-            shootButton.gameObject.SetActive(true);
             aimButton.gameObject.SetActive(false);
+            aimPanel.SetActive(true);
         }
         else
         {
             aimButton.gameObject.SetActive(true);
-            shootButton.gameObject.SetActive(false);
+            aimPanel.SetActive(false);
         }
     }
 }
