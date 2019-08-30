@@ -12,16 +12,16 @@ public class EnemyMovement : MonoBehaviour, IMove
     private Unit _unit;
     private SpaceHulkAgent _agent;
     [SerializeField] private bool isTraining;
-    
-    void Start()
+
+    private void Start()
     {
         _unit = GetComponent<Unit>();
-        _tileMap = GameObject.FindObjectOfType<Tilemap>();
+        _tileMap = FindObjectOfType<Tilemap>();
         _tilemapController = FindObjectOfType<TilemapController>();
         _agent = GetComponent<SpaceHulkAgent>();
     }
 
-    void Update()
+    private void Update()
     {
 
         if (isTraining)
@@ -29,7 +29,7 @@ public class EnemyMovement : MonoBehaviour, IMove
             Act();
         }
     }
-   
+
     public void Act()
     {
         if (isAi)
@@ -46,26 +46,27 @@ public class EnemyMovement : MonoBehaviour, IMove
             ListenToInput();
         }
     }
-    void ListenToInput()
+
+    private void ListenToInput()
     {
-        if(Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
+        if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
         {
-            //CanMove(transform.up);
+            CanMove(transform.up);
         }
-        
-        if(Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
+
+        if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
         {
-            //CanMove(-transform.up);
+            CanMove(-transform.up);
         }
-        
-        if(Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
+
+        if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
         {
-            //CanMove(-transform.right);
+            CanMove(-transform.right);
         }
-        
-        if(Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
+
+        if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
         {
-            //CanMove(transform.right);
+            CanMove(transform.right);
         }
     }
 
@@ -79,12 +80,12 @@ public class EnemyMovement : MonoBehaviour, IMove
         {
             return;
         }
-        
+
         // If tile is occupied by a unit
         if (_tilemapController.CheckIfTileOccupied(intPos, _unit))
         {
             // if unit type is not friendly unit attack it
-            if (_tilemapController.GetUnitFromTile(intPos)?.unitType != _unit.unitType)
+            if (_tilemapController.TileOccupiedByMarine(intPos, _unit))
             {
                 if (isTraining)
                 {
@@ -98,8 +99,8 @@ public class EnemyMovement : MonoBehaviour, IMove
                     return;
                 }
             }
-            
-            if (direction == Vector3.up)
+
+            if (_tilemapController.TileOccupiedByAlien(intPos, _unit))
             {
                 MoveTwoTiles(direction);
                 return;
@@ -108,17 +109,17 @@ public class EnemyMovement : MonoBehaviour, IMove
 
         MoveOneTile(direction, intPos);
     }
-    
+
     private void AttackUnit(Vector3Int intPos)
     {
         var enemy = _tilemapController.GetUnitFromTile(intPos);
         ICommand c = new MeleeAttackCommand(_unit, enemy);
         CommandInvoker.AddCommand(c);
     }
-    
-    void MoveOneTile(Vector3 direction, Vector3Int intPos)
+
+    private void MoveOneTile(Vector3 direction, Vector3Int intPos)
     {
-       
+
         // Check if tile is walkable
         var colliderType = _tileMap.GetColliderType(intPos);
         var door = _tileMap.GetInstantiatedObject(intPos).GetComponent<IOpenable>() as DoorNode;
@@ -127,25 +128,24 @@ public class EnemyMovement : MonoBehaviour, IMove
             Debug.Log("Tile not walkable");
             return;
         }
-        
+
         ICommand c = new EnemyMoveCommand(direction, _unit);
         CommandInvoker.AddCommand(c);
     }
 
-    void MoveTwoTiles(Vector3 direction)
+    private void MoveTwoTiles(Vector3 direction)
     {
-        if (_unit.actionPoints <= 2)
+        if (_unit.actionPoints < 2)
         {
             Debug.Log("Not enough AP to jump over");
             return;
         }
-         
-        Vector3 pos = _unit.TargetPos + direction*2;
+
+        Vector3 pos = _unit.TargetPos + direction * 2;
         Vector3Int intPos = new Vector3Int(Mathf.RoundToInt(pos.x), Mathf.RoundToInt(pos.y), (int)pos.z);
-         
+
         // Check if a tile 2 steps away is walkable (jump over)
-        var colliderType = _tileMap.GetColliderType(intPos);
-        if (colliderType == Tile.ColliderType.None || _tileMap.GetInstantiatedObject(intPos).GetComponent<IOpenable>() != null)
+        if (_tilemapController.IsWalkable(intPos, _tileMap) || _tileMap.GetInstantiatedObject(intPos).GetComponent<IOpenable>() != null)
         {
             // If tile is not occupied move to new tile
             if (!_tilemapController.CheckIfTileOccupied(intPos, _unit))
@@ -153,9 +153,15 @@ public class EnemyMovement : MonoBehaviour, IMove
                 ICommand c = new EnemyDoubleMoveCommand(direction, _unit);
                 CommandInvoker.AddCommand(c);
             }
+            else
+            {
+                Debug.Log("EnemyMove: Someone on the way");
+            }
         }
-
-        Debug.Log("EnemyMove: Someone on the way");
+        else
+        {
+            Debug.Log("EnemyMove: Not walkable");
+        }
     }
 
     /*

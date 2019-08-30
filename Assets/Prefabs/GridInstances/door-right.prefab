@@ -58,6 +58,7 @@ SpriteRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -67,9 +68,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingLayerID: 1106928901
+  m_SortingLayer: -1
+  m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: 5d2c417c2c6eda349ba1568f54ee0250, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -93,10 +94,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 110717c617b7474408d804c22c65c232, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitOnNode: {fileID: 0}
-  walkable: 1
   doorClose: {fileID: 11400000, guid: a16932aad5fca2b48ba7ef34347c9f19, type: 2}
   doorOpen: {fileID: 11400000, guid: bdbbf19b2b580f44bb482c1d7a1dcc86, type: 2}
+  unitOnNode: {fileID: 0}
 --- !u!82 &5195176614404918453
 AudioSource:
   m_ObjectHideFlags: 0

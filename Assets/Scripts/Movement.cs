@@ -12,7 +12,7 @@ public class Movement : MonoBehaviour, IMove
     private TilemapController _tilemapController;
     private SpaceHulkPlayerAgent _agent;
 
-    void Start()
+    private void Start()
     {
         _tileMap = FindObjectOfType<Tilemap>();
         _tilemapController = FindObjectOfType<TilemapController>();
@@ -37,20 +37,22 @@ public class Movement : MonoBehaviour, IMove
         }
     }
 
-    void ListenToInput()
+    private void ListenToInput()
     {
         if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
         {
             CanMove(transform.up);
         }
         else if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.S))
-        {     
+        {
             CanMove(-transform.up);
-        } else if(Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
+        }
+        else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
         {
             Turn(90);
-            
-        } else if(Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
+
+        }
+        else if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
         {
             Turn(-90);
         }
@@ -60,30 +62,30 @@ public class Movement : MonoBehaviour, IMove
     {
         Vector3 pos = _unit.TargetPos + direction;
         Vector3Int intPos = new Vector3Int(Mathf.RoundToInt(pos.x), Mathf.RoundToInt(pos.y), 0);
-        
+
         // Check if tile is not a floor
         if (!_tilemapController.IsWalkable(intPos, _unit.GetTileMap()))
         {
             return;
         }
-        
-       // If tile is occupied by a unit move two tiles
-       if (_tilemapController.CheckIfTileOccupied(intPos, _unit))
-       {
-           // if unit type is not friendly unit don't allow move through
-           if (_tilemapController.GetUnitFromTile(intPos).unitType != _unit.unitType)
-           {
-               return;
-           }
-           
-           if (direction == transform.up)
-           {
-               MoveTwoTiles(direction);
-               return;
-           }
-       }
 
-       MoveOneTile(direction, intPos);
+        // If tile is occupied by a unit move two tiles
+        if (_tilemapController.CheckIfTileOccupied(intPos, _unit))
+        {
+            // if unit type is not friendly unit don't allow move through
+            if (_tilemapController.GetUnitFromTile(intPos).unitType != _unit.unitType)
+            {
+                return;
+            }
+
+            if (direction == transform.up)
+            {
+                MoveTwoTiles(direction);
+                return;
+            }
+            return;
+        }
+        MoveOneTile(direction, intPos);
     }
 
     private void AttackUnit(Vector3Int intPos)
@@ -93,9 +95,9 @@ public class Movement : MonoBehaviour, IMove
         CommandInvoker.AddCommand(c);
     }
 
-    void MoveOneTile(Vector3 direction, Vector3Int intPos)
+    private void MoveOneTile(Vector3 direction, Vector3Int intPos)
     {
-       
+
         // Check if tile is walkable
         var colliderType = _tileMap.GetColliderType(intPos);
         var door = _tileMap.GetInstantiatedObject(intPos).GetComponent<IOpenable>() as DoorNode;
@@ -111,7 +113,7 @@ public class Movement : MonoBehaviour, IMove
             ICommand c = new MoveForwardCommand(_unit);
             CommandInvoker.AddCommand(c);
         }
-        else if(direction == -transform.up)
+        else if (direction == -transform.up)
         {
             if (_unit.actionPoints >= 2)
             {
@@ -125,30 +127,30 @@ public class Movement : MonoBehaviour, IMove
         }
     }
 
-    void MoveTwoTiles(Vector3 direction)
+    private void MoveTwoTiles(Vector3 direction)
     {
-      if (_unit.actionPoints < 2)
-      {
-          Debug.Log("Not enough AP to jump over");
-          EventManager.TriggerEvent("Negative");
-          return;
-      }
-         
-      Vector3 pos = _unit.TargetPos + direction*2;
-      Vector3Int intPos = new Vector3Int(Mathf.RoundToInt(pos.x), Mathf.RoundToInt(pos.y), (int)pos.z);
-         
-      // Check if a tile 2 steps away is walkable (jump over)
-      var colliderType = _tileMap.GetColliderType(intPos);
-      if (colliderType == Tile.ColliderType.None || _tileMap.GetInstantiatedObject(intPos).GetComponent<IOpenable>() != null)
-      {
-          // if tile is not occupied by unit allow movement
-          if (!_tilemapController.CheckIfTileOccupied(intPos, _unit))
-          {
-              ICommand c = new DoubleMoveCommand(_unit);
-              CommandInvoker.AddCommand(c);
-              return;
-          }
-      }
+        if (_unit.actionPoints < 2)
+        {
+            Debug.Log("Not enough AP to jump over");
+            EventManager.TriggerEvent("Negative");
+            return;
+        }
+
+        Vector3 pos = _unit.TargetPos + direction * 2;
+        Vector3Int intPos = new Vector3Int(Mathf.RoundToInt(pos.x), Mathf.RoundToInt(pos.y), (int)pos.z);
+
+        // Check if a tile 2 steps away is walkable (jump over)
+        var colliderType = _tileMap.GetColliderType(intPos);
+        if (colliderType == Tile.ColliderType.None || _tileMap.GetInstantiatedObject(intPos).GetComponent<IOpenable>() != null)
+        {
+            // if tile is not occupied by unit allow movement
+            if (!_tilemapController.CheckIfTileOccupied(intPos, _unit))
+            {
+                ICommand c = new DoubleMoveCommand(_unit);
+                CommandInvoker.AddCommand(c);
+                return;
+            }
+        }
 
         Debug.Log("Someone on the way");
         EventManager.TriggerEvent("Negative");

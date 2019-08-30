@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using Barracuda;
-using UnityEditor;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
@@ -16,7 +13,7 @@ public class TurnSystem : MonoBehaviour
     [SerializeField] private int maxEnemiesSpawnedPerTurn;
     [SerializeField] private List<Unit> _enemies;
     [SerializeField] private List<Unit> _players;
-    [SerializeField] private int activePlayerIndex = 0;
+    [SerializeField] private int activeUnitIndex = 0;
     [SerializeField] private int _activeEnemyIndex = 0;
     [SerializeField] private Phases currentPhase;
     private SetPlayerActive _setPlayerActive;
@@ -28,7 +25,7 @@ public class TurnSystem : MonoBehaviour
     private bool spawnedPlayers;
     [SerializeField]
     private int maxEnemies = 12;
-    
+
     // Timer for limiting AI enemy turn time
     private float _enemyTimer = 0;
     [SerializeField] private float _enemyMaxTime;
@@ -54,18 +51,18 @@ public class TurnSystem : MonoBehaviour
     public Unit activeUnit => _activeUnit;
 
     // Register listeners
-    void OnEnable()
+    private void OnEnable()
     {
         EventManager.StartListening("EnemyDied", UpdateEnemyList);
     }
 
-    void OnDisable()
+    private void OnDisable()
     {
         EventManager.StopListening("EnemyDied", UpdateEnemyList);
     }
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         _setPlayerActive = GetComponent<SetPlayerActive>();
         _objective = GameObject.FindWithTag("Objective");
@@ -79,8 +76,8 @@ public class TurnSystem : MonoBehaviour
         _tilemap = FindObjectOfType<Tilemap>();
         // First phase
         currentPhase = Phases.FirstMovement;
-        _activeUnit = _players[0]; 
-               
+        _activeUnit = _players[0];
+
         // Spawn enemies
         _spawnEnemies = GetComponent<SpawnEnemies>();
         _spawnEnemies.Spawn(GetEnemiesSpawned());
@@ -88,7 +85,7 @@ public class TurnSystem : MonoBehaviour
         UpdateEnemyList();
 
         UpdateMovementPoints();
-        
+
         // Choose first enemy
         CommandInvoker.ResetHistory();
     }
@@ -102,68 +99,79 @@ public class TurnSystem : MonoBehaviour
     {
         if ((currentPhase == Phases.FirstMovement) && _activeUnit.unitType == Unit.UnitType.Marine)
         {
-           return _activeUnit.GetComponent<AvatarColor>().healthy;
+            return _activeUnit.GetComponent<AvatarColor>().healthy;
         }
 
         return enemyColor;
     }
 
-    bool AllPlayersActed()
+    private bool AllPlayersActed()
     {
         foreach (var player in players)
         {
-            if (player.actionPoints > 0) return false;
+            if (player.actionPoints > 0)
+            {
+                return false;
+            }
         }
         return true;
     }
 
-    void SetNextPlayer()
+    private void SetNextUnit()
     {
         _activeUnit.ReturnToIdle();
         CommandInvoker.ResetHistory();
-        activePlayerIndex = activePlayerIndex + 1;
-        
-        if (activePlayerIndex >= _players.Count)
+        activeUnitIndex = activeUnitIndex + 1;
+
+        if (activeUnitIndex >= _players.Count)
         {
             if (AllPlayersActed())
             {
                 SetNextPhase();
-                activePlayerIndex = 0;
+                activeUnitIndex = 0;
                 EventManager.TriggerEvent("EnemyTurn");
             }
             else
             {
-                activePlayerIndex = -1;
-                SetNextPlayer();
+                activeUnitIndex = -1;
+                SetNextUnit();
             }
             //Debug.Log("All players moved, setting new phase: " + currentPhase);
         }
         else
         {
             //Debug.Log("Next player turn");
-            _activeUnit = _players[activePlayerIndex];
+            _activeUnit = _players[activeUnitIndex];
             if (_activeUnit.health <= 0)
             {
-                SetNextPlayer();
+                SetNextUnit();
             }
-            
+
             if (AllPlayersActed())
             {
                 SetNextPhase();
-                activePlayerIndex = 0;
+                activeUnitIndex = 0;
                 EventManager.TriggerEvent("EnemyTurn");
             }
             else
             {
                 if (_activeUnit.actionPoints <= 0)
                 {
-                    SetNextPlayer();
+                    SetNextUnit();
                 }
             }
         }
+
+        int counter = 1;
+        if (counter > 5)
+        {
+            SetNextPhase();
+            activeUnitIndex = 0;
+            EventManager.TriggerEvent("EnemyTurn");
+        }
     }
 
-    void NextEnemy()
+    private void NextEnemy()
     {
         _activeEnemyIndex = _activeEnemyIndex + 1;
         if (_activeEnemyIndex >= _enemies.Count)
@@ -179,7 +187,7 @@ public class TurnSystem : MonoBehaviour
         }
     }
 
-    void SetNextPhase()
+    public void SetNextPhase()
     {
         activeUnit.ReturnToIdle();
         if (currentPhase == Phases.Resolution)
@@ -193,7 +201,8 @@ public class TurnSystem : MonoBehaviour
 
         UpdateMovementPoints();
     }
-    void UpdateMovementPoints()
+
+    private void UpdateMovementPoints()
     {
         if (currentPhase == Phases.FirstMovement)
         {
@@ -210,20 +219,14 @@ public class TurnSystem : MonoBehaviour
         {
             foreach (var enemy in _enemies)
             {
-                var ap = GetEnemyAP();
-                enemy.SetActionPoints(ap);
+                enemy.SetActionPoints(_activeUnit.unitStats.maxAP);
             }
         }
     }
 
-    int GetEnemyAP()
+    private int GetEnemiesSpawned()
     {
-        return Random.Range(minEnemyAPperTurn, maxEnemyAPperTurn+1);
-    }
-
-    int GetEnemiesSpawned()
-    {
-        return Random.Range(minEnemiesSpawnedPerTurn, maxEnemiesSpawnedPerTurn+1);
+        return Random.Range(minEnemiesSpawnedPerTurn, maxEnemiesSpawnedPerTurn + 1);
     }
 
     public void UpdateEnemyList()
@@ -236,7 +239,7 @@ public class TurnSystem : MonoBehaviour
         {
             return;
         }
-        
+
         foreach (var enemy in enemyGameObjects)
         {
             _enemies.Add(enemy.GetComponent<Unit>());
@@ -247,22 +250,22 @@ public class TurnSystem : MonoBehaviour
     {
         _players.Clear();
         var playerObjects = GameObject.FindGameObjectsWithTag("Player");
-        
+
         if (playerObjects.Length == 0)
         {
             return;
         }
-        
+
         foreach (var player in playerObjects)
         {
             _players.Add(player.GetComponent<Unit>());
         }
     }
 
-    void UpdateUI()
+    private void UpdateUI()
     {
         _cameraFollow.SetTarget(_activeUnit.TargetPos);
-        
+
         if (currentPhase == Phases.FirstMovement)
         {
             if (_activeUnit)
@@ -281,7 +284,7 @@ public class TurnSystem : MonoBehaviour
         }
     }
 
-    void FollowPlayer()
+    private void FollowPlayer()
     {
         if (_activeUnit != null)
         {
@@ -290,7 +293,7 @@ public class TurnSystem : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         TurnManager();
         UpdateUI();
@@ -303,56 +306,39 @@ public class TurnSystem : MonoBehaviour
     {
         if (currentPhase == Phases.FirstMovement)
         {
-            SetNextPlayer();
+            SetNextUnit();
         }
     }
 
-    
-    // UI
-    public void Reload()
+    private void TurnManager()
     {
-        _activeUnit.Reload();
-    }
-
-    public void Aim()
-    {
-        _activeUnit.Aim();
-    }
-
-    public void EndTurn()
-    {
-        SetNextPhase();
-    }
-
-    public void Shoot()
-    {
-        _activeUnit.Shoot();
-    }
-
-    void TurnManager()
-    {       
         switch (currentPhase)
         {
-            case(Phases.FirstMovement):
-                if(Input.GetKeyDown(KeyCode.Tab))
+            case (Phases.FirstMovement):
+                if (Input.GetKeyDown(KeyCode.Tab))
                 {
-                    SetNextPlayer();
+                    SetNextUnit();
                 }
-                
+
+                if (_activeUnit.health <= 0)
+                {
+                    SetNextUnit();
+                }
+
                 if (_activeUnit == null || _activeUnit.unitType == Unit.UnitType.Alien)
                 {
                     if (_players.Count > 0)
                     {
-                        activePlayerIndex = -1;
-                        SetNextPlayer();
+                        activeUnitIndex = -1;
+                        SetNextUnit();
                     }
                     else
                     {
                         break;
                     }
                 }
-                
-                if (_activeUnit.GetComponent<Unit>().health > 0 && _activeUnit.actionPoints > 0)
+
+                if (_activeUnit.actionPoints > 0)
                 {
                     _activeUnit.Actions(_enemies);
                 }
@@ -360,7 +346,7 @@ public class TurnSystem : MonoBehaviour
                 {
                     _activeUnit.actionPoints = 0;
                 }
-                
+
                 /*
                 if (_activeUnit.actionPoints <= 0)
                 {
@@ -368,8 +354,8 @@ public class TurnSystem : MonoBehaviour
                 }
                 */
                 break;
-            case(Phases.EnemyMovement):
-                
+            case (Phases.EnemyMovement):
+
                 _enemyTimer += Time.deltaTime;
 
                 if (_enemyTimer > _enemyMaxTime)
@@ -377,7 +363,7 @@ public class TurnSystem : MonoBehaviour
                     NextEnemy();
                     _enemyTimer = 0;
                 }
-                
+
                 if (_activeUnit == null || _activeUnit.unitType == Unit.UnitType.Marine)
                 {
                     if (_enemies.Count > 0)
@@ -390,7 +376,7 @@ public class TurnSystem : MonoBehaviour
                         break;
                     }
                 }
-                
+
                 if (_activeUnit.GetComponent<Unit>().health > 0)
                 {
                     _activeUnit.Movement();
@@ -399,14 +385,14 @@ public class TurnSystem : MonoBehaviour
                 {
                     _activeUnit.actionPoints = 0;
                 }
-                
+
                 if (_activeUnit.actionPoints <= 0)
                 {
                     NextEnemy();
                 }
                 break;
-            case(Phases.EnemySpawn):
-                if (maxEnemies >_enemies.Count)
+            case (Phases.EnemySpawn):
+                if (maxEnemies > _enemies.Count)
                 {
                     // Do not spawn more than maxEnemies
                     int enemiesToSpawn = Mathf.Clamp(maxEnemies - _enemies.Count, 0, maxEnemiesSpawnedPerTurn);
@@ -415,8 +401,8 @@ public class TurnSystem : MonoBehaviour
                 }
                 SetNextPhase();
                 break;
-            case(Phases.Resolution):
-                
+            case (Phases.Resolution):
+
                 int playersAlive = 0;
 
                 foreach (var player in _players)
@@ -440,7 +426,7 @@ public class TurnSystem : MonoBehaviour
                         playersAlive++;
                     }
                 }
-                if(playersAlive == 0)
+                if (playersAlive == 0)
                 {
                     SceneManager.LoadScene(SceneManager.GetActiveScene().name);
                     break;
@@ -450,7 +436,13 @@ public class TurnSystem : MonoBehaviour
                 SetNextPhase();
                 break;
             default:
-                break;    
+                break;
         }
+    }
+
+    public void SetActiveUnit(Unit unit)
+    {
+        _activeUnit = unit;
+        activeUnitIndex = 0;
     }
 }

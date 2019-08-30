@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a90db3620cac3094eaa7f4ed95bfc68b, type: 3}
+  m_Name: NoAmmo
+  m_EditorClassIdentifier: 
+  clips:
+  - {fileID: 8300000, guid: 1f089adcb14432a4b912f325cad5a1e9, type: 3}
+  - {fileID: 8300000, guid: 685771c7181e84b40b661a53d2963c40, type: 3}
+  - {fileID: 8300000, guid: 7255e2aedde3ba04d929a14a0de16101, type: 3}
+  - {fileID: 8300000, guid: 4bae0015d7cf0e74aa418b7ecfa202e3, type: 3}
+  - {fileID: 8300000, guid: 1f053242e0fc81f4f8f3f3f2e5ae04df, type: 3}
+  - {fileID: 8300000, guid: 31d398975e0d03247a09d4ee58f70923, type: 3}
+  - {fileID: 8300000, guid: ef45efc2f0ab8da4a805109fb4c3a4bf, type: 3}
+  - {fileID: 8300000, guid: 56c715df4ea6e46408c3515372332f15, type: 3}
+  - {fileID: 8300000, guid: ef9034aea628b944f9c6b2a2711dd551, type: 3}
+  - {fileID: 8300000, guid: 5c2bc696cc91b2847a802a238221f04b, type: 3}
+  minVolume: 1
+  maxVolume: 1
+  minPitch: 1
+  maxPitch: 1

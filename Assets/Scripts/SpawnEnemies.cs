@@ -1,15 +1,13 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class SpawnEnemies : MonoBehaviour
 {
     public GameObject enemyPrefab;
     [SerializeField]
     private Spawner[] spawners;
-    
+
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         spawners = GameObject.FindGameObjectWithTag("Spawners").GetComponentsInChildren<Spawner>();
     }
@@ -18,7 +16,8 @@ public class SpawnEnemies : MonoBehaviour
     {
         for (int i = 0; i < number; i++)
         {
-            Instantiate(enemyPrefab, spawners[i].transform.localPosition, Quaternion.identity);
+            var instance = Instantiate(enemyPrefab, spawners[i].transform.localPosition, Quaternion.identity);
+            instance.transform.SetParent(GameObject.FindGameObjectWithTag("Instances").transform);
         }
     }
 }

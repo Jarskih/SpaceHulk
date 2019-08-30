@@ -1,9 +1,12 @@
 fileFormatVersion: 2
 guid: 2ccb7213e71463b4196639b0f9e7ff97
 ScriptedImporter:
-  fileIDToRecycleName:
-    11400000: Assets/Demonstrations/SpaceHulk.demo
+  internalIDToNameTable:
+  - first:
+      114: 11400000
+    second: Assets/Demonstrations/SpaceHulk.demo
   externalObjects: {}
+  serializedVersion: 2
   userData: ' (MLAgents.Demonstration)'
   assetBundleName: 
   assetBundleVariant: 

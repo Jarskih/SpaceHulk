@@ -16,4 +16,3 @@ MonoBehaviour:
   playerAttacking: 1
   enemyAttacking: 6
   turning: 1
-  reloading: 1

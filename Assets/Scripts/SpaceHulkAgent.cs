@@ -1,5 +1,5 @@
-﻿using System;
-using MLAgents;
+﻿using MLAgents;
+using System;
 using UnityEngine;
 
 public class SpaceHulkAgent : Agent
@@ -31,7 +31,7 @@ public class SpaceHulkAgent : Agent
     private const int Down = 1;
     private const int Left = 2;
     private const int Right = 3;
-    
+
     [Tooltip("Selecting will turn on action masking. Note that a model trained with action " +
              "masking turned on may not behave optimally when action masking is turned off.")]
     public bool maskActions = true;
@@ -60,37 +60,40 @@ public class SpaceHulkAgent : Agent
         AddVectorObs(_tilemapController.IsWalkable(intPos + Vector3Int.right, _unit.GetTileMap()));
         AddVectorObs(_tilemapController.IsWalkable(intPos - Vector3Int.right, _unit.GetTileMap()));
         AddVectorObs(_unit.TargetPos);
-        
-        
+
+
         // Normalized Action points
         // To normalize a value to [0, 1], you can use the following formula:
         // normalizedValue = (currentValue - minValue)/(maxValue - minValue)
         //var ap = _unit.actionPoints / 6;
         //AddVectorObs(ap);
 
-            var players = GameObject.FindGameObjectsWithTag("Player");
-           _player = null;
-            foreach (var player in players)
-            {
-                var unit = player.GetComponent<Unit>();
+        var players = GameObject.FindGameObjectsWithTag("Player");
+        _player = null;
+        foreach (var player in players)
+        {
+            var unit = player.GetComponent<Unit>();
 
-                if (unit.health <= 0) continue;
-                
-                if (_player == null)
+            if (unit.health <= 0)
+            {
+                continue;
+            }
+
+            if (_player == null)
+            {
+                _player = unit;
+            }
+            else
+            {
+                var currentDistance = Vector3.Distance(transform.position, _player.transform.position);
+                var newDistance = Vector3.Distance(transform.position, player.transform.position);
+                if (newDistance < currentDistance)
                 {
-                     _player = unit;
-                }
-                else
-                {
-                    var currentDistance = Vector3.Distance(transform.position, _player.transform.position);
-                    var newDistance = Vector3.Distance(transform.position, player.transform.position);
-                    if (newDistance < currentDistance)
-                    {
-                        _player = player.GetComponent<Unit>();
-                    }
+                    _player = player.GetComponent<Unit>();
                 }
             }
-      
+        }
+
         if (_player != null)
         {
             AddVectorObs(Vector3.Distance(_player.TargetPos, _unit.TargetPos));
@@ -104,16 +107,16 @@ public class SpaceHulkAgent : Agent
             AddVectorObs(Vector3.zero);
             Debug.LogError("no player");
         }
-        
-        
-        
+
+
+
         // Mask the necessary actions if selected by the user.
         if (maskActions)
         {
             SetMask();
         }
     }
-    
+
     /// <summary>
     /// Applies the mask for the agents action to disallow unnecessary actions.
     /// </summary>
@@ -122,150 +125,111 @@ public class SpaceHulkAgent : Agent
         {
             // Check left
             Vector3 pos = _unit.TargetPos - transform.right;
-            Vector3Int left = new Vector3Int(Mathf.RoundToInt(pos.x), (int)pos.y, 0);
-            if (!_tilemapController.IsWalkable(left, _unit.GetTileMap()))
-            {
-                SetActionMask(Left);
-            }
-            else
-            {
-                if (_unit.actionPoints < 2)
-                {
-                    if(_tilemapController.TileOccupiedByAlien(left, _unit))
-                    {
-                        SetActionMask(Left);
-                    }
-                }
-            }
+            CheckMaskedDirection(pos, Left);
         }
-        
+
         {
             // Check right
             Vector3 pos = _unit.TargetPos + transform.right;
-            Vector3Int right = new Vector3Int(Mathf.RoundToInt(pos.x), (int)pos.y, 0);
-            if (!_tilemapController.IsWalkable(right, _unit.GetTileMap()))
-            {
-                SetActionMask(Right);
-            }
-            else
-            {
-                if (_unit.actionPoints < 2)
-                {
-                    if(_tilemapController.TileOccupiedByAlien(right, _unit))
-                    {
-                        SetActionMask(Right);
-                    }
-                }
-            }
+            CheckMaskedDirection(pos, Right);
         }
-        
+
         {
             // Check up
             Vector3 pos = _unit.TargetPos + transform.up;
-            Vector3Int up = new Vector3Int(Mathf.RoundToInt(pos.x), (int)pos.y, 0);
-            if (!_tilemapController.IsWalkable(up, _unit.GetTileMap()))
-            {
-                SetActionMask(Up);
-            }
-            else
-            {
-                if (_unit.actionPoints < 2)
-                {
-                    if(_tilemapController.TileOccupiedByAlien(up, _unit))
-                    {
-                        SetActionMask(Up);
-                    }
-                }
-            }
+            CheckMaskedDirection(pos, Up);
         }
-        
+
         {
             // Check down
             Vector3 pos = _unit.TargetPos - transform.up;
-            Vector3Int down = new Vector3Int(Mathf.RoundToInt(pos.x), (int)pos.y, 0);
-            if (!_tilemapController.IsWalkable(down, _unit.GetTileMap()))
+            CheckMaskedDirection(pos, Down);
+        }
+    }
+
+    private void CheckMaskedDirection(Vector3 pos, int dir)
+    {
+        Vector3Int direction = new Vector3Int(Mathf.RoundToInt(pos.x), (int)pos.y, 0);
+        if (!_tilemapController.IsWalkable(direction, _unit.GetTileMap()))
+        {
+            SetActionMask(dir);
+        }
+
+        if (_tilemapController.TileOccupiedByAlien(direction, _unit))
+        {
+            if (_unit.actionPoints < 2)
             {
-                SetActionMask(Down);
-            }
-            else
-            {
-                if (_unit.actionPoints < 2)
-                {
-                    if(_tilemapController.TileOccupiedByAlien(down, _unit))
-                    {
-                        SetActionMask(Down);
-                    }
-                }
+                SetActionMask(dir);
             }
         }
     }
 
     // to be implemented by the developer
     public override void AgentAction(float[] vectorAction, string textAction)
-    {   
+    {
         AddReward(-0.01f);
         int action = Mathf.FloorToInt(vectorAction[0]);
         Vector3 pos;
-        
+
         switch (action)
         {
             case Right:
-               //Debug.Log("Right");
-               pos = _unit.TargetPos + transform.right;
-               Vector3Int right = new Vector3Int(Mathf.RoundToInt(pos.x), (int)pos.y, 0);
-               if (_tilemapController.IsWalkable(right, _unit.GetTileMap()))
-               {
-                   _movement.CanMove(transform.right);
-               }
-               else
-               {
-                   AddReward(-0.5f);
-                   Done();
-               }
-               break;
+                //Debug.Log("Right");
+                pos = _unit.TargetPos + transform.right;
+                Vector3Int right = new Vector3Int(Mathf.RoundToInt(pos.x), (int)pos.y, 0);
+                if (_tilemapController.IsWalkable(right, _unit.GetTileMap()))
+                {
+                    _movement.CanMove(transform.right);
+                }
+                else
+                {
+                    AddReward(-0.5f);
+                    Done();
+                }
+                break;
             case Left:
-               //Debug.Log("Left");
-               pos = _unit.TargetPos - transform.right;
-               Vector3Int left = new Vector3Int(Mathf.RoundToInt(pos.x), (int)pos.y, 0);
-               if (_tilemapController.IsWalkable(left, _unit.GetTileMap()))
-               {
-                   _movement.CanMove(-transform.right);
-               }
-               else
-               {
-                   AddReward(-0.5f);
-                   Done();
-               }
+                //Debug.Log("Left");
+                pos = _unit.TargetPos - transform.right;
+                Vector3Int left = new Vector3Int(Mathf.RoundToInt(pos.x), (int)pos.y, 0);
+                if (_tilemapController.IsWalkable(left, _unit.GetTileMap()))
+                {
+                    _movement.CanMove(-transform.right);
+                }
+                else
+                {
+                    AddReward(-0.5f);
+                    Done();
+                }
 
-               break;
+                break;
             case Up:
-               //Debug.Log("Up");
-               pos = _unit.TargetPos + transform.up;
-               Vector3Int up = new Vector3Int(Mathf.RoundToInt(pos.x), (int)pos.y, 0);
-               if (_tilemapController.IsWalkable(up, _unit.GetTileMap()))
-               {
-                   _movement.CanMove(transform.up);
-               }
-               else
-               {
-                   AddReward(-0.5f);
-                   Done();
-               }
+                //Debug.Log("Up");
+                pos = _unit.TargetPos + transform.up;
+                Vector3Int up = new Vector3Int(Mathf.RoundToInt(pos.x), (int)pos.y, 0);
+                if (_tilemapController.IsWalkable(up, _unit.GetTileMap()))
+                {
+                    _movement.CanMove(transform.up);
+                }
+                else
+                {
+                    AddReward(-0.5f);
+                    Done();
+                }
                 break;
             case Down:
-               //Debug.Log("Down");
-               pos = _unit.TargetPos - transform.up;
-               Vector3Int down = new Vector3Int(Mathf.RoundToInt(pos.x), (int)pos.y, 0);
-               if (_tilemapController.IsWalkable(down, _unit.GetTileMap()))
-               {
-                   _movement.CanMove(-transform.up);
-               }
-               else
-               {
-                   AddReward(-0.5f);
-                   Done();
-               }
-               break;
+                //Debug.Log("Down");
+                pos = _unit.TargetPos - transform.up;
+                Vector3Int down = new Vector3Int(Mathf.RoundToInt(pos.x), (int)pos.y, 0);
+                if (_tilemapController.IsWalkable(down, _unit.GetTileMap()))
+                {
+                    _movement.CanMove(-transform.up);
+                }
+                else
+                {
+                    AddReward(-0.5f);
+                    Done();
+                }
+                break;
             default:
                 throw new ArgumentException("Invalid action value");
         }
@@ -275,7 +239,8 @@ public class SpaceHulkAgent : Agent
             _academy.playersKilled++;
             SetReward(1f);
             Done();
-        } else if (_unit.health <= 0)
+        }
+        else if (_unit.health <= 0)
         {
             Done();
         }
@@ -294,12 +259,12 @@ public class SpaceHulkAgent : Agent
             }
             _unit.UpdateCurrentTile(_unit.startingPos);
             _unit.transform.position = _unit.startingPos;
-           _academy.AcademyReset();
+            _academy.AcademyReset();
         }
         killedPlayer = false;
     }
-    
-   // Note that in order for AgentOnDone() to be called, the Agent's ResetOnDone property must be false. You can set ResetOnDone on the Agent's Inspector or in code.
+
+    // Note that in order for AgentOnDone() to be called, the Agent's ResetOnDone property must be false. You can set ResetOnDone on the Agent's Inspector or in code.
     public override void AgentOnDone()
     {
         Destroy(gameObject);

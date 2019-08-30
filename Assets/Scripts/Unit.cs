@@ -1,13 +1,13 @@
-﻿using System.Collections;
+﻿using Interfaces;
+using System.Collections;
 using System.Collections.Generic;
-using Interfaces;
 using UnityEngine;
-using UnityEngine.Networking.NetworkSystem;
 using UnityEngine.Tilemaps;
 
 public class Unit : MonoBehaviour
 {
-    public IntVariable maxAP;
+    public GameObject blood;
+    public UnitStats unitStats;
     public UnitType unitType;
     public SetActive setActive;
     public APrules APrules;
@@ -17,11 +17,10 @@ public class Unit : MonoBehaviour
     private Vector3 _targetPos;
     private ChangeSprite _changeSprite;
     private IMove _movement;
-    private ComplexActions _complexActions;
-    private int _health = 1;
+    private ShootAction _shootAction;
+    private int _health;
     private Tilemap _tileMap;
     private TurnSystem _turnSystem;
-   
 
     public enum UnitType
     {
@@ -43,21 +42,28 @@ public class Unit : MonoBehaviour
 
     public Vector3 TargetPos => currentNode ? currentNode.transform.position : transform.position;
 
-
-    void Start()
+    private void Start()
     {
         setActive = GetComponentInChildren<SetActive>();
         _changeSprite = GetComponentInChildren<ChangeSprite>();
         _turnSystem = FindObjectOfType<TurnSystem>();
         _movement = GetComponent<IMove>();
-        _complexActions = GetComponent<ComplexActions>();
+        _shootAction = GetComponent<ShootAction>();
         _tileMap = FindObjectOfType<Tilemap>();
         StartCoroutine(SaveCurrentTile());
         startingPos = transform.position;
-
+        if (unitType == UnitType.Marine)
+        {
+            _health = unitStats.maxHealth;
+            actionPoints = unitStats.maxAP;
+        }
+        else
+        {
+            _health = 1;
+        }
     }
 
-    void Update()
+    private void Update()
     {
         transform.position = TargetPos;
         //transform.position = Vector3.MoveTowards(transform.position, TargetPos, 0.3f);
@@ -68,7 +74,7 @@ public class Unit : MonoBehaviour
     {
         _currentState = UnitState.Idle;
         enemyTargets.list.Clear();
-        _complexActions?.ClearTargetingTiles();
+        _shootAction?.ClearTargetingTiles();
     }
 
     private IEnumerator SaveCurrentTile()
@@ -76,7 +82,7 @@ public class Unit : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
         UpdateCurrentTile(GetCurrentTilePos());
     }
-    
+
     private void UpdateCurrentTile(Vector3Int newPos)
     {
         var tileObject = _tileMap.GetInstantiatedObject(newPos);
@@ -94,7 +100,7 @@ public class Unit : MonoBehaviour
     {
         UpdateCurrentTile(new Vector3Int(Mathf.RoundToInt(newPos.x), Mathf.RoundToInt(newPos.y), 0));
     }
-    
+
     public Vector3Int GetCurrentTilePos()
     {
         return new Vector3Int(Mathf.RoundToInt(TargetPos.x), Mathf.RoundToInt(TargetPos.y), 0);
@@ -107,7 +113,7 @@ public class Unit : MonoBehaviour
 
     public void Movement()
     {
-         _movement.Act();
+        _movement.Act();
     }
 
     public void ChangeState(UnitState state)
@@ -118,12 +124,15 @@ public class Unit : MonoBehaviour
     public void Actions(IEnumerable<Unit> enemies)
     {
         // Wait for unit to move before allowing new orders
-        if (Vector3.Distance(transform.position, TargetPos) > 0.05f) return;
-        
+        if (Vector3.Distance(transform.position, TargetPos) > 0.05f)
+        {
+            return;
+        }
+
         if (currentState == UnitState.Idle)
         {
             _movement.Act();
-            _complexActions?.UpdateAmmo();
+            _shootAction?.UpdateAmmo();
             enemyTargets.list.Clear();
             if (Input.GetKeyDown(KeyCode.Space))
             {
@@ -134,7 +143,7 @@ public class Unit : MonoBehaviour
 
         if (currentState == UnitState.Shooting)
         {
-            _complexActions.Act(enemies);
+            _shootAction.Act(enemies);
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 Shoot();
@@ -142,15 +151,15 @@ public class Unit : MonoBehaviour
             }
         }
     }
-    
+
     public void UpdateMovementPoints(int change)
     {
-        actionPoints = Mathf.Clamp(actionPoints + change, 0, maxAP.Value);
+        actionPoints = Mathf.Clamp(actionPoints + change, 0, unitStats.maxAP);
     }
 
     public void SetActionPoints(int AP)
     {
-        actionPoints = Mathf.Clamp(AP, 0, maxAP.Value);
+        actionPoints = Mathf.Clamp(AP, 0, unitStats.maxAP);
     }
 
     public void TakeDamage(int damage)
@@ -159,25 +168,25 @@ public class Unit : MonoBehaviour
         Mathf.Clamp(_health, 0, 5);
         if (unitType == UnitType.Marine)
         {
-            if (_health > 0) return;
-            
+            if (_health > 0)
+            {
+                return;
+            }
+
             EventManager.TriggerEvent("Die");
             foreach (var spriteRenderer in GetComponentsInChildren<SpriteRenderer>())
             {
                 spriteRenderer.enabled = false;
             }
+
+            BloodCreator.CreateBlood(currentNode.transform.position, blood);
         }
         else
         {
             EventManager.TriggerEvent("EnemyDie");
+            BloodCreator.CreateBlood(currentNode.transform.position, blood);
             Destroy(gameObject);
         }
-    }
-
-    private IEnumerator RemovePlayer()
-    {
-        yield return new WaitForSeconds(0.1f);
-        Destroy(gameObject);
     }
 
     public void GainHealth(int value)
@@ -188,17 +197,21 @@ public class Unit : MonoBehaviour
 
     public void Reload()
     {
-        if (actionPoints >= APrules.reloading)
+        if (actionPoints >= GetWeaponStats().reloading)
         {
-            _complexActions.Reload();
+            _shootAction.Reload();
+        }
+        else
+        {
+            EventManager.TriggerEvent("Negative");
         }
     }
-    
+
     public void Aim()
     {
         if (actionPoints >= APrules.playerAttacking)
         {
-            _complexActions.FindTargets();
+            _shootAction.FindTargets();
             _currentState = UnitState.Shooting;
         }
         else
@@ -210,14 +223,35 @@ public class Unit : MonoBehaviour
 
     public WeaponStats GetWeaponStats()
     {
-        return _complexActions.weaponStats;
+        return _shootAction.weaponStats;
     }
 
     public void Shoot()
     {
         if (currentState == UnitState.Shooting)
         {
-            _complexActions.Shoot();
+            if (actionPoints >= APrules.playerAttacking)
+            {
+                _shootAction.Shoot();
+            }
+            else
+            {
+                EventManager.TriggerEvent("Negative");
+            }
         }
+        else
+        {
+            EventManager.TriggerEvent("Negative");
+        }
+    }
+
+    public bool CanShoot()
+    {
+        return actionPoints >= APrules.playerAttacking && enemyTargets.list.Count > 0;
+    }
+
+    public bool CanReload()
+    {
+        return actionPoints >= GetWeaponStats().reloading && _shootAction.ammoUI.Value != GetWeaponStats().maxAmmo;
     }
 }

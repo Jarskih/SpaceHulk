@@ -1,6 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Xml.Linq;
-using Interfaces;
+﻿using Interfaces;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -9,10 +8,28 @@ public class TilemapController : MonoBehaviour
     private Tilemap _tilemap;
     private TurnSystem _turnSystem;
 
-    void Start()
+    private void Start()
     {
         _tilemap = GetComponent<Tilemap>();
         _turnSystem = FindObjectOfType<TurnSystem>();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyUp(KeyCode.Mouse0))
+        {
+            Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            // Offset of tiles
+            mouseWorldPos.x += 0.5f;
+            mouseWorldPos.y += 0.5f;
+            Vector3Int coordinate = _tilemap.WorldToCell(mouseWorldPos);
+            Debug.Log(coordinate);
+            var unit = GetUnitFromTile(coordinate);
+            if (unit != null && unit.unitType == Unit.UnitType.Marine)
+            {
+                _turnSystem.SetActiveUnit(unit);
+            }
+        }
     }
 
     public bool IsWalkable(Vector3Int intPos, Tilemap tilemap)
@@ -31,7 +48,7 @@ public class TilemapController : MonoBehaviour
             Debug.Log("Tile outside of game area");
             return null;
         }
-        
+
         Unit unit = null;
         var enemies = GameObject.FindGameObjectsWithTag("Enemy");
         //var enemies = _turnSystem.enemies;
@@ -60,10 +77,10 @@ public class TilemapController : MonoBehaviour
                 }
             }
         }
-        
+
         return unit;
     }
-    
+
     public bool CheckIfTileOccupied(Vector3Int newPos, Unit currentUnit)
     {
         var tile = _tilemap.GetInstantiatedObject(newPos);
@@ -81,7 +98,11 @@ public class TilemapController : MonoBehaviour
         {
             var u = enemy.GetComponent<Unit>();
             // Dont check current player
-            if (u == currentUnit) continue;
+            if (u == currentUnit)
+            {
+                continue;
+            }
+
             if (u.currentNode == tile)
             {
                 if (u.health > 0)
@@ -99,7 +120,11 @@ public class TilemapController : MonoBehaviour
             {
                 var u = player.GetComponent<Unit>();
                 // Dont check current player
-                if (u == currentUnit) continue;
+                if (u == currentUnit)
+                {
+                    continue;
+                }
+
                 if (u.currentNode == tile)
                 {
                     if (u.health > 0)
@@ -130,7 +155,11 @@ public class TilemapController : MonoBehaviour
         {
             var u = enemy.GetComponent<Unit>();
             // Dont check current player
-            if (u == currentUnit) continue;
+            if (u == currentUnit)
+            {
+                continue;
+            }
+
             if (u.currentNode == tile)
             {
                 if (u.health > 0)
@@ -142,7 +171,7 @@ public class TilemapController : MonoBehaviour
 
         return unit != null && unit.health > 0;
     }
-    
+
     public bool TileOccupiedByMarine(Vector3Int newPos, Unit currentUnit)
     {
         var tile = _tilemap.GetInstantiatedObject(newPos);
@@ -153,14 +182,18 @@ public class TilemapController : MonoBehaviour
         }
 
         Unit unit = null;
-            
+
         // var players = _turnSystem.players;
         var players = GameObject.FindGameObjectsWithTag("Player");
         foreach (var player in players)
         {
             var u = player.GetComponent<Unit>();
             // Dont check current player
-            if (u == currentUnit) continue;
+            if (u == currentUnit)
+            {
+                continue;
+            }
+
             if (u.currentNode == tile)
             {
                 if (u.health > 0)
@@ -182,7 +215,7 @@ public class TilemapController : MonoBehaviour
     {
         List<int> tileIndex = new List<int>();
         Vector3Int currentPos = new Vector3Int((int)pos.x, (int)pos.y, 0);
-        
+
         for (int x = -1; x < 1; x++)
         {
             for (int y = -1; y < 1; y++)
@@ -200,19 +233,20 @@ public class TilemapController : MonoBehaviour
                             tileIndex.Add(1);
                             continue;
                         }
-                            
-                            
+
+
                         {
                             if (unitFromTile == unit)
                             {
                                 tileIndex.Add(2);
-                            } else if (unitFromTile.unitType == Unit.UnitType.Alien)
+                            }
+                            else if (unitFromTile.unitType == Unit.UnitType.Alien)
                             {
                                 tileIndex.Add(0);
                             }
-                            else if(unitFromTile.unitType == Unit.UnitType.Marine)
+                            else if (unitFromTile.unitType == Unit.UnitType.Marine)
                             {
-                                tileIndex.Add(3);         
+                                tileIndex.Add(3);
                             }
                             else
                             {
@@ -242,7 +276,7 @@ public class TilemapController : MonoBehaviour
     {
         return _tilemap.GetTile(pos) as Tile;
     }
-    
+
     /// <summary>
     /// Set the colour of a tile.
     /// </summary>
@@ -254,15 +288,15 @@ public class TilemapController : MonoBehaviour
         // Flag the tile, inidicating that it can change colour.
         // By default it's set to "Lock Colour".
         tilemap.SetTileFlags(position, TileFlags.None);
- 
+
         // Set the colour.
         tilemap.SetColor(position, colour);
     }
 
     public bool IsDoor(Vector3Int intPos)
     {
-       var door = _tilemap.GetInstantiatedObject(intPos).GetComponent<IOpenable>() as DoorNode;
-       return door != null;
+        var door = _tilemap.GetInstantiatedObject(intPos).GetComponent<IOpenable>() as DoorNode;
+        return door != null;
     }
 
     public bool DoorIsOpen(Vector3Int intPos)

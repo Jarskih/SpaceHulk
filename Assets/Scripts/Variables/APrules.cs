@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 [CreateAssetMenu]
 public class APrules : ScriptableObject
@@ -9,5 +7,4 @@ public class APrules : ScriptableObject
     public int playerAttacking;
     public int enemyAttacking;
     public int turning;
-    public int reloading;
 }

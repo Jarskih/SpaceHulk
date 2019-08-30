@@ -1,6 +1,5 @@
-﻿using System.Collections;
+﻿using Interfaces;
 using System.Collections.Generic;
-using Interfaces;
 using UnityEngine;
 
 public class CommandInvoker : MonoBehaviour
@@ -27,11 +26,11 @@ public class CommandInvoker : MonoBehaviour
                 currentPlayerHistory.RemoveAt(counter);
             }
         }
-        
+
         commandBuffer.Enqueue(command);
     }
-    
-    void Update()
+
+    private void Update()
     {
         if (commandBuffer.Count > 0)
         {
@@ -62,15 +61,16 @@ public class CommandInvoker : MonoBehaviour
         }
     }
 
-    public void Undo()
+    public static void Undo()
     {
-        if (counter > 0) {
+        if (counter > 0)
+        {
             counter--;
             currentPlayerHistory[counter].Undo();
         }
     }
 
-    public void Redo()
+    public static void Redo()
     {
         if (counter < currentPlayerHistory.Count)
         {
