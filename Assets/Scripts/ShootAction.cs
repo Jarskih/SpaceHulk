@@ -198,6 +198,7 @@ public class ShootAction : MonoBehaviour
             _unit.UpdateMovementPoints(-_unit.APrules.playerAttacking);
             _unit.ReturnToIdle();
             ClearTargetingTiles();
+            CommandInvoker.ResetHistory();
         }
         else
         {
