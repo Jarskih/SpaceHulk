@@ -65,8 +65,8 @@ public class Unit : MonoBehaviour
 
     private void Update()
     {
-        transform.position = TargetPos;
-        //transform.position = Vector3.MoveTowards(transform.position, TargetPos, 0.3f);
+        //transform.position = TargetPos;
+        transform.position = Vector3.MoveTowards(transform.position, TargetPos, 0.3f);
         //UpdateCurrentTile(targetPos);
     }
 

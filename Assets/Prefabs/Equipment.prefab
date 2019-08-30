@@ -96,7 +96,7 @@ MonoBehaviour:
   _lowAlpha: 0.3
   _highAlpha: 0.7
   _currentAlpha: 1
-  _speed: 0.5
+  _speed: 0.1
   _decreasing: 0
 --- !u!1 &912833728734211608
 GameObject:

@@ -64,6 +64,7 @@ public class TurnSystem : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
+        Application.targetFrameRate = 60;
         _setPlayerActive = GetComponent<SetPlayerActive>();
         _objective = GameObject.FindWithTag("Objective");
         if (_objective == null)
@@ -117,8 +118,17 @@ public class TurnSystem : MonoBehaviour
         return true;
     }
 
+    private int counter = 0;
     private void SetNextUnit()
     {
+        if (counter > 5)
+        {
+            counter = 0;
+            SetNextPhase();
+            activeUnitIndex = 0;
+            EventManager.TriggerEvent("EnemyTurn");
+        }
+
         _activeUnit.ReturnToIdle();
         CommandInvoker.ResetHistory();
         activeUnitIndex = activeUnitIndex + 1;
@@ -160,14 +170,6 @@ public class TurnSystem : MonoBehaviour
                     SetNextUnit();
                 }
             }
-        }
-
-        int counter = 1;
-        if (counter > 5)
-        {
-            SetNextPhase();
-            activeUnitIndex = 0;
-            EventManager.TriggerEvent("EnemyTurn");
         }
     }
 

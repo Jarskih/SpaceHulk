@@ -84,15 +84,15 @@ MonoBehaviour:
   PlayerAPPerTurn: {fileID: 11400000, guid: 3a3af4e0087d73c49a6c820503ad9490, type: 2}
   minEnemyAPperTurn: 4
   maxEnemyAPperTurn: 4
-  minEnemiesSpawnedPerTurn: 4
-  maxEnemiesSpawnedPerTurn: 6
+  minEnemiesSpawnedPerTurn: 8
+  maxEnemiesSpawnedPerTurn: 8
   _enemies: []
   _players:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  activePlayerIndex: 0
+  activeUnitIndex: 0
   _activeEnemyIndex: 0
   currentPhase: 0
   _activeUnit: {fileID: 0}
