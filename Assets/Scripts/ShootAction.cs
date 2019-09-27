@@ -170,27 +170,20 @@ public class ShootAction : MonoBehaviour
 
             if (weaponStats.shotsPerBurst > 1)
             {
-                int counter = 0;
-                foreach (var enemy in _unit.enemyTargets.list)
+                for (int shot = 0; shot < weaponStats.shotsPerBurst; shot++)
                 {
-                    counter++;
                     if (ammo <= 0)
                     {
                         break;
                     }
-                    enemy.TakeDamage(1);
+                    FindClosestEnemy().TakeDamage(weaponStats.damage);
                     ammo--;
                     ammoUI.Value = ammo;
-
-                    if (counter >= weaponStats.shotsPerBurst)
-                    {
-                        break;
-                    }
                 }
             }
             else
             {
-                _unit.enemyTargets.list[0].TakeDamage(weaponStats.damage);
+                FindClosestEnemy().TakeDamage(weaponStats.damage);
                 ammo--;
                 ammoUI.Value = ammo;
             }
@@ -210,5 +203,26 @@ public class ShootAction : MonoBehaviour
                 ClearTargetingTiles();
             }
         }
+    }
+
+    Unit FindClosestEnemy()
+    {
+        float dist = 999;
+        Unit closest = null;
+        foreach (var enemy in _unit.enemyTargets.list)
+        {
+            if (enemy.health <= 0)
+            {
+                continue;
+            }
+            
+            var distanceToEnemy = Vector3.Distance(enemy.transform.position, _unit.transform.position);
+            if (distanceToEnemy < dist)
+            {
+                dist = distanceToEnemy;
+                closest = enemy;
+            }
+        }
+        return closest;
     }
 }

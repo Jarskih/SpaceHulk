@@ -7,8 +7,8 @@ public class TurnSystem : MonoBehaviour
 {
     public IntVariable actionPoints;
     public IntVariable PlayerAPPerTurn;
-    [SerializeField] private int minEnemyAPperTurn;
-    [SerializeField] private int maxEnemyAPperTurn;
+    //[SerializeField] private int minEnemyAPperTurn;
+    //[SerializeField] private int maxEnemyAPperTurn;
     [SerializeField] private int minEnemiesSpawnedPerTurn;
     [SerializeField] private int maxEnemiesSpawnedPerTurn;
     [SerializeField] private List<Unit> _enemies;
@@ -117,59 +117,23 @@ public class TurnSystem : MonoBehaviour
         }
         return true;
     }
-
-    private int counter = 0;
+    
     private void SetNextUnit()
     {
-        if (counter > 5)
-        {
-            counter = 0;
-            SetNextPhase();
-            activeUnitIndex = 0;
-            EventManager.TriggerEvent("EnemyTurn");
-        }
-
         _activeUnit.ReturnToIdle();
         CommandInvoker.ResetHistory();
-        activeUnitIndex = activeUnitIndex + 1;
+        activeUnitIndex += 1;
 
         if (activeUnitIndex >= _players.Count)
         {
-            if (AllPlayersActed())
-            {
-                SetNextPhase();
-                activeUnitIndex = 0;
-                EventManager.TriggerEvent("EnemyTurn");
-            }
-            else
-            {
-                activeUnitIndex = -1;
-                SetNextUnit();
-            }
-            //Debug.Log("All players moved, setting new phase: " + currentPhase);
+            activeUnitIndex = 0;
         }
-        else
+        
+        _activeUnit = _players[activeUnitIndex];
+        
+        if (_activeUnit.health <= 0)
         {
-            //Debug.Log("Next player turn");
-            _activeUnit = _players[activeUnitIndex];
-            if (_activeUnit.health <= 0)
-            {
-                SetNextUnit();
-            }
-
-            if (AllPlayersActed())
-            {
-                SetNextPhase();
-                activeUnitIndex = 0;
-                EventManager.TriggerEvent("EnemyTurn");
-            }
-            else
-            {
-                if (_activeUnit.actionPoints <= 0)
-                {
-                    SetNextUnit();
-                }
-            }
+            SetNextUnit();
         }
     }
 
@@ -219,6 +183,18 @@ public class TurnSystem : MonoBehaviour
 
         if (currentPhase == Phases.EnemyMovement)
         {
+            if (_activeUnit == null || _activeUnit.unitType == Unit.UnitType.Marine)
+            {
+                if (_enemies.Count > 0)
+                {
+                    _activeUnit = _enemies[0];
+                }
+                else
+                {
+                    SetNextPhase();
+                }
+            }
+            
             foreach (var enemy in _enemies)
             {
                 enemy.SetActionPoints(_activeUnit.unitStats.maxAP);
@@ -371,6 +347,7 @@ public class TurnSystem : MonoBehaviour
                     if (_enemies.Count > 0)
                     {
                         _activeUnit = _enemies[0];
+                        UpdateMovementPoints();
                     }
                     else
                     {
@@ -415,6 +392,9 @@ public class TurnSystem : MonoBehaviour
                         if (SceneManager.GetActiveScene().name == "Level1")
                         {
                             SceneManager.LoadScene("Level2");
+                        } else if (SceneManager.GetActiveScene().name == "Level2")
+                        {
+                            SceneManager.LoadScene("Level3");
                         }
                         else
                         {
