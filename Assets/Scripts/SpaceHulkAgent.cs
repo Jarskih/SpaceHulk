@@ -107,10 +107,8 @@ public class SpaceHulkAgent : Agent
             AddVectorObs(Vector3.zero);
             Debug.LogError("no player");
         }
-
-
-
-        // Mask the necessary actions if selected by the user.
+        
+        // Mask the not allowed actions
         if (maskActions)
         {
             SetMask();
@@ -149,12 +147,14 @@ public class SpaceHulkAgent : Agent
 
     private void CheckMaskedDirection(Vector3 pos, int dir)
     {
-        Vector3Int direction = new Vector3Int(Mathf.RoundToInt(pos.x), (int)pos.y, 0);
+        // Mash not walkable tiles
+        Vector3Int direction = new Vector3Int(Mathf.RoundToInt(pos.x), Mathf.RoundToInt(pos.y), 0);
         if (!_tilemapController.IsWalkable(direction, _unit.GetTileMap()))
         {
             SetActionMask(dir);
         }
 
+        // Mask tiles only if cannot jump over friendly unit
         if (_tilemapController.TileOccupiedByAlien(direction, _unit))
         {
             if (_unit.actionPoints < 2)
@@ -164,9 +164,10 @@ public class SpaceHulkAgent : Agent
         }
     }
 
-    // to be implemented by the developer
+    // Reward actions
     public override void AgentAction(float[] vectorAction, string textAction)
     {
+        // Give negative reward every step to encourage completing task faster
         AddReward(-0.01f);
         int action = Mathf.FloorToInt(vectorAction[0]);
         Vector3 pos;
@@ -236,6 +237,7 @@ public class SpaceHulkAgent : Agent
 
         if (killedPlayer)
         {
+            // Mark done and give big reward
             _academy.playersKilled++;
             SetReward(1f);
             Done();

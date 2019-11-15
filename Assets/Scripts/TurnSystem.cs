@@ -87,7 +87,7 @@ public class TurnSystem : MonoBehaviour
 
         UpdateMovementPoints();
 
-        // Choose first enemy
+        // Reset command history
         CommandInvoker.ResetHistory();
     }
 
@@ -98,7 +98,7 @@ public class TurnSystem : MonoBehaviour
 
     public Color GetCurrentColor()
     {
-        if ((currentPhase == Phases.FirstMovement) && _activeUnit.unitType == Unit.UnitType.Marine)
+        if ((currentPhase == Phases.FirstMovement) && _activeUnit?.unitType == Unit.UnitType.Marine)
         {
             return _activeUnit.GetComponent<AvatarColor>().healthy;
         }
@@ -117,7 +117,7 @@ public class TurnSystem : MonoBehaviour
         }
         return true;
     }
-    
+
     private void SetNextUnit()
     {
         _activeUnit.ReturnToIdle();
@@ -128,9 +128,9 @@ public class TurnSystem : MonoBehaviour
         {
             activeUnitIndex = 0;
         }
-        
+
         _activeUnit = _players[activeUnitIndex];
-        
+
         if (_activeUnit.health <= 0)
         {
             SetNextUnit();
@@ -194,7 +194,7 @@ public class TurnSystem : MonoBehaviour
                     SetNextPhase();
                 }
             }
-            
+
             foreach (var enemy in _enemies)
             {
                 enemy.SetActionPoints(_activeUnit.unitStats.maxAP);
@@ -207,7 +207,7 @@ public class TurnSystem : MonoBehaviour
         return Random.Range(minEnemiesSpawnedPerTurn, maxEnemiesSpawnedPerTurn + 1);
     }
 
-    public void UpdateEnemyList()
+    private void UpdateEnemyList()
     {
         // Find enemies
         _enemies.Clear();
@@ -224,7 +224,7 @@ public class TurnSystem : MonoBehaviour
         }
     }
 
-    public void UpdatePlayerList()
+    private void UpdatePlayerList()
     {
         _players.Clear();
         var playerObjects = GameObject.FindGameObjectsWithTag("Player");
@@ -392,7 +392,8 @@ public class TurnSystem : MonoBehaviour
                         if (SceneManager.GetActiveScene().name == "Level1")
                         {
                             SceneManager.LoadScene("Level2");
-                        } else if (SceneManager.GetActiveScene().name == "Level2")
+                        }
+                        else if (SceneManager.GetActiveScene().name == "Level2")
                         {
                             SceneManager.LoadScene("Level3");
                         }
