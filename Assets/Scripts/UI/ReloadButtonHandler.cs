@@ -5,18 +5,18 @@ public class ReloadButtonHandler : MonoBehaviour
 {
     public Button reloadButton;
 
-    private TurnSystem _turnSystem;
+    private PlayerInteractions _pi;
 
     // Start is called before the first frame update
     private void Start()
     {
-        _turnSystem = FindObjectOfType<TurnSystem>();
+        _pi = FindObjectOfType<PlayerInteractions>();
     }
 
     // Update is called once per frame
     private void Update()
     {
-        var activeUnit = _turnSystem.activeUnit;
+        var activeUnit = _pi.activeUnit;
         reloadButton.interactable = activeUnit.CanReload();
     }
 }

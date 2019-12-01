@@ -7,21 +7,21 @@ public class IsUnitAiming : MonoBehaviour
     public Button shootButton;
     public GameObject aimPanel;
 
-    private TurnSystem _turnSystem;
+    private PlayerInteractions _pi;
 
     // Start is called before the first frame update
     private void Start()
     {
-        _turnSystem = FindObjectOfType<TurnSystem>();
+        _pi = FindObjectOfType<PlayerInteractions>();
     }
 
     // Update is called once per frame
     private void Update()
     {
-        var unitState = _turnSystem.activeUnit.currentState;
+        var unitState = _pi.activeUnit.currentState;
         if (unitState == Unit.UnitState.Shooting)
         {
-            shootButton.interactable = _turnSystem.activeUnit.CanShoot();
+            shootButton.interactable = _pi.activeUnit.CanShoot();
             aimButton.gameObject.SetActive(false);
             aimPanel.SetActive(true);
         }

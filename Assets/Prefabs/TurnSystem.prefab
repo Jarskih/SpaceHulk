@@ -39,13 +39,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9034076305799624828}
+  - component: {fileID: 2324187013355481777}
   - component: {fileID: 9034076305799624803}
   - component: {fileID: 1401116394}
   - component: {fileID: 1959010648}
   - component: {fileID: 717212853}
   - component: {fileID: 894980127}
   - component: {fileID: 894980123}
-  - component: {fileID: 6244676327448489463}
   m_Layer: 0
   m_Name: TurnSystem
   m_TagString: TurnSystem
@@ -68,6 +68,24 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2324187013355481777
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9034076305799624802}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 384556eafd30f6e4d8fc42e30409739c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actionPoints: {fileID: 11400000, guid: 4b1ccb44bb0f6214a998095ee82d564a, type: 2}
+  PlayerAPPerTurn: {fileID: 11400000, guid: 3a3af4e0087d73c49a6c820503ad9490, type: 2}
+  _activeUnit: {fileID: 0}
+  activeUnitIndex: 0
+  _activeEnemyIndex: 0
+  _enemyMaxTime: 2
 --- !u!114 &9034076305799624803
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -80,11 +98,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b8f94b9e79fad747b9e36b5379e4f90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionPoints: {fileID: 11400000, guid: 4b1ccb44bb0f6214a998095ee82d564a, type: 2}
-  PlayerAPPerTurn: {fileID: 11400000, guid: 3a3af4e0087d73c49a6c820503ad9490, type: 2}
-  minEnemyAPperTurn: 4
-  maxEnemyAPperTurn: 4
-  minEnemiesSpawnedPerTurn: 8
+  minEnemiesSpawnedPerTurn: 4
   maxEnemiesSpawnedPerTurn: 8
   _enemies: []
   _players:
@@ -92,13 +106,8 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  activeUnitIndex: 0
-  _activeEnemyIndex: 0
   currentPhase: 0
-  _activeUnit: {fileID: 0}
-  enemyColor: {r: 0.4716981, g: 0.0022249965, b: 0.0022249965, a: 0}
   maxEnemies: 12
-  _enemyMaxTime: 5
 --- !u!114 &1401116394
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -161,17 +170,5 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4093d1bb72b04364ebac90c166413ccf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &6244676327448489463
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9034076305799624802}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 306099f16ecc2f549af7d0e9fead42ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

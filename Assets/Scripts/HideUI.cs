@@ -20,7 +20,7 @@ public class HideUI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(_turnSystem.GetCurrentPhase() == TurnSystem.Phases.FirstMovement)
+        if(_turnSystem.GetCurrentPhase() == TurnSystem.Phases.Movement)
         {
             EnableUI();
             UpdateTurnText("Marine Turn", marineColor);

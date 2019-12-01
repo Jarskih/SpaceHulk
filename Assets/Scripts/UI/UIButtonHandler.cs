@@ -2,23 +2,25 @@
 
 public class UIButtonHandler : MonoBehaviour
 {
+    private PlayerInteractions _pi;
     private TurnSystem _turnSystem;
 
     // Start is called before the first frame update
     private void Start()
     {
+        _pi = FindObjectOfType<PlayerInteractions>();
         _turnSystem = FindObjectOfType<TurnSystem>();
     }
 
     // UI
     public void Reload()
     {
-        _turnSystem.activeUnit.Reload();
+        _pi.activeUnit.Reload();
     }
 
     public void Aim()
     {
-        _turnSystem.activeUnit.Aim();
+        _pi.activeUnit.Aim();
     }
 
     public void EndTurn()
@@ -28,7 +30,7 @@ public class UIButtonHandler : MonoBehaviour
 
     public void Shoot()
     {
-        _turnSystem.activeUnit.Shoot();
+        _pi.activeUnit.Shoot();
     }
 
     public void Undo()

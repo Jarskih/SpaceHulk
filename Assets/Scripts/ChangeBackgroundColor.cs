@@ -15,6 +15,6 @@ public class ChangeBackgroundColor : MonoBehaviour
 
     void Update()
     {
-        cam.backgroundColor = turnSystem.GetCurrentColor();
+       // cam.backgroundColor = turnSystem.GetCurrentColor();
     }
 }

@@ -473,7 +473,7 @@ GameObject:
   - component: {fileID: 1229582194}
   - component: {fileID: 1229582193}
   - component: {fileID: 1229582192}
-  - component: {fileID: 1229582191}
+  - component: {fileID: 1783409623221370069}
   m_Layer: 5
   m_Name: AP on Unit
   m_TagString: Untagged
@@ -634,7 +634,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   text: {fileID: 1229582193}
   Variable: {fileID: 11400000, guid: 4b1ccb44bb0f6214a998095ee82d564a, type: 2}
---- !u!114 &1229582191
+--- !u!114 &1783409623221370069
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -643,7 +643,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1229582189}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 017256e09c3437e44be3f5cbd737198d, type: 3}
+  m_Script: {fileID: 11500000, guid: d95efe85c0bf6dd4a942b2dd0d997a31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1551413615
@@ -2245,7 +2245,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: f7bb227461a01ee45811acb9500ef02a, type: 3}
+  m_Sprite: {fileID: 21300000, guid: c9095f13d9864dc4298380241b53d482, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -2448,8 +2448,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -31.695, y: 53.2}
-  m_SizeDelta: {x: 169.54, y: 35.59}
+  m_AnchoredPosition: {x: -0.485, y: 52.3}
+  m_SizeDelta: {x: 231.96, y: 37.4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2003220799338362436
 CanvasRenderer:
@@ -2479,7 +2479,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: Augustus
+  m_text: Tactical Marine
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 67a6e57ae05965148a89d29c02a992a4, type: 2}
   m_sharedMaterial: {fileID: 21803229259569938, guid: 67a6e57ae05965148a89d29c02a992a4,
@@ -2549,10 +2549,10 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 2607951411188054648}
-    characterCount: 8
+    characterCount: 15
     spriteCount: 0
-    spaceCount: 0
-    wordCount: 1
+    spaceCount: 1
+    wordCount: 2
     linkCount: 0
     lineCount: 1
     pageCount: 1
@@ -2823,7 +2823,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e93ad33a6f80f8045b21fb8933ac7499, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _unitPortrait: {fileID: 21300000, guid: f7bb227461a01ee45811acb9500ef02a, type: 3}
+  _unitPortrait: {fileID: 21300000, guid: c9095f13d9864dc4298380241b53d482, type: 3}
   _unitDead: {fileID: 21300000, guid: 3180724c01895c14c9c4ecca96e49eb1, type: 3}
   portraitGameObject: {fileID: 6644915401328148838, guid: 996467e79fc6f32479e5f730158b34d8,
     type: 3}
@@ -4020,7 +4020,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -347, y: -42.359985}
+  m_AnchoredPosition: {x: -347, y: -42.360107}
   m_SizeDelta: {x: 627.5, y: 85.390015}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &6370009962173653844
@@ -4089,7 +4089,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -814.65, y: -432.92}
-  m_SizeDelta: {x: 253.99, y: 174.05}
+  m_SizeDelta: {x: 253.99, y: 174.1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2750034839184779465
 CanvasRenderer:

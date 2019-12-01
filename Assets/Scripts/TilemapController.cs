@@ -7,11 +7,13 @@ public class TilemapController : MonoBehaviour
 {
     private Tilemap _tilemap;
     private TurnSystem _turnSystem;
+    private PlayerInteractions _pi;
 
     private void Start()
     {
         _tilemap = GetComponent<Tilemap>();
         _turnSystem = FindObjectOfType<TurnSystem>();
+        _pi = FindObjectOfType<PlayerInteractions>();
     }
 
     private void Update()
@@ -27,7 +29,7 @@ public class TilemapController : MonoBehaviour
             var unit = GetUnitFromTile(coordinate);
             if (unit != null && unit.unitType == Unit.UnitType.Marine)
             {
-                _turnSystem.SetActiveUnit(unit);
+                _pi.SetActiveUnit(unit);
             }
         }
     }

@@ -97,40 +97,13 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="FindInProjectRecents">
-    <findStrings>
-      <find>spawn</find>
-      <find>UpdateCurrentTile</find>
-      <find>targetPos</find>
-      <find>initializeAgent</find>
-      <find>activePlayer</find>
-      <find>GetCurrentColor</find>
-      <find>_players</find>
-      <find>OnDemand</find>
-      <find>MakeRequests</find>
-      <find>AgentAction</find>
-      <find>getUnit</find>
-      <find>isfloor</find>
-      <find>debug.log</find>
-      <find>actionp</find>
-      <find>screen</find>
-      <find>next</find>
-      <find>apPer</find>
-      <find>PlayerAPPerTurn</find>
-      <find>ap</find>
-      <find>UpdateMovementPoints</find>
-      <find>enemy</find>
-      <find>activeUnit</find>
-      <find>actions</find>
-      <find>minenemyap</find>
-    </findStrings>
-  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/TilemapController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/AvatarColor.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/UnitPortraitManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Variables/StatsListVariable.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Unit.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/EventManager.cs" root0="FORCE_HIGHLIGHTING" />
@@ -141,6 +114,8 @@
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Variables/ListVariable.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/CommandInvoker.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Movement.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Variables/TextSetter.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/PlayerInteractions.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Commands/TurnCommand.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Commands/EnemyDoubleMoveCommand.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Commands/DoubleMoveCommand.cs" root0="FORCE_HIGHLIGHTING" />
@@ -154,10 +129,18 @@
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Nodes/WallNode.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Prefabs/Old/BlueUnit.prefab" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Nodes/FloorNode.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/UI/CurrentUnitUI.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/UI/SetWeaponName.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/SetUITextToUnit.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/UI/UIButtonHandler.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/UI/Quit.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/UI/GetWeaponImage.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/UI/IsUnitAiming.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/UI/ReloadButtonHandler.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/TurnSystem.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/SpawnPlayers.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/CameraFollow.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/ChangeBackgroundColor.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/SpaceHulkAgent.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/PlayAudio.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Spawner.cs" root0="FORCE_HIGHLIGHTING" />
@@ -175,17 +158,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/Assets/UnitySDK/ML-Agents/Scripts/Agent.cs" />
-        <option value="$PROJECT_DIR$/Assets/UnitySDK/ML-Agents/Examples/3DBall/Scripts/Ball3DHardAgent.cs" />
-        <option value="$PROJECT_DIR$/Assets/SpaceHulkAcademy.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Stats.cs" />
-        <option value="$PROJECT_DIR$/Assets/SpaceHulkAgent.cs" />
-        <option value="$PROJECT_DIR$/Assets/TilemapController.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/FloorTile.cs" />
-        <option value="$PROJECT_DIR$/Assets/Respawn.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/SpawnPlayers.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/PlayerAgentcs.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/SpaceHulkAcademy.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Variables/APrules.cs" />
         <option value="$PROJECT_DIR$/Assets/HideUI.cs" />
         <option value="$PROJECT_DIR$/Assets/UnitySDK/ML-Agents/Scripts/Academy.cs" />
@@ -208,7 +180,6 @@
         <option value="$PROJECT_DIR$/Assets/Scripts/Node.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Nodes/Node.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Nodes/WallNode.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/TilemapController.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Interfaces/IWalkable.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Nodes/DoorNode.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Nodes/FloorNode.cs" />
@@ -225,7 +196,19 @@
         <option value="$PROJECT_DIR$/Assets/ReturnToMenu.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/ShootAction.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/SpaceHulkAgent.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Variables/TextSetter.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/ChangeBackgroundColor.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/TilemapController.cs" />
+        <option value="$PROJECT_DIR$/Assets/PlayerInteractions.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/UnitPortraitManager.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/TurnSystem.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/SetUITextToUnit.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/UI/CurrentUnitUI.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/UI/SetWeaponName.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/UI/UIButtonHandler.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/UI/ReloadButtonHandler.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/UI/IsUnitAiming.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/UI/GetWeaponImage.cs" />
       </list>
     </option>
   </component>
@@ -289,6 +272,7 @@
       <workItem from="1566547876998" duration="29914000" />
       <workItem from="1569426028090" duration="7031000" />
       <workItem from="1572605475364" duration="6472000" />
+      <workItem from="1575195835110" duration="2845000" />
     </task>
     <servers />
   </component>
@@ -302,7 +286,9 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
           </value>
         </entry>
       </map>

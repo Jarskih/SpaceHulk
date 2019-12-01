@@ -7,6 +7,7 @@ public class UnitPortraitManager : MonoBehaviour
     private Image image;
     private UnitPortrait unitPortrait;
     private TurnSystem _turnSystem;
+    private PlayerInteractions _pi;
     public Image activeIndicator;
 
     // Start is called before the first frame update
@@ -14,12 +15,13 @@ public class UnitPortraitManager : MonoBehaviour
     {
         image = GetComponent<Image>();
         unitPortrait = GetComponentInParent<UnitPortrait>();
+        _pi = FindObjectOfType<PlayerInteractions>();
         _turnSystem = FindObjectOfType<TurnSystem>();
     }
 
     public void SelectUnit()
     {
-        _turnSystem.SetActiveUnit(unit);
+        _pi.SetActiveUnit(unit);
     }
 
     // Update is called once per frame
@@ -34,7 +36,7 @@ public class UnitPortraitManager : MonoBehaviour
             image.sprite = unitPortrait._unitPortrait;
         }
 
-        if (unit == _turnSystem.activeUnit)
+        if (unit == _pi.activeUnit)
         {
             activeIndicator.gameObject.SetActive(true);
         }
