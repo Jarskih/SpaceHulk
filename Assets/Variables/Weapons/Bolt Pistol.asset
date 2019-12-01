@@ -18,5 +18,5 @@ MonoBehaviour:
   reloading: 1
   maxAmmo: 6
   weaponImage: {fileID: 0}
-  actionCost: 1
+  actionCost: 2
   range: 6

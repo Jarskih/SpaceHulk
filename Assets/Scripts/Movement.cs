@@ -39,20 +39,20 @@ public class Movement : MonoBehaviour, IMove
 
     private void ListenToInput()
     {
-        if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
+        if (Input.GetKeyDown(KeyCode.W))
         {
             CanMove(transform.up);
         }
-        else if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.S))
+        else if (Input.GetKeyDown(KeyCode.S))
         {
             CanMove(-transform.up);
         }
-        else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
+        else if (Input.GetKeyDown(KeyCode.A))
         {
             Turn(90);
 
         }
-        else if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
+        else if (Input.GetKeyDown(KeyCode.D))
         {
             Turn(-90);
         }
@@ -115,7 +115,7 @@ public class Movement : MonoBehaviour, IMove
         }
         else if (direction == -transform.up)
         {
-            if (_unit.actionPoints >= 2)
+            if (_unit.actionPoints >= _unit.APrules.backwardsMove)
             {
                 ICommand c = new MoveBackwardCommand(_unit);
                 CommandInvoker.AddCommand(c);

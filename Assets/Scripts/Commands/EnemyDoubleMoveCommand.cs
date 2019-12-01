@@ -20,6 +20,7 @@ public class EnemyDoubleMoveCommand : ICommand
     public void Execute()
     {
         _unit.UpdateCurrentTile( _transform.position + _direction);
+        _unit.transform.up = _direction.normalized;
         _unit.UpdateMovementPoints(-_moveCost);
         EventManager.TriggerEvent("EnemyMove");
         

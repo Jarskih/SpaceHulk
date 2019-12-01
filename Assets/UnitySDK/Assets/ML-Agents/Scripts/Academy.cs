@@ -369,7 +369,7 @@ namespace MLAgents
         {
             if (m_IsInference)
             {
-                ConfigureEnvironmentHelper(m_InferenceConfiguration);
+                // ConfigureEnvironmentHelper(m_InferenceConfiguration);
                 Monitor.SetActive(true);
             }
             else
@@ -388,7 +388,7 @@ namespace MLAgents
         /// </param>
         static void ConfigureEnvironmentHelper(EnvironmentConfiguration config)
         {
-            Screen.SetResolution(config.width, config.height, false);
+            Screen.SetResolution(config.width, config.height, true);
             QualitySettings.SetQualityLevel(config.qualityLevel, true);
             Time.timeScale = config.timeScale;
             Time.captureFramerate = 60;

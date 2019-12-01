@@ -5,9 +5,9 @@ using UnityEngine;
 public class PlayerInteractions : MonoBehaviour
 {
     public IntVariable actionPoints;
-    public IntVariable PlayerAPPerTurn;
     public IntVariable currentWeaponDamage;
     public IntVariable currentActionCost;
+    public IntVariable currentMaxAmmo;
 
     private SetPlayerActive _setPlayerActive;
     [SerializeField] private Unit _activeUnit;
@@ -32,21 +32,31 @@ public class PlayerInteractions : MonoBehaviour
         _activeUnit = _turnSystem.players[0];
         
         UpdateMovementPoints();
+        FollowPlayer();
     }
 
     // Update is called once per frame
     void Update()
     {
-        FollowPlayer();
+        //FollowPlayer();
         UpdateUI();
     }
     
-    private void FollowPlayer()
+    public void FollowPlayer()
     {
         if (_activeUnit != null)
         {
             _cameraFollow.SetTarget(_activeUnit.transform.position);
         }
+
+        StartCoroutine(DisableFollow());
+    }
+
+    IEnumerator DisableFollow()
+    {
+        _cameraFollow.followEnabled = true;
+        yield return new WaitForSeconds(0.2f);
+        _cameraFollow.followEnabled = false;
     }
     
     private void UpdateUI()
@@ -85,11 +95,6 @@ public class PlayerInteractions : MonoBehaviour
 
     public void UpdateMovement()
     {
-        if (Input.GetKeyDown(KeyCode.Tab))
-        {
-            SetNextUnit();
-        }
-
         if (_activeUnit.health <= 0)
         {
             SetNextUnit();
@@ -107,21 +112,15 @@ public class PlayerInteractions : MonoBehaviour
                 return;
             }
         }
-        
-        if (_activeUnit.actionPoints > 0)
-        {
-            _activeUnit.Actions(_turnSystem.enemies);
-        }
-        else
-        {
-            _activeUnit.actionPoints = 0;
-        }
+
+        _activeUnit.Actions(_turnSystem.enemies);
 
         _enemyTimer = 0;
         
         // Update UI variables
         currentWeaponDamage.Value = _activeUnit.GetWeaponStats().damage;
         currentActionCost.Value = _activeUnit.GetWeaponStats().actionCost;
+        currentMaxAmmo.Value = _activeUnit.GetWeaponStats().maxAmmo;
     }
 
     public void UpdateEnemyMovement()
@@ -179,7 +178,7 @@ public class PlayerInteractions : MonoBehaviour
             {
                 if (player.health > 0)
                 {
-                    player.SetActionPoints(PlayerAPPerTurn.Value);
+                    player.SetActionPoints(player.unitStats.maxAP);
                 }
             }
         }
@@ -200,12 +199,12 @@ public class PlayerInteractions : MonoBehaviour
 
             foreach (var enemy in _turnSystem.enemies)
             {
-                enemy.SetActionPoints(_activeUnit.unitStats.maxAP);
+                enemy.SetActionPoints(enemy.unitStats.maxAP);
             }
         }
     }
     
-    private void SetNextUnit()
+    public void SetNextUnit()
     {
         _activeUnit.ReturnToIdle();
         CommandInvoker.ResetHistory();
@@ -222,6 +221,8 @@ public class PlayerInteractions : MonoBehaviour
         {
             SetNextUnit();
         }
+        
+        FollowPlayer();
     }
 
     private void NextEnemy()

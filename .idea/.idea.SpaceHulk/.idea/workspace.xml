@@ -113,11 +113,18 @@
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Variables/RandomAudioEvent.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Variables/ListVariable.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/CommandInvoker.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Variables/UnitStats.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Movement.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/TargetIconRenderer.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Variables/SliderSetterInt.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/UI/EnemyTargetUI.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Variables/TextSetter.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/PlayerInteractions.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/UI/VisibleEnemyUI.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/UnitySDK/Assets/ML-Agents/Scripts/Academy.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Commands/TurnCommand.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Commands/EnemyDoubleMoveCommand.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/CameraMover.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Commands/DoubleMoveCommand.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ide.rider@1.1.0/Rider/Editor/RiderInitializer.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/UnitySDK/Assets/ML-Agents/Scripts/ActionMasker.cs" root0="FORCE_HIGHLIGHTING" />
@@ -134,6 +141,7 @@
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/UI/SetWeaponName.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/SetUITextToUnit.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/UI/UIButtonHandler.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/UnitIconRenderer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/UI/Quit.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/LoadLevel.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/UI/GetWeaponImage.cs" root0="FORCE_HIGHLIGHTING" />
@@ -158,20 +166,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/Assets/UnitySDK/ML-Agents/Scripts/Academy.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/CameraFollow.cs" />
-        <option value="$PROJECT_DIR$/Assets/SetActive.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/AvatarColor.cs" />
-        <option value="$PROJECT_DIR$/Assets/SetPlayerActive.cs" />
-        <option value="$PROJECT_DIR$/Assets/Quit.cs" />
-        <option value="$PROJECT_DIR$/Assets/UnitPortrait.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Interfaces/IOpenable.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Commands/MoveForwardCommand.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Commands/EnemyMoveCommand.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Commands/EnemyDoubleMoveCommand.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Commands/DoubleMoveCommand.cs" />
-        <option value="$PROJECT_DIR$/Assets/DoorNode.cs" />
-        <option value="$PROJECT_DIR$/Assets/RedoController.cs" />
         <option value="$PROJECT_DIR$/Assets/UndoController.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/CommandInvoker.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/SpaceHulkPlayerAgent.cs" />
@@ -182,7 +176,6 @@
         <option value="$PROJECT_DIR$/Assets/Scripts/Nodes/DoorNode.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Nodes/FloorNode.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/EnemyMovement.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Movement.cs" />
         <option value="$PROJECT_DIR$/Assets/SetWeaponName.cs" />
         <option value="$PROJECT_DIR$/Assets/IsUnitAiming.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/ComplexActions.cs" />
@@ -193,22 +186,37 @@
         <option value="$PROJECT_DIR$/Assets/Scripts/Variables/TextSetter.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/ChangeBackgroundColor.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/TilemapController.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/UnitPortraitManager.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/SetUITextToUnit.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/UI/CurrentUnitUI.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/UI/SetWeaponName.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/UI/UIButtonHandler.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/UI/ReloadButtonHandler.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/UI/IsUnitAiming.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/UI/GetWeaponImage.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/TurnSystem.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Variables/WeaponStats.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Commands/MoveBackwardCommand.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Variables/APrules.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Variables/WeaponStats.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/UnitPortraitManager.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Spawner.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/UI/EnemyTargetUI.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/UI/VisibleEnemyUI.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Variables/SliderSetterInt.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/SpawnEnemies.cs" />
+        <option value="$PROJECT_DIR$/Assets/TargetIconRenderer.cs" />
+        <option value="$PROJECT_DIR$/Assets/UnitIconRenderer.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/ChangeSprite.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Variables/UnitStats.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Commands/TurnCommand.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Commands/EnemyMoveCommand.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Commands/EnemyDoubleMoveCommand.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/ShootAction.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Movement.cs" />
+        <option value="$PROJECT_DIR$/Assets/CameraMover.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/CameraFollow.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/UI/UIButtonHandler.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Unit.cs" />
         <option value="$PROJECT_DIR$/Assets/PlayerInteractions.cs" />
+        <option value="$PROJECT_DIR$/Assets/UnitySDK/Assets/ML-Agents/Scripts/Academy.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/TurnSystem.cs" />
       </list>
     </option>
   </component>
@@ -243,10 +251,10 @@
       <option name="userSelectedPid" value="false" />
       <method v="2" />
     </configuration>
-    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" pid="204">
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" pid="19408">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" value="204" />
+      <option name="pid" value="19408" />
       <option name="userSelectedPid" value="false" />
       <method v="2" />
     </configuration>
@@ -273,7 +281,7 @@
       <workItem from="1566547876998" duration="29914000" />
       <workItem from="1569426028090" duration="7031000" />
       <workItem from="1572605475364" duration="6472000" />
-      <workItem from="1575195835110" duration="6983000" />
+      <workItem from="1575195835110" duration="24721000" />
     </task>
     <servers />
   </component>
@@ -305,6 +313,19 @@
           <properties exception="System.Threading.ThreadAbortException" displayValue="System.Threading.ThreadAbortException" />
           <option name="timeStamp" value="1" />
         </breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Assets/Scripts/SpawnEnemies.cs</url>
+          <line>31</line>
+          <properties documentPath="$PROJECT_DIR$/Assets/Scripts/SpawnEnemies.cs" initialLine="31">
+            <startOffsets>
+              <option value="816" />
+            </startOffsets>
+            <endOffsets>
+              <option value="925" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="10" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>

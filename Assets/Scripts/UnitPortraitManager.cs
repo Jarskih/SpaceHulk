@@ -9,10 +9,13 @@ public class UnitPortraitManager : MonoBehaviour
     private TurnSystem _turnSystem;
     private PlayerInteractions _pi;
     public Image activeIndicator;
+    private Slider _slider;
 
     // Start is called before the first frame update
     private void Start()
     {
+        _slider = GetComponentInChildren<Slider>();
+        _slider.maxValue = unit.unitStats.maxAP;
         image = GetComponent<Image>();
         unitPortrait = GetComponentInParent<UnitPortrait>();
         _pi = FindObjectOfType<PlayerInteractions>();
@@ -27,6 +30,8 @@ public class UnitPortraitManager : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
+        _slider.value = unit.actionPoints;
+
         if (unit.health <= 0)
         {
             image.sprite = unitPortrait._unitDead;

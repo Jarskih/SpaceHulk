@@ -5,6 +5,9 @@ using UnityEngine;
 public class ShootAction : MonoBehaviour
 {
     public IntVariable targetIndex;
+    public IntVariable targetHealth;
+    public IntVariable targetMaxHealth;
+    public StringVariable targetName;
     public WeaponStats weaponStats;
     public IntVariable ammoUI;
     private Unit _unit;
@@ -18,7 +21,7 @@ public class ShootAction : MonoBehaviour
         _unit = GetComponent<Unit>();
         _tilemapController = FindObjectOfType<TilemapController>();
         ammo = weaponStats.maxAmmo;
-        ammoUI.Value = ammo;
+        ammoUI.Value = weaponStats.maxAmmo;
     }
 
     public void Act(IEnumerable<Unit> enemies)
@@ -28,22 +31,22 @@ public class ShootAction : MonoBehaviour
 
     private void ReturnToIdle()
     {
-        if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
+        if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
             _unit.ReturnToIdle();
         }
 
-        if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
+        if (Input.GetKeyDown(KeyCode.RightArrow))
         {
             _unit.ReturnToIdle();
         }
 
-        if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
+        if (Input.GetKeyDown(KeyCode.UpArrow))
         {
             _unit.ReturnToIdle();
         }
 
-        if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
+        if (Input.GetKeyDown(KeyCode.DownArrow))
         {
             _unit.ReturnToIdle();
         }
@@ -62,17 +65,17 @@ public class ShootAction : MonoBehaviour
         // Left Side 
         {
             var startingPos = _unit.TargetPos + transform.right;
-            FindEnemiesInLine(10, startingPos);
+            FindEnemiesInLine(weaponStats.range, startingPos);
         }
         // Middle
         {
             var startingPos = _unit.TargetPos;
-            FindEnemiesInLine(10, startingPos);
+            FindEnemiesInLine(weaponStats.range, startingPos);
         }
         // Right
         {
             var startingPos = _unit.TargetPos - transform.right;
-            FindEnemiesInLine(10, startingPos);
+            FindEnemiesInLine(weaponStats.range, startingPos);
         }
     }
 
@@ -82,9 +85,23 @@ public class ShootAction : MonoBehaviour
 
         if (_unit.enemyTargets.list.Count > 0)
         {
+            targetHealth.Value = _unit.enemyTargets.list[index].health;
+            targetMaxHealth.Value = _unit.enemyTargets.list[index].unitStats.maxHealth;
+            targetName.Value = _unit.enemyTargets.list[index].unitStats.unitName;
             return _unit.enemyTargets.list[index] != null;
         }
         return false;
+    }
+    
+    public void NextTarget()
+    {
+        var nextIndex = targetIndex.Value + 1;
+        if (nextIndex >= _unit.enemyTargets.list.Count)
+        {
+            nextIndex = 0;
+        }
+
+        TargetEnemy(nextIndex);
     }
 
     public void ClearTargetingTiles()
@@ -173,11 +190,11 @@ public class ShootAction : MonoBehaviour
         if (ammo <= 0)
         {
             EventManager.TriggerEvent("NoAmmo");
+            ReturnToIdle();
+            ClearTargetingTiles();
             return;
         }
 
-        FindClosestEnemy();
-        
         if (_unit.enemyTargets.list.Count() > 0)
         {
             EventManager.TriggerEvent(weaponStats.name);
@@ -191,22 +208,15 @@ public class ShootAction : MonoBehaviour
                         break;
                     }
 
-                    var enemy = FindClosestEnemy();
-                    if (enemy != null)
-                    {
-                        enemy.TakeDamage(weaponStats.damage);
-                        ammo--;
-                        ammoUI.Value = ammo;
-                    }
-                    else
-                    {
-                        break;
-                    }
+                    _unit.enemyTargets.list[targetIndex.Value].TakeDamage(weaponStats.damage);
+                    ammo--;
+                    ammoUI.Value = ammo;
+                    NextTarget();
                 }
             }
             else
             {
-                FindClosestEnemy().TakeDamage(weaponStats.damage);
+                _unit.enemyTargets.list[targetIndex.Value].TakeDamage(weaponStats.damage);
                 ammo--;
                 ammoUI.Value = ammo;
             }
@@ -248,14 +258,5 @@ public class ShootAction : MonoBehaviour
             }
         }
         return closest;
-    }
-
-    public void NextTarget()
-    {
-        targetIndex.Value += 1;
-        if (targetIndex.Value >= _unit.enemyTargets.list.Count)
-        {
-            targetIndex.Value = 0;
-        }
     }
 }

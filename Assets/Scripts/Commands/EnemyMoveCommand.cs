@@ -20,6 +20,7 @@ public class EnemyMoveCommand : ICommand
     public void Execute()
     {
         _unit.UpdateCurrentTile(_transform.position + _direction);
+        _unit.GetComponentInChildren<UnitIconRenderer>().transform.up = _direction.normalized;
         _unit.UpdateMovementPoints(-_moveCost);
         EventManager.TriggerEvent("EnemyMove");
         

@@ -13,7 +13,7 @@ public class TurnCommand : ICommand
     public TurnCommand(Unit unit, int angle)
     {
         _unit = unit;
-        _moveCost = _unit.APrules.turning;
+        _moveCost = _unit.APrules.turning + _unit.unitStats.turningCostExtra;
         _angle = angle;
     }
     

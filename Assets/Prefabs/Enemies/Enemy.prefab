@@ -1,5 +1,17 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &8798708062159393204
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2951848986700113234}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fac71091cb21a25428a298f4749fc9e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &7896100799333519304
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11,22 +23,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Enemy
-      objectReference: {fileID: 0}
-    - target: {fileID: 8821393952440982105, guid: d64a5d1f878976049b053a53e477da2f,
-        type: 3}
-      propertyPath: brain
-      value: 
-      objectReference: {fileID: 11400000, guid: c89b1bb356ce11f4284355735b3c0fae,
-        type: 2}
-    - target: {fileID: 8821393952440982105, guid: d64a5d1f878976049b053a53e477da2f,
-        type: 3}
-      propertyPath: agentParameters.resetOnDone
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8821393952440982105, guid: d64a5d1f878976049b053a53e477da2f,
-        type: 3}
-      propertyPath: maskActions
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4999988259447710836, guid: d64a5d1f878976049b053a53e477da2f,
         type: 3}
@@ -83,10 +79,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4094675398754299362, guid: d64a5d1f878976049b053a53e477da2f,
+    - target: {fileID: 4999988260633094808, guid: d64a5d1f878976049b053a53e477da2f,
         type: 3}
-      propertyPath: timeBetweenDecisions
-      value: 0.3
-      objectReference: {fileID: 0}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: bf194386366e2914f8bda3fe122535f0,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d64a5d1f878976049b053a53e477da2f, type: 3}
+--- !u!1 &2951848986700113234 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4999988260633094810, guid: d64a5d1f878976049b053a53e477da2f,
+    type: 3}
+  m_PrefabInstance: {fileID: 7896100799333519304}
+  m_PrefabAsset: {fileID: 0}

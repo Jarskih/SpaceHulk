@@ -4,15 +4,13 @@ public class ChangeSprite : MonoBehaviour
 {
     public StatsListVariable enemyTargets;
     public IntVariable targetIndex;
-    public Sprite normal;
-    public Sprite targeted;
 
     private Unit _unit;
-    private SpriteRenderer _spriteRenderer;
+    private SpriteRenderer _targetRenderer;
 
     void Start()
     {
-        _spriteRenderer = GetComponent<SpriteRenderer>();
+        _targetRenderer = GetComponentInChildren<TargetIconRenderer>().GetComponent<SpriteRenderer>();
         _unit = GetComponentInParent<Unit>();
     }
 
@@ -20,26 +18,21 @@ public class ChangeSprite : MonoBehaviour
     {
         if (enemyTargets.list.Count == 0)
         {
-            SetNormal();
+            SetTargeted(false);
             return;
         }
         
         if (enemyTargets.list[targetIndex.Value] == _unit)
         {
-            SetTargeted();
+            SetTargeted(true);
         }
         else
         {
-            SetNormal();
+            SetTargeted(false);
         }
     }
-    void SetTargeted()
+    void SetTargeted(bool value)
     {
-        _spriteRenderer.sprite = targeted;
-    }
-
-    void SetNormal()
-    {
-        _spriteRenderer.sprite = normal;
+        _targetRenderer.enabled = value;
     }
 }

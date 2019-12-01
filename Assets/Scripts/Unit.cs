@@ -15,12 +15,14 @@ public class Unit : MonoBehaviour
     public int actionPoints;
     public GameObject currentNode;
     private Vector3 _targetPos;
-    private ChangeSprite _changeSprite;
     private IMove _movement;
     private ShootAction _shootAction;
     private int _health;
     private Tilemap _tileMap;
-    private TurnSystem _turnSystem;
+    private PlayerInteractions _pi;
+    public BoolVariable enableTargetingUI;
+
+    private UnitIconRenderer unitIconRenderer;
 
     public enum UnitType
     {
@@ -44,34 +46,37 @@ public class Unit : MonoBehaviour
 
     private void Start()
     {
+        _pi = FindObjectOfType<PlayerInteractions>();
         setActive = GetComponentInChildren<SetActive>();
-        _changeSprite = GetComponentInChildren<ChangeSprite>();
-        _turnSystem = FindObjectOfType<TurnSystem>();
         _movement = GetComponent<IMove>();
         _shootAction = GetComponent<ShootAction>();
         _tileMap = FindObjectOfType<Tilemap>();
         StartCoroutine(SaveCurrentTile());
         startingPos = transform.position;
-        if (unitType == UnitType.Marine)
-        {
-            _health = unitStats.maxHealth;
-            actionPoints = unitStats.maxAP;
-        }
-        else
-        {
-            _health = 1;
-        }
+
+        _health = unitStats.maxHealth; 
+        actionPoints = unitStats.maxAP;
+
+        enableTargetingUI.Value = false;
+
+        unitIconRenderer = GetComponentInChildren<UnitIconRenderer>();
+        unitIconRenderer.GetComponent<SpriteRenderer>().sprite = unitStats.unitSprite;
     }
 
     private void Update()
     {
         //transform.position = TargetPos;
+        if (Vector3.Distance(TargetPos, transform.position) > 0.1f)
+        {
+            _pi.FollowPlayer();
+        }
         transform.position = Vector3.MoveTowards(transform.position, TargetPos, 0.3f);
         //UpdateCurrentTile(targetPos);
     }
 
     public void ReturnToIdle()
     {
+        enableTargetingUI.Value = false;
         _currentState = UnitState.Idle;
         _shootAction?.ClearTargetingTiles();
     }
@@ -130,6 +135,16 @@ public class Unit : MonoBehaviour
 
         if (currentState == UnitState.Idle)
         {
+            if (Input.GetKeyDown(KeyCode.Tab))
+            {
+                _pi.SetNextUnit();
+            }
+
+            if (actionPoints == 0)
+            {
+                return;
+            }
+            
             _movement.Act();
             _shootAction?.UpdateAmmo();
             _shootAction.ClearTargetingTiles();
@@ -143,6 +158,8 @@ public class Unit : MonoBehaviour
 
         if (currentState == UnitState.Shooting)
         {
+            enableTargetingUI.Value = true;
+            
             if (Input.GetKeyDown(KeyCode.Tab))
             {
                 _shootAction.NextTarget();
@@ -174,6 +191,10 @@ public class Unit : MonoBehaviour
         BloodCreator.CreateBlood(currentNode.transform.position, blood);
         if (_health > 0)
         {
+            if (unitType == UnitType.Marine)
+            {
+                EventManager.TriggerEvent("Wounded");   
+            }
             return;
         }
         

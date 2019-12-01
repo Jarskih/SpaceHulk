@@ -6,6 +6,8 @@ public class CameraFollow : MonoBehaviour
 {
     private Camera _cam;
     private Vector3 _target;
+    public bool followEnabled;
+    public float maxDist = 0.3f;
     
     // Start is called before the first frame update
     void Start()
@@ -16,7 +18,10 @@ public class CameraFollow : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        _cam.transform.position = Vector3.MoveTowards(_cam.transform.position, new Vector3(_target.x, _target.y, _cam.transform.position.z), 0.3f);
+        if (followEnabled)
+        {
+            _cam.transform.position = Vector3.MoveTowards(_cam.transform.position, new Vector3(_target.x, _target.y, _cam.transform.position.z), maxDist);
+        }
     }
 
     public void SetTarget(Vector3 target)

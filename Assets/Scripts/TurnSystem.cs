@@ -10,9 +10,12 @@ public class TurnSystem : MonoBehaviour
     [SerializeField] private List<Unit> _enemies;
     [SerializeField] private List<Unit> _players;
 
+    [SerializeField] private List<UnitStats> _enemyTypes;
+    
     [SerializeField] private Phases currentPhase;
     private GameObject _objective;
     private SpawnEnemies _spawnEnemies;
+    private CameraFollow _camFollow;
     private bool spawnedPlayers;
     [SerializeField]
     private int maxEnemies = 12;
@@ -50,20 +53,22 @@ public class TurnSystem : MonoBehaviour
     private void Start()
     {
         _pi = GetComponent<PlayerInteractions>();
-        Application.targetFrameRate = 60;
+        QualitySettings.vSyncCount = 1;
         _objective = GameObject.FindWithTag("Objective");
         if (_objective == null)
         {
             Debug.LogError("Objective missing from level");
 
         }
+
+        _camFollow = FindObjectOfType<CameraFollow>();
         
         // First phase
         currentPhase = Phases.Movement;
 
         // Spawn enemies
         _spawnEnemies = GetComponent<SpawnEnemies>();
-        _spawnEnemies.Spawn(GetEnemiesSpawned());
+        _spawnEnemies.Spawn(GetEnemiesSpawned(), _enemyTypes);
 
         UpdateEnemyList();
 
@@ -142,14 +147,16 @@ public class TurnSystem : MonoBehaviour
                 _pi.UpdateMovement();
                 break;
             case (Phases.EnemyMovement):
+                _camFollow.followEnabled = true;
                 _pi.UpdateEnemyMovement();
                 break;
             case (Phases.EnemySpawn):
+                _camFollow.followEnabled = false;
                 if (maxEnemies > _enemies.Count)
                 {
                     // Do not spawn more than maxEnemies
                     int enemiesToSpawn = Mathf.Clamp(maxEnemies - _enemies.Count, 0, maxEnemiesSpawnedPerTurn);
-                    _spawnEnemies.Spawn(enemiesToSpawn);
+                    _spawnEnemies.Spawn(enemiesToSpawn, _enemyTypes);
                     UpdateEnemyList();
                 }
                 SetNextPhase();

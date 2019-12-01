@@ -42,4 +42,9 @@ public class UIButtonHandler : MonoBehaviour
     {
         CommandInvoker.Redo();
     }
+
+    public void ReturnToIdle()
+    {
+        _pi.activeUnit.ReturnToIdle();
+    }
 }

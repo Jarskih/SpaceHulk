@@ -81,10 +81,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   actionPoints: {fileID: 11400000, guid: 4b1ccb44bb0f6214a998095ee82d564a, type: 2}
-  PlayerAPPerTurn: {fileID: 11400000, guid: 3a3af4e0087d73c49a6c820503ad9490, type: 2}
   currentWeaponDamage: {fileID: 11400000, guid: e1ceb881210267f4383cadc1d4a276be,
     type: 2}
   currentActionCost: {fileID: 11400000, guid: e0c348439e87c7d41966b41afa9478f0, type: 2}
+  currentMaxAmmo: {fileID: 11400000, guid: 37b135e05de9a1f4ba4a6101db7761f5, type: 2}
   _activeUnit: {fileID: 0}
   activeUnitIndex: 0
   _activeEnemyIndex: 0
@@ -101,14 +101,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b8f94b9e79fad747b9e36b5379e4f90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minEnemiesSpawnedPerTurn: 4
-  maxEnemiesSpawnedPerTurn: 8
+  minEnemiesSpawnedPerTurn: 6
+  maxEnemiesSpawnedPerTurn: 12
   _enemies: []
   _players:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  _enemyTypes:
+  - {fileID: 11400000, guid: 2d21dd831c5f3a4448da9922a2b44bcd, type: 2}
+  - {fileID: 11400000, guid: 3d4e568b2e69be0479dcded0e1dfa55f, type: 2}
+  - {fileID: 11400000, guid: 885e1c4b16f5f174b902d138c01e774b, type: 2}
+  - {fileID: 11400000, guid: 40d4b23d56f88244797379688659c8e4, type: 2}
   currentPhase: 0
   maxEnemies: 12
 --- !u!114 &1401116394
