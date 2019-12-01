@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86379b7fd809de64e86384193aaad763, type: 3}
   m_Name: APrules
   m_EditorClassIdentifier: 
+  backwardsMove: 2
   moving: 1
-  playerAttacking: 2
   enemyAttacking: 6
   turning: 1

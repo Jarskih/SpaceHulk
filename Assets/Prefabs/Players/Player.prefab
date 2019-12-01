@@ -48,12 +48,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2894534e139f8374eaf74ea8e6167a94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  APrules: {fileID: 11400000, guid: ac6b57c383ec70a4cbe16a70b09549a6, type: 2}
-  actionPoints: 0
-  enemyTargets: {fileID: 11400000, guid: 8b3237d8c41e30540a77cdb930212f30, type: 2}
-  currentNode: {fileID: 0}
+  blood: {fileID: 0}
+  unitStats: {fileID: 0}
   unitType: 1
-  currentState: 0
+  setActive: {fileID: 0}
+  APrules: {fileID: 11400000, guid: ac6b57c383ec70a4cbe16a70b09549a6, type: 2}
+  enemyTargets: {fileID: 11400000, guid: 8b3237d8c41e30540a77cdb930212f30, type: 2}
+  actionPoints: 0
+  currentNode: {fileID: 0}
+  _currentState: 0
   startingPos: {x: 0, y: 0, z: 0}
 --- !u!114 &1731015295
 MonoBehaviour:
@@ -82,9 +85,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 251b941edd9ac5a4a91f03cb1b4b4748, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  targetIndex: {fileID: 11400000, guid: 0902482cb1007654590c253f65a03c3d, type: 2}
+  weaponStats: {fileID: 0}
   ammoUI: {fileID: 0}
+  _tiles: []
   ammo: 0
-  maxAmmo: 0
 --- !u!114 &1555154700
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -155,6 +160,7 @@ SpriteRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -234,6 +240,7 @@ SpriteRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0

@@ -14,7 +14,7 @@ public class MoveBackwardCommand : ICommand
         _unit = unit;
         _transform = _unit.transform;
         _direction = -_transform.up;
-        _moveCost = _unit.APrules.moving;
+        _moveCost = _unit.APrules.backwardsMove;
     }
     
     public void Execute()

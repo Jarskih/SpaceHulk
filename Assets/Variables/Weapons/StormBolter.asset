@@ -14,7 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Storm Bolter
   shotsPerBurst: 2
-  damage: 1
+  damage: 3
   reloading: 2
   maxAmmo: 6
   weaponImage: {fileID: 21300000, guid: 18181b55e0979634aacef9d0233abff7, type: 3}
+  actionCost: 1
+  range: 12

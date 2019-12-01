@@ -206,5 +206,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyTargets: {fileID: 11400000, guid: 8b3237d8c41e30540a77cdb930212f30, type: 2}
+  targetIndex: {fileID: 11400000, guid: 0902482cb1007654590c253f65a03c3d, type: 2}
   normal: {fileID: 21300000, guid: 19016c363984b1a46b40236f971f3359, type: 3}
   targeted: {fileID: 21300000, guid: eaf292e9f0227b04fa94b27fe50d6504, type: 3}

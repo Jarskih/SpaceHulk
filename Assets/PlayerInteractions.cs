@@ -6,7 +6,9 @@ public class PlayerInteractions : MonoBehaviour
 {
     public IntVariable actionPoints;
     public IntVariable PlayerAPPerTurn;
-    
+    public IntVariable currentWeaponDamage;
+    public IntVariable currentActionCost;
+
     private SetPlayerActive _setPlayerActive;
     [SerializeField] private Unit _activeUnit;
     private TurnSystem _turnSystem;
@@ -116,6 +118,10 @@ public class PlayerInteractions : MonoBehaviour
         }
 
         _enemyTimer = 0;
+        
+        // Update UI variables
+        currentWeaponDamage.Value = _activeUnit.GetWeaponStats().damage;
+        currentActionCost.Value = _activeUnit.GetWeaponStats().actionCost;
     }
 
     public void UpdateEnemyMovement()
@@ -236,6 +242,7 @@ public class PlayerInteractions : MonoBehaviour
     
     public void SetActiveUnit(Unit unit)
     {
+        _activeUnit.ReturnToIdle();
         _activeUnit = unit;
         activeUnitIndex = 0;
     }

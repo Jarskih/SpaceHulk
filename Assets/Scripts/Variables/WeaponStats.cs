@@ -9,4 +9,6 @@ public class WeaponStats : ScriptableObject
     public int reloading;
     public int maxAmmo;
     public Sprite weaponImage;
+    public int actionCost;
+    public int range;
 }

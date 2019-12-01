@@ -108,7 +108,7 @@
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Unit.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/EventManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Variables/APrules.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/SpaceHulkPlayerAgent.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/SetPlayerActive.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Variables/WeaponStats.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Variables/RandomAudioEvent.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Variables/ListVariable.cs" root0="FORCE_HIGHLIGHTING" />
@@ -120,6 +120,7 @@
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Commands/EnemyDoubleMoveCommand.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Commands/DoubleMoveCommand.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ide.rider@1.1.0/Rider/Editor/RiderInitializer.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/UnitySDK/Assets/ML-Agents/Scripts/ActionMasker.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/ShootAction.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Commands/MoveForwardCommand.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Commands/EnemyMoveCommand.cs" root0="FORCE_HIGHLIGHTING" />
@@ -134,6 +135,7 @@
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/SetUITextToUnit.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/UI/UIButtonHandler.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/UI/Quit.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/LoadLevel.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/UI/GetWeaponImage.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/UI/IsUnitAiming.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/UI/ReloadButtonHandler.cs" root0="FORCE_HIGHLIGHTING" />
@@ -141,14 +143,12 @@
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/SpawnPlayers.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/CameraFollow.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/ChangeBackgroundColor.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/SpaceHulkAgent.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/PlayAudio.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Spawner.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/ChangeSprite.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/FloorTile.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Interfaces/ITargetable.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/EnemyMovement.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/SpaceHulkAcademy.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Interfaces/IOpenable.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Interfaces/IMove.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Interfaces/IWalkable.cs" root0="FORCE_HIGHLIGHTING" />
@@ -158,8 +158,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/Assets/Scripts/Variables/APrules.cs" />
-        <option value="$PROJECT_DIR$/Assets/HideUI.cs" />
         <option value="$PROJECT_DIR$/Assets/UnitySDK/ML-Agents/Scripts/Academy.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/CameraFollow.cs" />
         <option value="$PROJECT_DIR$/Assets/SetActive.cs" />
@@ -185,23 +183,17 @@
         <option value="$PROJECT_DIR$/Assets/Scripts/Nodes/FloorNode.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/EnemyMovement.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Movement.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Commands/MoveBackwardCommand.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Variables/WeaponStats.cs" />
         <option value="$PROJECT_DIR$/Assets/SetWeaponName.cs" />
         <option value="$PROJECT_DIR$/Assets/IsUnitAiming.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/ComplexActions.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Unit.cs" />
         <option value="$PROJECT_DIR$/Assets/SetUITextToUnit.cs" />
         <option value="$PROJECT_DIR$/Assets/LoadLevel.cs" />
         <option value="$PROJECT_DIR$/Assets/ReturnToMenu.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/ShootAction.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/SpaceHulkAgent.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Variables/TextSetter.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/ChangeBackgroundColor.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/TilemapController.cs" />
-        <option value="$PROJECT_DIR$/Assets/PlayerInteractions.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/UnitPortraitManager.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/TurnSystem.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/SetUITextToUnit.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/UI/CurrentUnitUI.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/UI/SetWeaponName.cs" />
@@ -209,6 +201,14 @@
         <option value="$PROJECT_DIR$/Assets/Scripts/UI/ReloadButtonHandler.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/UI/IsUnitAiming.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/UI/GetWeaponImage.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/TurnSystem.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Variables/WeaponStats.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Commands/MoveBackwardCommand.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Variables/APrules.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/ChangeSprite.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/ShootAction.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Unit.cs" />
+        <option value="$PROJECT_DIR$/Assets/PlayerInteractions.cs" />
       </list>
     </option>
   </component>
@@ -220,6 +220,7 @@
     <property name="Rider.ProjectViewActivator.IsNotFirstRun" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="preferences.build.unityPlugin" />
   </component>
   <component name="RunDashboard">
@@ -272,7 +273,7 @@
       <workItem from="1566547876998" duration="29914000" />
       <workItem from="1569426028090" duration="7031000" />
       <workItem from="1572605475364" duration="6472000" />
-      <workItem from="1575195835110" duration="2845000" />
+      <workItem from="1575195835110" duration="6983000" />
     </task>
     <servers />
   </component>
@@ -304,19 +305,6 @@
           <properties exception="System.Threading.ThreadAbortException" displayValue="System.Threading.ThreadAbortException" />
           <option name="timeStamp" value="1" />
         </breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/Scripts/ShootAction.cs</url>
-          <line>170</line>
-          <properties documentPath="$PROJECT_DIR$/Assets/Scripts/ShootAction.cs" initialLine="170">
-            <startOffsets>
-              <option value="4446" />
-            </startOffsets>
-            <endOffsets>
-              <option value="4480" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>

@@ -82,6 +82,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   actionPoints: {fileID: 11400000, guid: 4b1ccb44bb0f6214a998095ee82d564a, type: 2}
   PlayerAPPerTurn: {fileID: 11400000, guid: 3a3af4e0087d73c49a6c820503ad9490, type: 2}
+  currentWeaponDamage: {fileID: 11400000, guid: e1ceb881210267f4383cadc1d4a276be,
+    type: 2}
+  currentActionCost: {fileID: 11400000, guid: e0c348439e87c7d41966b41afa9478f0, type: 2}
   _activeUnit: {fileID: 0}
   activeUnitIndex: 0
   _activeEnemyIndex: 0

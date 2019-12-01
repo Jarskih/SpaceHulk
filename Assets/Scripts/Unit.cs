@@ -73,7 +73,6 @@ public class Unit : MonoBehaviour
     public void ReturnToIdle()
     {
         _currentState = UnitState.Idle;
-        enemyTargets.list.Clear();
         _shootAction?.ClearTargetingTiles();
     }
 
@@ -133,6 +132,7 @@ public class Unit : MonoBehaviour
         {
             _movement.Act();
             _shootAction?.UpdateAmmo();
+            _shootAction.ClearTargetingTiles();
             enemyTargets.list.Clear();
             if (Input.GetKeyDown(KeyCode.Space))
             {
@@ -143,6 +143,11 @@ public class Unit : MonoBehaviour
 
         if (currentState == UnitState.Shooting)
         {
+            if (Input.GetKeyDown(KeyCode.Tab))
+            {
+                _shootAction.NextTarget();
+            }
+            
             _shootAction.Act(enemies);
             if (Input.GetKeyDown(KeyCode.Space))
             {
@@ -165,26 +170,24 @@ public class Unit : MonoBehaviour
     public void TakeDamage(int damage)
     {
         _health -= damage;
-        Mathf.Clamp(_health, 0, 5);
+        Mathf.Max(_health, 0);
+        BloodCreator.CreateBlood(currentNode.transform.position, blood);
+        if (_health > 0)
+        {
+            return;
+        }
+        
         if (unitType == UnitType.Marine)
         {
-            if (_health > 0)
-            {
-                return;
-            }
-
             EventManager.TriggerEvent("Die");
             foreach (var spriteRenderer in GetComponentsInChildren<SpriteRenderer>())
             {
                 spriteRenderer.enabled = false;
             }
-
-            BloodCreator.CreateBlood(currentNode.transform.position, blood);
         }
         else
         {
             EventManager.TriggerEvent("EnemyDie");
-            BloodCreator.CreateBlood(currentNode.transform.position, blood);
             Destroy(gameObject);
         }
     }
@@ -209,10 +212,19 @@ public class Unit : MonoBehaviour
 
     public void Aim()
     {
-        if (actionPoints >= APrules.playerAttacking)
+        if (actionPoints >= GetWeaponStats().actionCost)
         {
+            // Check all targets and target first one in list
             _shootAction.FindTargets();
-            _currentState = UnitState.Shooting;
+            if (_shootAction.TargetEnemy())
+            {
+                _currentState = UnitState.Shooting;
+            }
+            else
+            {
+                EventManager.TriggerEvent("Negative");
+                _currentState = UnitState.Idle;
+            }
         }
         else
         {
@@ -230,7 +242,7 @@ public class Unit : MonoBehaviour
     {
         if (currentState == UnitState.Shooting)
         {
-            if (actionPoints >= APrules.playerAttacking)
+            if (actionPoints >= GetWeaponStats().actionCost)
             {
                 _shootAction.Shoot();
             }
@@ -247,7 +259,7 @@ public class Unit : MonoBehaviour
 
     public bool CanShoot()
     {
-        return actionPoints >= APrules.playerAttacking && enemyTargets.list.Count > 0;
+        return actionPoints >= GetWeaponStats().actionCost && enemyTargets.list.Count > 0;
     }
 
     public bool CanReload()

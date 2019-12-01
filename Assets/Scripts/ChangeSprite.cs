@@ -3,6 +3,7 @@
 public class ChangeSprite : MonoBehaviour
 {
     public StatsListVariable enemyTargets;
+    public IntVariable targetIndex;
     public Sprite normal;
     public Sprite targeted;
 
@@ -17,7 +18,13 @@ public class ChangeSprite : MonoBehaviour
 
     void Update()
     {
-        if (enemyTargets.list.Contains(_unit))
+        if (enemyTargets.list.Count == 0)
+        {
+            SetNormal();
+            return;
+        }
+        
+        if (enemyTargets.list[targetIndex.Value] == _unit)
         {
             SetTargeted();
         }

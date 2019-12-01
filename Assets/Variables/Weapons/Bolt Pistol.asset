@@ -9,9 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9c426522d52d80243928c73a4d777bf0, type: 3}
-  m_Name: Enemy
+  m_Script: {fileID: 11500000, guid: 6bdddc177437b584aa9331206222c1cb, type: 3}
+  m_Name: Bolt Pistol
   m_EditorClassIdentifier: 
-  unitName: Enemy
-  maxHealth: 1
-  maxAP: 5
+  name: Bolt Pistol
+  shotsPerBurst: 1
+  damage: 2
+  reloading: 1
+  maxAmmo: 6
+  weaponImage: {fileID: 0}
+  actionCost: 1
+  range: 6

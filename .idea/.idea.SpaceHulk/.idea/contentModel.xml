@@ -7,6 +7,11 @@
       <e p="Assets" t="Include">
         <e p="PlayerInteractions.cs" t="Include" />
         <e p="Scripts" t="Include">
+          <e p="Agents" t="Include">
+            <e p="SpaceHulkAcademy.cs" t="Include" />
+            <e p="SpaceHulkAgent.cs" t="Include" />
+            <e p="SpaceHulkPlayerAgent.cs" t="Include" />
+          </e>
           <e p="Aim.cs" t="Include" />
           <e p="AvatarColor.cs" t="Include" />
           <e p="BloodCreator.cs" t="Include" />
@@ -51,9 +56,6 @@
           <e p="SetUITextToUnit.cs" t="Include" />
           <e p="ShootAction.cs" t="Include" />
           <e p="SmoothColorTransition.cs" t="Include" />
-          <e p="SpaceHulkAcademy.cs" t="Include" />
-          <e p="SpaceHulkAgent.cs" t="Include" />
-          <e p="SpaceHulkPlayerAgent.cs" t="Include" />
           <e p="SpawnEnemies.cs" t="Include" />
           <e p="Spawner.cs" t="Include" />
           <e p="SpawnPlayers.cs" t="Include" />

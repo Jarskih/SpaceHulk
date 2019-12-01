@@ -482,8 +482,9 @@ GameObject:
   - component: {fileID: 855341923}
   - component: {fileID: 855341922}
   - component: {fileID: 855341924}
+  - component: {fileID: 855341925}
   m_Layer: 5
-  m_Name: TextMeshPro Text (4)
+  m_Name: Level3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -672,8 +673,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1644361250}
-        m_MethodName: LoadScene
+      - m_Target: {fileID: 855341925}
+        m_MethodName: set_name
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -685,6 +686,18 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &855341925
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 855341920}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7f59d2731aaf494f9bd0525465ab4cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1000141483
 GameObject:
   m_ObjectHideFlags: 0
@@ -972,7 +985,7 @@ GameObject:
   - component: {fileID: 1117170660}
   - component: {fileID: 1117170659}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: Musicplayer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1100,8 +1113,9 @@ GameObject:
   - component: {fileID: 1530228072}
   - component: {fileID: 1530228071}
   - component: {fileID: 1530228073}
+  - component: {fileID: 1530228074}
   m_Layer: 5
-  m_Name: TextMeshPro Text (3)
+  m_Name: Level2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1290,8 +1304,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1644361250}
-        m_MethodName: LoadScene
+      - m_Target: {fileID: 1530228074}
+        m_MethodName: set_name
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1303,6 +1317,18 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &1530228074
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1530228069}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7f59d2731aaf494f9bd0525465ab4cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1617835502
 GameObject:
   m_ObjectHideFlags: 0
@@ -1541,8 +1567,9 @@ GameObject:
   - component: {fileID: 1841851719}
   - component: {fileID: 1841851718}
   - component: {fileID: 1841851720}
+  - component: {fileID: 1841851721}
   m_Layer: 5
-  m_Name: TextMeshPro Text (2)
+  m_Name: Level1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1731,8 +1758,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1644361250}
-        m_MethodName: LoadScene
+      - m_Target: {fileID: 1841851721}
+        m_MethodName: set_name
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1744,3 +1771,15 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &1841851721
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1841851716}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7f59d2731aaf494f9bd0525465ab4cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
