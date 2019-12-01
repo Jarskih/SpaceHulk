@@ -142,6 +142,7 @@
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/SetUITextToUnit.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/UI/UIButtonHandler.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/UnitIconRenderer.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/ReturnToMenu.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/UI/Quit.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/LoadLevel.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/UI/GetWeaponImage.cs" root0="FORCE_HIGHLIGHTING" />
@@ -215,8 +216,8 @@
         <option value="$PROJECT_DIR$/Assets/Scripts/UI/UIButtonHandler.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Unit.cs" />
         <option value="$PROJECT_DIR$/Assets/PlayerInteractions.cs" />
-        <option value="$PROJECT_DIR$/Assets/UnitySDK/Assets/ML-Agents/Scripts/Academy.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/TurnSystem.cs" />
+        <option value="$PROJECT_DIR$/Assets/UnitySDK/Assets/ML-Agents/Scripts/Academy.cs" />
       </list>
     </option>
   </component>
@@ -281,7 +282,7 @@
       <workItem from="1566547876998" duration="29914000" />
       <workItem from="1569426028090" duration="7031000" />
       <workItem from="1572605475364" duration="6472000" />
-      <workItem from="1575195835110" duration="24721000" />
+      <workItem from="1575195835110" duration="25627000" />
     </task>
     <servers />
   </component>
