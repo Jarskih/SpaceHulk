@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Bolter
   shotsPerBurst: 1
-  damage: 3
+  damage: 2
   reloading: 2
   maxAmmo: 6
   weaponImage: {fileID: 21300000, guid: 2e16063f55cffef42be41a45f3048af2, type: 3}

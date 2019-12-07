@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unitName: Broodlord
   maxHealth: 4
-  maxAP: 4
+  maxAP: 8
   unitSprite: {fileID: 21300000, guid: 5d5e10bedcfb7a64eb2460d643b2aec4, type: 3}
   unitIcon: {fileID: 21300000, guid: 5d5e10bedcfb7a64eb2460d643b2aec4, type: 3}
+  turningCostExtra: 0
+  meleeDamage: 1

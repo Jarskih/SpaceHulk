@@ -18,6 +18,7 @@ public class SetWeaponName : MonoBehaviour
     private void Update()
     {
         var unit = _pi.activeUnit;
+        if (unit == null) return;
         if (_pi.activeUnit.unitType == Unit.UnitType.Marine)
         {
             _unit = unit;

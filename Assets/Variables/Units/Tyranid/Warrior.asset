@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unitName: Warrior
   maxHealth: 6
-  maxAP: 3
+  maxAP: 8
   unitSprite: {fileID: 21300000, guid: f625e654ee50db84eb0cbdd423f5723f, type: 3}
   unitIcon: {fileID: 21300000, guid: f625e654ee50db84eb0cbdd423f5723f, type: 3}
+  turningCostExtra: 0
+  meleeDamage: 2

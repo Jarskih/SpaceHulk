@@ -17,9 +17,12 @@ public class CurrentUnitUI : MonoBehaviour
 
     private void Update()
     {
-        _activeUnit = _pi.activeUnit;
-        currentAP.Value = _activeUnit.actionPoints;
-        currentHealth.Value = _activeUnit.health;
-        currentUnitName.Value = _activeUnit.unitStats.unitName;
+        if (_pi.activeUnit != null)
+        {
+            _activeUnit = _pi.activeUnit;
+            currentAP.Value = _activeUnit.actionPoints;
+            currentHealth.Value = _activeUnit.health;
+            currentUnitName.Value = _activeUnit.unitStats.unitName;  
+        }
     }
 }

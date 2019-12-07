@@ -29,6 +29,15 @@ public class PlayerInteractions : MonoBehaviour
         _cameraFollow = GetComponent<CameraFollow>();
         _setPlayerActive = GetComponent<SetPlayerActive>();
         _turnSystem = GetComponent<TurnSystem>();
+        
+        // Find units
+        var units = GameObject.FindGameObjectsWithTag("Player");
+        _turnSystem.players.Clear();
+        foreach (var unit in units)
+        {
+            _turnSystem.players.Add(unit.GetComponent<Unit>());
+        }
+        
         _activeUnit = _turnSystem.players[0];
         
         UpdateMovementPoints();
@@ -61,6 +70,8 @@ public class PlayerInteractions : MonoBehaviour
     
     private void UpdateUI()
     {
+        if (_activeUnit == null) return;
+        
         _cameraFollow.SetTarget(_activeUnit.TargetPos);
 
         if (_turnSystem.GetCurrentPhase() == TurnSystem.Phases.Movement)
@@ -95,6 +106,8 @@ public class PlayerInteractions : MonoBehaviour
 
     public void UpdateMovement()
     {
+        if (_activeUnit == null) return;
+        
         if (_activeUnit.health <= 0)
         {
             SetNextUnit();

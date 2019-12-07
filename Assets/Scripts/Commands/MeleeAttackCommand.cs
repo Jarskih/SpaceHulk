@@ -19,12 +19,12 @@ public class MeleeAttackCommand : ICommand
     public void Execute()
     {
         _attacker.UpdateMovementPoints(-_moveCost);
-        _defender.TakeDamage(1);
+        _defender.TakeDamage(_attacker.unitStats.meleeDamage);
     }
 
     public void Undo()
     {
         _attacker.UpdateMovementPoints(_moveCost);
-        _defender.GainHealth(1);
+        _defender.GainHealth(_attacker.unitStats.meleeDamage);
     }
 }

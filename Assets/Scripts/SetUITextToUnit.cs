@@ -20,6 +20,7 @@ public class SetUITextToUnit : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (_pi.activeUnit == null) return;
         var position = _pi.activeUnit.transform.position;
         _point = _cam.WorldToScreenPoint(new Vector3(position.x, position.y, 0));
         transform.position = _point;

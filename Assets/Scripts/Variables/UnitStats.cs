@@ -9,4 +9,5 @@ public class UnitStats : ScriptableObject
     public Sprite unitSprite;
     public Sprite unitIcon;
     public int turningCostExtra;
+    public int meleeDamage;
 }

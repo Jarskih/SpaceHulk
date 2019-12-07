@@ -18,6 +18,8 @@ public class IsUnitAiming : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
+        if (_pi.activeUnit == null) return;
+        
         var unitState = _pi.activeUnit.currentState;
         if (unitState == Unit.UnitState.Shooting)
         {

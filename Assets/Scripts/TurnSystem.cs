@@ -170,6 +170,9 @@ public class TurnSystem : MonoBehaviour
                     if (Mathf.RoundToInt(player.TargetPos.x) == Mathf.RoundToInt(_objective.transform.position.x) &&
                         Mathf.RoundToInt(player.TargetPos.y) == Mathf.RoundToInt(_objective.transform.position.y))
                     {
+                        
+                        SceneManager.LoadScene("Debrief");
+                        /*
                         if (SceneManager.GetActiveScene().name == "Level1")
                         {
                             SceneManager.LoadScene("Level2");
@@ -182,6 +185,7 @@ public class TurnSystem : MonoBehaviour
                         {
                             SceneManager.LoadScene("WinScreen");
                         }
+                        */
                         break;
                     }
 

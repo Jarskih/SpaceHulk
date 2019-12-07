@@ -5,8 +5,23 @@ using UnityEngine.SceneManagement;
 
 public class LoadLevel : MonoBehaviour
 {
-    public void LoadScene(string level)
+    public IntVariable currentLevel;
+    public void LoadScene(int level)
     {
-        SceneManager.LoadScene(level);
+        currentLevel.Value = level;
+        SceneManager.LoadScene("Level"+level);
+    }
+
+    public void LoadNextScene()
+    {
+        currentLevel.Value++;
+        if (currentLevel.Value > 3)
+        {
+            SceneManager.LoadScene("StartScreen");
+        }
+        else
+        {
+            SceneManager.LoadScene("Level" + currentLevel.Value);
+        }
     }
 }

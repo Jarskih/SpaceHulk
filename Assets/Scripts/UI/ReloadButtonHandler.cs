@@ -17,6 +17,7 @@ public class ReloadButtonHandler : MonoBehaviour
     private void Update()
     {
         var activeUnit = _pi.activeUnit;
+        if (activeUnit == null) return;
         reloadButton.interactable = activeUnit.CanReload();
     }
 }

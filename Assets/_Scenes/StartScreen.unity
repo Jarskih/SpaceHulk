@@ -675,13 +675,13 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 855341925}
         m_MethodName: LoadScene
-        m_Mode: 5
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 3
           m_FloatArgument: 0
-          m_StringArgument: Level3
+          m_StringArgument: 3
           m_BoolArgument: 0
         m_CallState: 1
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
@@ -698,6 +698,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7f59d2731aaf494f9bd0525465ab4cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentLevel: {fileID: 11400000, guid: 9dc07e45ef820b14189ca1d986f6e8b2, type: 2}
 --- !u!1 &1000141483
 GameObject:
   m_ObjectHideFlags: 0
@@ -1306,13 +1307,13 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1530228074}
         m_MethodName: LoadScene
-        m_Mode: 5
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 2
           m_FloatArgument: 0
-          m_StringArgument: Level2
+          m_StringArgument: 2
           m_BoolArgument: 0
         m_CallState: 1
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
@@ -1329,6 +1330,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7f59d2731aaf494f9bd0525465ab4cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentLevel: {fileID: 11400000, guid: 9dc07e45ef820b14189ca1d986f6e8b2, type: 2}
 --- !u!1 &1617835502
 GameObject:
   m_ObjectHideFlags: 0
@@ -1760,13 +1762,13 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1841851721}
         m_MethodName: LoadScene
-        m_Mode: 5
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 1
           m_FloatArgument: 0
-          m_StringArgument: Level1
+          m_StringArgument: 1
           m_BoolArgument: 0
         m_CallState: 1
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
@@ -1783,3 +1785,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7f59d2731aaf494f9bd0525465ab4cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentLevel: {fileID: 11400000, guid: 9dc07e45ef820b14189ca1d986f6e8b2, type: 2}

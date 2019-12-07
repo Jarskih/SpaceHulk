@@ -11,7 +11,8 @@ public class ShootAction : MonoBehaviour
     public WeaponStats weaponStats;
     public IntVariable ammoUI;
     private Unit _unit;
-    private TilemapController _tilemapController;
+    private FlashHandler _flashHandler;
+        private TilemapController _tilemapController;
     [SerializeField] private List<Vector3Int> _tiles = new List<Vector3Int>();
     [SerializeField] private int ammo;
 
@@ -20,6 +21,7 @@ public class ShootAction : MonoBehaviour
     {
         _unit = GetComponent<Unit>();
         _tilemapController = FindObjectOfType<TilemapController>();
+        _flashHandler = GetComponentInChildren<FlashHandler>();
         ammo = weaponStats.maxAmmo;
         ammoUI.Value = weaponStats.maxAmmo;
     }
@@ -225,6 +227,8 @@ public class ShootAction : MonoBehaviour
             _unit.ReturnToIdle();
             ClearTargetingTiles();
             CommandInvoker.ResetHistory();
+
+            _flashHandler.Flash();
         }
         else
         {
